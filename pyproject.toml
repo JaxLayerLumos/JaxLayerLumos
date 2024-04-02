@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jaxlayerlumos"
+version = "0.1.0"
+description = "A JAX-based extension for LayerLumos, focusing on efficient TMM optical simulations"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Mingxuan Li", email = "mil152@pitt.edu"},
+]
+dependencies = [
+    "jax",
+    "jaxlib",
+    "numpy",
+    "scipy",
+]
+
+[project.urls]
+Homepage = "https://github.com/mil152/jaxlayerlumos"
+Source = "https://github.com/mil152/jaxlayerlumos"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "wheel",
+    "build",
+    "twine",
+    "sphinx",
+    "black",
+    "isort",
+]

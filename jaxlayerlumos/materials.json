@@ -1,0 +1,14 @@
+{
+    "Ag": "materials/Ag_Yang.csv",
+    "Al2O3": "materials/Al2O3_Querry.csv",
+    "Al": "materials/Al_Rakic.csv",
+    "Cr": "materials/Cr_Rakic.csv",
+    "Ni": "materials/Ni_Ordal.csv",
+    "Pd": "materials/Pd_Werner.csv",
+    "Si3N4": "materials/Si3N4_Kischkat.csv",
+    "SiO2": "materials/SiO2_Kischkat.csv",
+    "TiN": "materials/TiN_Beliaev.csv",
+    "TiO2": "materials/TiO2_Siefke.csv",
+    "Ti": "materials/Ti_Ordal.csv",
+    "W": "materials/W_Ordal.csv"
+}
