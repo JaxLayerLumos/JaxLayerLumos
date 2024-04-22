@@ -8,6 +8,7 @@ jax.config.update("jax_enable_x64", True)
 
 def stackrt_theta(n, d, f, theta=0):
     """
+
     Calculate the reflection and transmission coefficients for a multilayer stack
     at different frequencies under an arbitrary angle of incidence.
 
@@ -23,7 +24,9 @@ def stackrt_theta(n, d, f, theta=0):
               - T_TE (numpy.ndarray): Transmittance for TE polarization. Shape is (Nfreq,).
               - R_TM (numpy.ndarray): Reflectance for TM polarization. Shape is (Nfreq,).
               - T_TM (numpy.ndarray): Transmittance for TM polarization. Shape is (Nfreq,).
+
     """
+
     wvl = convert_frequencies_to_wavelengths(f)
     theta_rad = jnp.radians(theta)
     r_TE = jnp.zeros_like(f, dtype=jnp.complex128)
@@ -96,6 +99,7 @@ def stackrt_theta(n, d, f, theta=0):
 
 def stackrt(n, d, f, thetas=None):
     """
+
     Calculate the reflection and transmission coefficients for a multilayer stack
     at different frequencies and incidence angles, adapted for JAX.
 
@@ -112,11 +116,14 @@ def stackrt(n, d, f, thetas=None):
       - T_TE (jax.numpy.ndarray): Transmittance for TE polarization. Shape is (Nfreq,).
       - R_TM (jax.numpy.ndarray): Reflectance for TM polarization. Shape is (Nfreq,).
       - T_TM (jax.numpy.ndarray): Transmittance for TM polarization. Shape is (Nfreq,).
+
     """
 
     if thetas is None:
         thetas = jnp.array([0])
-    elif isinstance(thetas, (float, jnp.float32, jnp.float64, int, jnp.int32, jnp.int64)):
+    elif isinstance(
+        thetas, (float, jnp.float32, jnp.float64, int, jnp.int32, jnp.int64)
+    ):
         thetas = jnp.array([thetas])
 
     Nfreq, Ntheta = len(f), len(thetas)
@@ -133,3 +140,11 @@ def stackrt(n, d, f, thetas=None):
         T_TM = T_TM.at[i, :].set(T_TM_i)
 
     return R_TE, T_TE, R_TM, T_TM
+
+
+def stackrt0(n, d, f):
+    return stackrt(n, d, f, thetas=jnp.array([0]))
+
+
+def stackrt45(n, d, f):
+    return stackrt(n, d, f, thetas=jnp.array([45]))
