@@ -2,17 +2,13 @@ import jax.numpy as jnp
 import csv
 import json
 from pathlib import Path
-from .utils_spectra import (
-    convert_wavelengths_to_frequencies,
-)  # Ensure this function exists
+from .utils_spectra import convert_wavelengths_to_frequencies, convert_frequencies_to_wavelengths
 
 # from scipy.interpolate import interp1d  # Note: Consider JAX-compatible interpolation if needed
 
 # JAX doesn't have direct equivalents for all SciPy functions, so you might still need SciPy for some tasks,
 # especially those not directly related to numerical arrays, such as file I/O or interpolation.
 # For purely numerical tasks, seek JAX or JAX-compatible libraries.
-
-from .utils_spectra import convert_frequencies_to_wavelengths
 
 Metals_sigma = {
     "Cu": 5.96e7,
@@ -172,3 +168,28 @@ def interpolate_material(material_data, frequencies):
     )
 
     return jnp.vstack((n_interp_values, k_interp_values)).T
+
+
+def get_n_k_surrounded_by_air(materials, frequencies):
+    assert isinstance(materials, list)
+    assert isinstance(frequencies, jnp.ndarray)
+    assert frequencies.ndim == 1
+
+    num_layers = len(materials) + 2
+    num_frequencies = frequencies.shape[0]
+
+    n_k = jnp.ones((num_layers, num_frequencies), dtype=jnp.complex128)
+
+    for ind, material in enumerate(materials):
+        data_material = load_material(material)
+        n_k_material = interpolate_material(data_material, frequencies)
+
+        n_k = n_k.at[ind + 1, :].set(n_k_material[:, 0] + 1j * n_k_material[:, 1])
+
+    assert jnp.all(jnp.real(n_k[0]) == 1)
+    assert jnp.all(jnp.imag(n_k[0]) == 0)
+    assert jnp.all(jnp.real(n_k[-1]) == 1)
+    assert jnp.all(jnp.imag(n_k[-1]) == 0)
+
+    n_k = n_k.T
+    return n_k
