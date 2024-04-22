@@ -94,7 +94,7 @@ def stackrt_theta(n, d, f, theta=0):
     return R_TE, T_TE, R_TM, T_TM
 
 
-def stackrt(n, d, f, theta=None):
+def stackrt(n, d, f, thetas=None):
     """
     Calculate the reflection and transmission coefficients for a multilayer stack
     at different frequencies and incidence angles, adapted for JAX.
@@ -104,7 +104,7 @@ def stackrt(n, d, f, theta=None):
          Shape should be (Nfreq, Nlayers), where Nfreq is the number of frequencies and Nlayers is the number of layers.
     - d: The thicknesses of the layers. Shape should be (Nlayers,).
     - f: The frequencies at which to calculate the coefficients. Shape should be (Nfreq,).
-    - theta: The incidence angle(s) in degrees. Can be a single value or an array of angles. Defaults to [0].
+    - thetas: The incidence angle(s) in degrees. Can be a single value or an array of angles. Defaults to [0].
 
     Returns:
     - A tuple containing:
@@ -114,18 +114,18 @@ def stackrt(n, d, f, theta=None):
       - T_TM (jax.numpy.ndarray): Transmittance for TM polarization. Shape is (Nfreq,).
     """
 
-    if theta is None:
-        theta = jnp.array([0])
-    elif isinstance(theta, (float, int)):
-        theta = jnp.array([theta])
+    if thetas is None:
+        thetas = jnp.array([0])
+    elif isinstance(thetas, (float, jnp.float32, jnp.float64, int, jnp.int32, jnp.int64)):
+        thetas = jnp.array([thetas])
 
-    Nfreq, Ntheta = len(f), len(theta)
+    Nfreq, Ntheta = len(f), len(thetas)
     R_TE = jnp.zeros((Ntheta, Nfreq))
     T_TE = jnp.zeros((Ntheta, Nfreq))
     R_TM = jnp.zeros((Ntheta, Nfreq))
     T_TM = jnp.zeros((Ntheta, Nfreq))
 
-    for i, angle in enumerate(theta):
+    for i, angle in enumerate(thetas):
         R_TE_i, T_TE_i, R_TM_i, T_TM_i = stackrt_theta(n, d, f, angle)
         R_TE = R_TE.at[i, :].set(R_TE_i)
         T_TE = T_TE.at[i, :].set(T_TE_i)

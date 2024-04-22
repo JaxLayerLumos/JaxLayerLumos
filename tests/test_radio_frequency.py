@@ -27,7 +27,7 @@ def test_stackrt_RF():
 
     # Calculate R and T over the frequency range
     R_TE, T_TE, R_TM, T_TM = stackrt(
-        n_stack, d_stack, frequencies, theta=jnp.array([0])
+        n_stack, d_stack, frequencies, thetas=jnp.array([0])
     )
 
     # Calculate average shielding effectiveness
