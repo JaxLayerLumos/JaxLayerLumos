@@ -2,14 +2,19 @@ import jax.numpy as jnp
 import jax
 import scipy.constants as scic
 from jaxlayerlumos.utils_materials import load_material, interpolate_material
-from jaxlayerlumos.jaxlayerlumos import stackrt_theta  # Adjust the import path as needed
+from jaxlayerlumos.jaxlayerlumos import (
+    stackrt_theta,
+)  # Adjust the import path as needed
 import unittest
 import numpy as np
+
 
 class TestJaxLayerLumos(unittest.TestCase):
     def test_gradient_stackrt_theta_thickness(self):
         # Define parameters for a simplified single-layer system
-        Ag_data = load_material('Ag')  # Make sure your data includes SiO2 or adjust accordingly
+        Ag_data = load_material(
+            "Ag"
+        )  # Make sure your data includes SiO2 or adjust accordingly
 
         # Define a small wavelength range for testing
         wavelengths = jnp.linspace(300e-9, 900e-9, 3)  # from 300nm to 900nm
@@ -38,19 +43,26 @@ class TestJaxLayerLumos(unittest.TestCase):
         # Asserts to ensure the gradient computation is successful and results are sensible
         assert grad_R_TE is not None, "Gradient computation failed, returned None."
         assert isinstance(grad_R_TE, jnp.ndarray), "Gradient should be a JAX ndarray."
-        assert grad_R_TE.shape == d_stack.shape, "Gradient shape mismatch with the input thickness shape."
+        assert (
+            grad_R_TE.shape == d_stack.shape
+        ), "Gradient shape mismatch with the input thickness shape."
 
-        expected_grad_R_TE = jnp.array([0.00000000e+00, 1.49930213e-10, 5.23746370e-10])
+        expected_grad_R_TE = jnp.array([0.00000000e00, 1.49930213e-10, 5.23746370e-10])
 
         # Assert that the computed gradient matches the expected gradient closely
-        np.testing.assert_allclose(grad_R_TE, expected_grad_R_TE, rtol=1e-6, atol=1e-10, 
-                               err_msg="Computed gradient does not match expected values.")
-
+        np.testing.assert_allclose(
+            grad_R_TE,
+            expected_grad_R_TE,
+            rtol=1e-6,
+            atol=1e-10,
+            err_msg="Computed gradient does not match expected values.",
+        )
 
     # Note: Since we're not comparing against a specific expected value here,
     # the asserts mainly ensure that the computation does not error out and returns
     # results of the correct type and shape. For more rigorous testing, consider
     # adding comparisons against known values or behaviors under specific scenarios.
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

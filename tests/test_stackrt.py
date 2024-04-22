@@ -3,13 +3,19 @@ import jax.numpy as jnp
 import scipy.constants as scic
 import numpy as np
 from jaxlayerlumos.utils_materials import load_material, interpolate_material
-from jaxlayerlumos.jaxlayerlumos import stackrt, stackrt_theta  # Assuming stackrt can handle the case previously covered by stackrt0
+from jaxlayerlumos.jaxlayerlumos import (
+    stackrt,
+    stackrt_theta,
+)  # Assuming stackrt can handle the case previously covered by stackrt0
+
 
 class TestJaxLayerLumos(unittest.TestCase):
     def test_stackrt(self):
         # Load material data for SiO2 (example previously used 'Ag', ensure you replace with 'SiO2' or the correct material if available)
         # This assumes 'load_material' and 'interpolate_material' are adapted for JAX
-        Ag_data = load_material('Ag')  # Make sure your data includes SiO2 or adjust accordingly
+        Ag_data = load_material(
+            "Ag"
+        )  # Make sure your data includes SiO2 or adjust accordingly
 
         # Define a small wavelength range for testing
         wavelengths = jnp.linspace(300e-9, 900e-9, 3)  # from 300nm to 900nm
@@ -44,5 +50,6 @@ class TestJaxLayerLumos(unittest.TestCase):
         np.testing.assert_allclose(R_avg, expected_R_avg, rtol=1e-2, atol=0)
         np.testing.assert_allclose(T_avg, expected_T_avg, rtol=1e-2, atol=0)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
