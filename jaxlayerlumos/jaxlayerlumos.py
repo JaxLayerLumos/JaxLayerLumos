@@ -2,7 +2,9 @@ import jax.numpy as jnp
 from .utils_spectra import convert_frequencies_to_wavelengths
 from .utils_materials import load_material, interpolate_material
 import jax
+
 jax.config.update("jax_enable_x64", True)
+
 
 def stackrt_theta(n, d, f, theta=0):
     """
@@ -39,24 +41,37 @@ def stackrt_theta(n, d, f, theta=0):
         theta_i = theta_rad
 
         for j in range(n.shape[1] - 1):
-            n_j, n_next, d_next = n[i, j], n[i, j+1], d[j+1]
+            n_j, n_next, d_next = n[i, j], n[i, j + 1], d[j + 1]
             sin_theta_t = n_j * jnp.sin(theta_i) / n_next
             theta_t = jnp.arcsin(sin_theta_t)
-            
+
             cos_theta_i, cos_theta_t = jnp.cos(theta_i), jnp.cos(theta_t)
-            r_jk_TE = (n_j * cos_theta_i - n_next * cos_theta_t) / (n_j * cos_theta_i + n_next * cos_theta_t)
+            r_jk_TE = (n_j * cos_theta_i - n_next * cos_theta_t) / (
+                n_j * cos_theta_i + n_next * cos_theta_t
+            )
             t_jk_TE = 2 * n_j * cos_theta_i / (n_j * cos_theta_i + n_next * cos_theta_t)
-            r_jk_TM = (n_next * cos_theta_i - n_j * cos_theta_t) / (n_next * cos_theta_i + n_j * cos_theta_t)
+            r_jk_TM = (n_next * cos_theta_i - n_j * cos_theta_t) / (
+                n_next * cos_theta_i + n_j * cos_theta_t
+            )
             t_jk_TM = 2 * n_j * cos_theta_i / (n_next * cos_theta_i + n_j * cos_theta_t)
 
-            M_jk_TE = jnp.array([[1/t_jk_TE, r_jk_TE/t_jk_TE], [r_jk_TE/t_jk_TE, 1/t_jk_TE]], dtype=jnp.complex128)
-            M_jk_TM = jnp.array([[1/t_jk_TM, r_jk_TM/t_jk_TM], [r_jk_TM/t_jk_TM, 1/t_jk_TM]], dtype=jnp.complex128)
-            
+            M_jk_TE = jnp.array(
+                [[1 / t_jk_TE, r_jk_TE / t_jk_TE], [r_jk_TE / t_jk_TE, 1 / t_jk_TE]],
+                dtype=jnp.complex128,
+            )
+            M_jk_TM = jnp.array(
+                [[1 / t_jk_TM, r_jk_TM / t_jk_TM], [r_jk_TM / t_jk_TM, 1 / t_jk_TM]],
+                dtype=jnp.complex128,
+            )
+
             delta = 2 * jnp.pi * n_next * d_next / lambda_i
-            P = jnp.array([[jnp.exp(-1j * delta), 0], [0, jnp.exp(1j * delta)]], dtype=jnp.complex128)
+            P = jnp.array(
+                [[jnp.exp(-1j * delta), 0], [0, jnp.exp(1j * delta)]],
+                dtype=jnp.complex128,
+            )
             M_TE = jnp.dot(M_TE, jnp.dot(M_jk_TE, P))
             M_TM = jnp.dot(M_TM, jnp.dot(M_jk_TM, P))
-            
+
             theta_i = theta_t
 
         # Use .at[].set() for updating JAX arrays
@@ -65,12 +80,19 @@ def stackrt_theta(n, d, f, theta=0):
         r_TM = r_TM.at[i].set(M_TM[1, 0] / M_TM[0, 0])
         t_TM = t_TM.at[i].set(1 / M_TM[0, 0])
 
-        R_TE = R_TE.at[i].set(jnp.abs(r_TE[i])**2)
-        T_TE = T_TE.at[i].set(jnp.abs(t_TE[i])**2 * jnp.real(n[i, -1] * jnp.cos(theta_rad) / (n[i, 0] * cos_theta_t)))
-        R_TM = R_TM.at[i].set(jnp.abs(r_TM[i])**2)
-        T_TM = T_TM.at[i].set(jnp.abs(t_TM[i])**2 * jnp.real(n[i, -1] * jnp.cos(theta_rad) / (n[i, 0] * cos_theta_t)))
+        R_TE = R_TE.at[i].set(jnp.abs(r_TE[i]) ** 2)
+        T_TE = T_TE.at[i].set(
+            jnp.abs(t_TE[i]) ** 2
+            * jnp.real(n[i, -1] * jnp.cos(theta_rad) / (n[i, 0] * cos_theta_t))
+        )
+        R_TM = R_TM.at[i].set(jnp.abs(r_TM[i]) ** 2)
+        T_TM = T_TM.at[i].set(
+            jnp.abs(t_TM[i]) ** 2
+            * jnp.real(n[i, -1] * jnp.cos(theta_rad) / (n[i, 0] * cos_theta_t))
+        )
 
     return R_TE, T_TE, R_TM, T_TM
+
 
 def stackrt(n, d, f, theta=None):
     """
