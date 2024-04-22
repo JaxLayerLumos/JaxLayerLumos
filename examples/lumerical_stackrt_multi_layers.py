@@ -3,17 +3,15 @@ import scipy.constants as scic
 import lumapi
 
 
-def compute_properties_via_stackrt(thicknesses, n_k, frequencies, angle_of_incidence=0):
-    assert isinstance(thicknesses, np.ndarray)
-
-    layers = [0]
-    for thickness in thicknesses:
-        layers.append(thickness * scic.nano)
-    layers.append(0)
-
-    layers = np.array(layers)
-    num_layers = layers.shape[0]
-    assert num_layers == (thicknesses.shape[0] + 2)
+def compute_properties_via_stackrt(layers, n_k, frequencies, angle_of_incidence=0):
+    assert isinstance(layers, np.ndarray)
+    assert isinstance(n_k, np.ndarray)
+    assert isinstance(frequencies, np.ndarray)
+    assert layers.ndim == 1
+    assert n_k.ndim == 2
+    assert frequencies.ndim == 1
+    assert layers.shape[0] == n_k.shape[0]
+    assert frequencies.shape[0] == n_k.shape[1]
 
     fdtd = lumapi.FDTD(hide=True)
 

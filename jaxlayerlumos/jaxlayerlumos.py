@@ -1,7 +1,6 @@
+import jax
 import jax.numpy as jnp
 from .utils_spectra import convert_frequencies_to_wavelengths
-from .utils_materials import load_material, interpolate_material
-import jax
 
 jax.config.update("jax_enable_x64", True)
 
@@ -29,6 +28,7 @@ def stackrt_theta(n, d, f, theta=0):
 
     wvl = convert_frequencies_to_wavelengths(f)
     theta_rad = jnp.radians(theta)
+
     r_TE = jnp.zeros_like(f, dtype=jnp.complex128)
     r_TM = jnp.zeros_like(f, dtype=jnp.complex128)
     t_TE = jnp.zeros_like(f, dtype=jnp.complex128)
@@ -134,6 +134,7 @@ def stackrt(n, d, f, thetas=None):
 
     for i, angle in enumerate(thetas):
         R_TE_i, T_TE_i, R_TM_i, T_TM_i = stackrt_theta(n, d, f, angle)
+
         R_TE = R_TE.at[i, :].set(R_TE_i)
         T_TE = T_TE.at[i, :].set(T_TE_i)
         R_TM = R_TM.at[i, :].set(R_TM_i)
