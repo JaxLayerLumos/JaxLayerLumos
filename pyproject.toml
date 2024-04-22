@@ -13,7 +13,7 @@ packages = [
 [project]
 name = "jaxlayerlumos"
 version = "0.1.0"
-description = "A JAX-based extension for LayerLumos, focusing on efficient TMM optical simulations"
+description = "A JAX-based LayerLumos, focusing on efficient TMM optical simulations"
 readme = "README.md"
 requires-python = ">=3.8"
 authors = [
@@ -22,6 +22,7 @@ authors = [
 ]
 dependencies = [
     "jax",
+    "jaxlib",
 ]
 license = {text = "MIT"}
 classifiers = [
