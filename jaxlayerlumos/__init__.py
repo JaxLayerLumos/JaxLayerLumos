@@ -1,3 +1,3 @@
 from jaxlayerlumos.jaxlayerlumos import stackrt
-
-__version__ = '0.1.0'
+from jaxlayerlumos.jaxlayerlumos import stackrt0
+from jaxlayerlumos.jaxlayerlumos import stackrt45

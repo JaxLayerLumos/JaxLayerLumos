@@ -1,6 +1,7 @@
 import jax.numpy as jnp
 import scipy.constants as scic
 
+
 def convert_frequencies_to_wavelengths(f):
     """
     Convert frequency to wavelength in a JAX-compatible manner.
@@ -11,13 +12,14 @@ def convert_frequencies_to_wavelengths(f):
     Returns:
     - Wavelength in meters. Has the same shape as input f.
     """
-    # Note: In JAX, explicit type and dimension checks like those done in NumPy 
-    # might not be as straightforward due to JAX's lazy evaluation model. 
-    # If you still need type checks, consider doing them at a higher level 
+    # Note: In JAX, explicit type and dimension checks like those done in NumPy
+    # might not be as straightforward due to JAX's lazy evaluation model.
+    # If you still need type checks, consider doing them at a higher level
     # or using JAX's custom JIT-compiled function behaviors for runtime assertions.
 
     wvl = scic.c / f
     return wvl
+
 
 def convert_wavelengths_to_frequencies(wavelengths):
     """
@@ -30,4 +32,11 @@ def convert_wavelengths_to_frequencies(wavelengths):
     - Frequency in Hertz. Has the same shape as input wavelengths.
     """
     frequencies = scic.c / wavelengths
+    return frequencies
+
+
+def get_frequencies_visible_light(num_wavelengths=1001):
+    wavelengths = jnp.linspace(380 * scic.nano, 780 * scic.nano, num_wavelengths)
+    frequencies = convert_wavelengths_to_frequencies(wavelengths)
+
     return frequencies
