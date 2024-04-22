@@ -22,9 +22,9 @@ def compute_properties_via_stackrt(layers, n_k, frequencies, angle_of_incidence=
 
     RT = fdtd.stackrt(n_k, layers, frequencies, angle_of_incidence)
 
-    Ts = RT['Ts']
-    Rs = RT['Rs']
-    Tp = RT['Tp']
-    Rp = RT['Rp']
+    Ts = RT["Ts"]
+    Rs = RT["Rs"]
+    Tp = RT["Tp"]
+    Rp = RT["Rp"]
 
     return Rs, Rp, Ts, Tp

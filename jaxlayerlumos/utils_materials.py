@@ -2,7 +2,10 @@ import jax.numpy as jnp
 import csv
 import json
 from pathlib import Path
-from .utils_spectra import convert_wavelengths_to_frequencies, convert_frequencies_to_wavelengths
+from .utils_spectra import (
+    convert_wavelengths_to_frequencies,
+    convert_frequencies_to_wavelengths,
+)
 
 # from scipy.interpolate import interp1d  # Note: Consider JAX-compatible interpolation if needed
 

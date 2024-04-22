@@ -5,7 +5,10 @@ import scipy.constants as scic
 from jaxlayerlumos import stackrt
 from jaxlayerlumos.utils_materials import get_n_k_surrounded_by_air
 from jaxlayerlumos.utils_spectra import get_frequencies_visible_light
-from jaxlayerlumos.utils_layers import get_thicknesses_surrounded_by_air, convert_nm_to_m
+from jaxlayerlumos.utils_layers import (
+    get_thicknesses_surrounded_by_air,
+    convert_nm_to_m,
+)
 
 from lumerical_stackrt_multi_layers import compute_properties_via_stackrt
 
@@ -13,10 +16,10 @@ from lumerical_stackrt_multi_layers import compute_properties_via_stackrt
 if __name__ == "__main__":
     frequencies = get_frequencies_visible_light()
     list_materials = [
-        ['Ag'],
-        ['Ag'],
-        ['Ag', 'Al', 'Ag'],
-        ['TiO2', 'Ag', 'TiO2'],
+        ["Ag"],
+        ["Ag"],
+        ["Ag", "Al", "Ag"],
+        ["TiO2", "Ag", "TiO2"],
     ]
     list_thicknesses = [
         jnp.array([100.0]),
@@ -44,7 +47,7 @@ if __name__ == "__main__":
             np.array(layers),
             np.array(n_k).T,
             np.array(frequencies),
-            angle_of_incidence=np.array(angles)
+            angle_of_incidence=np.array(angles),
         )
 
         print(Rs.shape)
