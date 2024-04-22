@@ -1,7 +1,8 @@
 import unittest
 import jax.numpy as jnp
-import scipy.constants as scic
 import numpy as np
+import scipy.constants as scic
+
 from jaxlayerlumos.utils_materials import load_material, interpolate_material
 from jaxlayerlumos.jaxlayerlumos import stackrt
 

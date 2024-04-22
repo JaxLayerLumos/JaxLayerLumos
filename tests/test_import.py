@@ -4,20 +4,17 @@ def test_import_jaxlayerlumos():
 
 def test_import_functions():
     from jaxlayerlumos import stackrt
-
-    # Since stackrt0 functionality is merged with stackrt, no need to test stackrt0 import
-
+    from jaxlayerlumos import stackrt0
+    from jaxlayerlumos import stackrt45
     assert callable(stackrt)
+    assert callable(stackrt0)
+    assert callable(stackrt45)
 
     from jaxlayerlumos.jaxlayerlumos import stackrt
-
-    # Test importing directly from the module, assuming stackrt is within jaxlayerlumos/jaxlayerlumos.py
-
+    from jaxlayerlumos.jaxlayerlumos import stackrt_theta
     assert callable(stackrt)
+    assert callable(stackrt_theta)
 
     import jaxlayerlumos.utils_spectra
     import jaxlayerlumos.utils_materials
-
-    # Optionally, verify the callable status of specific functions you expect to exist
-    assert callable(jaxlayerlumos.utils_spectra.convert_frequencies_to_wavelengths)
-    assert callable(jaxlayerlumos.utils_materials.load_material)
+    import jaxlayerlumos.utils_layers

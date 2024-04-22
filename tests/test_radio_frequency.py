@@ -1,9 +1,8 @@
 import jax.numpy as jnp
 import numpy as np
+
 from jaxlayerlumos.utils_materials import load_material_RF
-from jaxlayerlumos.jaxlayerlumos import (
-    stackrt,
-)  # Assuming stackrt includes the functionality of stackrt0
+from jaxlayerlumos.jaxlayerlumos import stackrt
 
 
 def test_stackrt_RF():

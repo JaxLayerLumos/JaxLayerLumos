@@ -1,12 +1,10 @@
 import unittest
 import jax.numpy as jnp
-import scipy.constants as scic
 import numpy as np
+import scipy.constants as scic
+
 from jaxlayerlumos.utils_materials import load_material, interpolate_material
-from jaxlayerlumos.jaxlayerlumos import (
-    stackrt,
-    stackrt_theta,
-)  # Assuming stackrt can handle the case previously covered by stackrt0
+from jaxlayerlumos.jaxlayerlumos import stackrt, stackrt_theta
 
 
 class TestJaxLayerLumos(unittest.TestCase):
