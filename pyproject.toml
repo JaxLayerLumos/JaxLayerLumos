@@ -39,6 +39,7 @@ Source = "https://github.com/mil152/jaxlayerlumos"
 
 [project.optional-dependencies]
 dev = [
+    "matplotlib",
     "pytest",
     "wheel",
     "build",

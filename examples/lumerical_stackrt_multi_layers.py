@@ -1,5 +1,12 @@
 import numpy as np
 import scipy.constants as scic
+import os
+import sys
+
+if os.name == "nt":
+    sys.path.append("C:\\Program Files\\Lumerical\\v241\\api\\python\\")
+    sys.path.append("C:\\Program Files\\Lumerical\\v232\\api\\python\\")
+
 import lumapi
 
 
