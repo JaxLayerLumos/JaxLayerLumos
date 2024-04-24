@@ -5,7 +5,11 @@ import matplotlib.pyplot as plt
 from jaxlayerlumos import stackrt
 from tmm.tmm_core import coh_tmm
 from jaxlayerlumos.utils_materials import get_n_k_surrounded_by_air
-from jaxlayerlumos.utils_spectra import get_frequencies_visible_light, convert_frequencies_to_wavelengths, convert_wavelengths_to_frequencies
+from jaxlayerlumos.utils_spectra import (
+    get_frequencies_visible_light,
+    convert_frequencies_to_wavelengths,
+    convert_wavelengths_to_frequencies,
+)
 from jaxlayerlumos.utils_layers import (
     get_thicknesses_surrounded_by_air,
     convert_nm_to_m,
@@ -40,24 +44,36 @@ if __name__ == "__main__":
             layers = convert_nm_to_m(get_thicknesses_surrounded_by_air(thicknesses))
             # print(n_k)
             # print(layers)
-            lambda_list = np.sort(convert_frequencies_to_wavelengths(frequencies)) *  1e9 # Match the number of points in `frequencies`
-            d_list = [np.inf] + list(thicknesses) + [np.inf]  # Convert thickness from meters to nanometers for tmm, add infinite layers for ambient
+            lambda_list = (
+                np.sort(convert_frequencies_to_wavelengths(frequencies)) * 1e9
+            )  # Match the number of points in `frequencies`
+            d_list = (
+                [np.inf] + list(thicknesses) + [np.inf]
+            )  # Convert thickness from meters to nanometers for tmm, add infinite layers for ambient
             s_R_list = []
             s_T_list = []
             p_R_list = []
             p_T_list = []
 
             for i, lambda_vac in enumerate(lambda_list):
-                n_list = [1] + [n_k[i, j] for j in range(1, len(materials) + 1)] + [1]  # Creating the refractive index list for each wavelength
+                n_list = (
+                    [1] + [n_k[i, j] for j in range(1, len(materials) + 1)] + [1]
+                )  # Creating the refractive index list for each wavelength
                 # print(n_list)
-                s_result = coh_tmm('s', n_list, d_list, angle * np.pi/180.0, lambda_vac)
-                p_result = coh_tmm('p', n_list, d_list, angle * np.pi/180.0, lambda_vac)
-                s_R_list.append(s_result['R'])
-                s_T_list.append(s_result['T'])
-                p_R_list.append(p_result['R'])
-                p_T_list.append(p_result['T'])
+                s_result = coh_tmm(
+                    "s", n_list, d_list, angle * np.pi / 180.0, lambda_vac
+                )
+                p_result = coh_tmm(
+                    "p", n_list, d_list, angle * np.pi / 180.0, lambda_vac
+                )
+                s_R_list.append(s_result["R"])
+                s_T_list.append(s_result["T"])
+                p_R_list.append(p_result["R"])
+                p_T_list.append(p_result["T"])
 
-            R_TE, T_TE, R_TM, T_TM = stackrt(n_k, layers, frequencies, thetas=jnp.array([angle]))
+            R_TE, T_TE, R_TM, T_TM = stackrt(
+                n_k, layers, frequencies, thetas=jnp.array([angle])
+            )
 
             Rs, Rp, Ts, Tp = compute_properties_via_stackrt(
                 np.array(layers),
@@ -90,35 +106,51 @@ if __name__ == "__main__":
             fig, axs = plt.subplots(2, 2, figsize=(12, 12))  # Adjust the size as needed
 
             # Plot R_TE and Rs.T with frequencies on the x-axis
-            axs[0, 0].plot(frequencies, R_TE_squeezed, label='JaxLayerLumos', color='blue')
+            axs[0, 0].plot(
+                frequencies, R_TE_squeezed, label="JaxLayerLumos", color="blue"
+            )
             # axs[0, 0].plot(frequencies, Rs_T_squeezed, label='tmm', color='yellow', linestyle='-')
-            axs[0, 0].plot(frequencies, Rs_squeezed, label='Lumerical', color='red', linestyle='--')
-            axs[0, 0].set_xlabel('Frequency (Hz)')
-            axs[0, 0].set_ylabel('Reflectance_TE')
+            axs[0, 0].plot(
+                frequencies, Rs_squeezed, label="Lumerical", color="red", linestyle="--"
+            )
+            axs[0, 0].set_xlabel("Frequency (Hz)")
+            axs[0, 0].set_ylabel("Reflectance_TE")
             axs[0, 0].legend()
 
             # Plot R_TM and Rp.T with frequencies on the x-axis
-            axs[0, 1].plot(frequencies, R_TM_squeezed, label='JaxLayerLumos', color='blue')
+            axs[0, 1].plot(
+                frequencies, R_TM_squeezed, label="JaxLayerLumos", color="blue"
+            )
             # axs[0, 1].plot(frequencies, Rp_T_squeezed, label='tmm', color='green', linestyle='-')
-            axs[0, 1].plot(frequencies, Rp_squeezed, label='Lumerical', color='red', linestyle='--')
-            axs[0, 1].set_xlabel('Frequency (Hz)')
-            axs[0, 1].set_ylabel('Reflectance_TM')
+            axs[0, 1].plot(
+                frequencies, Rp_squeezed, label="Lumerical", color="red", linestyle="--"
+            )
+            axs[0, 1].set_xlabel("Frequency (Hz)")
+            axs[0, 1].set_ylabel("Reflectance_TM")
             axs[0, 1].legend()
 
             # Plot T_TE and Ts.T with frequencies on the x-axis
-            axs[1, 0].plot(frequencies, T_TE_squeezed, label='JaxLayerLumos', color='blue')
+            axs[1, 0].plot(
+                frequencies, T_TE_squeezed, label="JaxLayerLumos", color="blue"
+            )
             # axs[1, 0].plot(frequencies, Ts_T_squeezed, label='tmm', color='black', linestyle='-.')
-            axs[1, 0].plot(frequencies, Ts_squeezed, label='Lumerical', color='red', linestyle='--')
-            axs[1, 0].set_xlabel('Frequency (Hz)')
-            axs[1, 0].set_ylabel('Transmittance_TE')
+            axs[1, 0].plot(
+                frequencies, Ts_squeezed, label="Lumerical", color="red", linestyle="--"
+            )
+            axs[1, 0].set_xlabel("Frequency (Hz)")
+            axs[1, 0].set_ylabel("Transmittance_TE")
             axs[1, 0].legend()
 
             # Plot T_TM and Tp.T with frequencies on the x-axis
-            axs[1, 1].plot(frequencies, T_TM_squeezed, label='JaxLayerLumos', color='blue')
+            axs[1, 1].plot(
+                frequencies, T_TM_squeezed, label="JaxLayerLumos", color="blue"
+            )
             # axs[1, 1].plot(frequencies, Tp_T_squeezed, label='tmm', color='black', linestyle=':')
-            axs[1, 1].plot(frequencies, Tp_squeezed, label='Lumerical', color='red', linestyle='--')
-            axs[1, 1].set_xlabel('Frequency (Hz)')
-            axs[1, 1].set_ylabel('Transmittance_TM')
+            axs[1, 1].plot(
+                frequencies, Tp_squeezed, label="Lumerical", color="red", linestyle="--"
+            )
+            axs[1, 1].set_xlabel("Frequency (Hz)")
+            axs[1, 1].set_ylabel("Transmittance_TM")
             axs[1, 1].legend()
 
             filename = f"tmm_{'_'.join(f'{mat}_{thick}nm' for mat, thick in zip(materials, thicknesses))}_angle_{angle}_deg"
