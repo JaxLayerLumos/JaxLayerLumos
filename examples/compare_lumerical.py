@@ -19,7 +19,7 @@ from plot_spectra import plot_spectra
 
 
 if __name__ == "__main__":
-    save_figure = False
+    save_figure = True
 
     frequencies = get_frequencies_visible_light()
     list_materials = [
@@ -74,23 +74,31 @@ if __name__ == "__main__":
 
                 plot_spectra(
                     frequencies,
-                    np.array([
-                        R_TE_jll,
-                        R_TE_lum,
-                    ]),
-                    np.array([
-                        R_TM_jll,
-                        R_TM_lum,
-                    ]),
-                    np.array([
-                        T_TE_jll,
-                        T_TE_lum,
-                    ]),
-                    np.array([
-                        T_TM_jll,
-                        T_TM_lum,
-                    ]),
-                    ['Lumerical', 'JaxLayerLumos'],
-                    ['-', '--'],
-                    str_file
+                    np.array(
+                        [
+                            R_TE_jll,
+                            R_TE_lum,
+                        ]
+                    ),
+                    np.array(
+                        [
+                            R_TM_jll,
+                            R_TM_lum,
+                        ]
+                    ),
+                    np.array(
+                        [
+                            T_TE_jll,
+                            T_TE_lum,
+                        ]
+                    ),
+                    np.array(
+                        [
+                            T_TM_jll,
+                            T_TM_lum,
+                        ]
+                    ),
+                    ["Lumerical", "JaxLayerLumos"],
+                    ["-", "--"],
+                    str_file,
                 )
