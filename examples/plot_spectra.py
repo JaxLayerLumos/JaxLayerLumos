@@ -64,4 +64,4 @@ def plot_spectra(
     if not os.path.exists(str_directory):
         os.mkdir(str_directory)
 
-    plt.savefig(os.path.join(str_directory, str_file + ".png")
+    plt.savefig(os.path.join(str_directory, str_file + ".png"))
