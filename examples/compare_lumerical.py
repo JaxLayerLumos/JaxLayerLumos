@@ -71,3 +71,26 @@ if __name__ == "__main__":
 
             if save_figure:
                 str_file = f"tmm_{'_'.join(f'{mat}_{thick}nm' for mat, thick in zip(materials, thicknesses))}_angle_{angle}_deg"
+
+                plot_spectra(
+                    frequencies,
+                    np.array([
+                        R_TE_jll,
+                        R_TE_lum,
+                    ]),
+                    np.array([
+                        R_TM_jll,
+                        R_TM_lum,
+                    ]),
+                    np.array([
+                        T_TE_jll,
+                        T_TE_lum,
+                    ]),
+                    np.array([
+                        T_TM_jll,
+                        T_TM_lum,
+                    ]),
+                    ['Lumerical', 'JaxLayerLumos'],
+                    ['-', '--'],
+                    str_file
+                )
