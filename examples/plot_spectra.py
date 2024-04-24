@@ -13,13 +13,8 @@ def plot_spectra(
     assert Ts_TM.ndim == 2
     assert Rs_TE.shape[0] == Rs_TM.shape[0] == Ts_TE.shape[0] == Ts_TM.shape[0]
     assert Rs_TE.shape[0] == len(str_labels) == len(linestyles)
-    assert (
-        Rs_TE.shape[1]
-        == Rs_TM.shape[1]
-        == Ts_TE.shape[1]
-        == Ts_TM.shape[1]
-        == frequencies.shape[0]
-    )
+    assert Rs_TE.shape[1] == Rs_TM.shape[1] == Ts_TE.shape[1] == Ts_TM.shape[1]
+    assert Rs_TE.shape[1] == frequencies.shape[0]
 
     fig, axs = plt.subplots(2, 2, figsize=(12, 12))
 
@@ -65,7 +60,8 @@ def plot_spectra(
     plt.suptitle(str_file)
     plt.subplots_adjust(top=0.95)
 
-    if not os.path.exists("./comparisons"):
-        os.mkdir("./comparisons")
+    str_directory = "./comparisons"
+    if not os.path.exists(str_directory):
+        os.mkdir(str_directory)
 
-    plt.savefig(str_file + ".png")
+    plt.savefig(os.path.join(str_directory, str_file + ".png")
