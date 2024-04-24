@@ -4,11 +4,7 @@ import scipy.constants as scic
 from jaxlayerlumos import stackrt
 
 from jaxlayerlumos.utils_materials import get_n_k_surrounded_by_air
-from jaxlayerlumos.utils_spectra import (
-    get_frequencies_visible_light,
-    convert_frequencies_to_wavelengths,
-    convert_wavelengths_to_frequencies,
-)
+from jaxlayerlumos.utils_spectra import get_frequencies_visible_light
 from jaxlayerlumos.utils_layers import (
     get_thicknesses_surrounded_by_air,
     convert_nm_to_m,
