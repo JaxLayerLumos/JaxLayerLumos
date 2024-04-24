@@ -57,7 +57,7 @@ def plot_spectra(
     axs[1, 1].grid()
 
     plt.tight_layout()
-    plt.suptitle(str_file)
+    plt.suptitle(str_file, fontsize=fontsize)
     plt.subplots_adjust(top=0.95)
 
     str_directory = "./comparisons"
