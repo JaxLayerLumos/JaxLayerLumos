@@ -41,6 +41,21 @@ for metal, sigma in Metals_sigma.items():
     }
 
 
+def load_material_json():
+    current_dir = Path(__file__).parent
+    materials_file = current_dir / "materials.json"
+
+    with open(materials_file, "r") as file_opened:
+        material_indices = json.load(file_opened)
+
+    return material_indices, current_dir
+
+
+def get_all_materials():
+    material_indices, _ = load_material_json()
+    return list(material_indices.keys())
+
+
 def load_material_RF(material_name, frequencies):
     """
     Load material RF data for a given material and frequencies. Adapted for JAX.
@@ -86,16 +101,14 @@ def load_material(material_name):
 
     Returns:
     - A JAX array with columns for frequency (converted from wavelength), n, and k.
+
     """
-    current_dir = Path(__file__).parent
-    materials_file = current_dir / "materials.json"
 
-    with open(materials_file, "r") as file:
-        material_index = json.load(file)
+    material_indices, current_dir = load_material_json()
+    relative_file_path = material_indices.get(material_name)
 
-    relative_file_path = material_index.get(material_name)
     if not relative_file_path:
-        raise ValueError(f"Material {material_name} not found in the index.")
+        raise ValueError(f"Material {material_name} not found in JaxLayerLumos.")
 
     csv_file_path = current_dir / relative_file_path
     data = []
