@@ -1,5 +1,6 @@
 import jax
 import jax.numpy as jnp
+
 from .utils_spectra import convert_frequencies_to_wavelengths
 
 jax.config.update("jax_enable_x64", True)
@@ -67,7 +68,7 @@ def stackrt_theta(n, d, f, theta=0):
                 dtype=jnp.complex128,
             )
 
-            delta = 2 * jnp.pi * n_next * d_next * cos_theta_t/ lambda_i
+            delta = 2 * jnp.pi * n_next * d_next * cos_theta_t / lambda_i
             P = jnp.array(
                 [[jnp.exp(-1j * delta), 0], [0, jnp.exp(1j * delta)]],
                 dtype=jnp.complex128,

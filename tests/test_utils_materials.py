@@ -47,11 +47,15 @@ def test_load_material_success():
 def test_load_material_failure():
     with pytest.raises(ValueError) as e:
         utils_materials.load_material("FakeMaterial")
-    np.testing.assert_string_equal(str(e.value), "Material FakeMaterial not found in JaxLayerLumos.")
+    np.testing.assert_string_equal(
+        str(e.value), "Material FakeMaterial not found in JaxLayerLumos."
+    )
 
     with pytest.raises(ValueError) as e:
         utils_materials.load_material("Material")
-    np.testing.assert_string_equal(str(e.value), "Material Material not found in JaxLayerLumos.")
+    np.testing.assert_string_equal(
+        str(e.value), "Material Material not found in JaxLayerLumos."
+    )
 
 
 def test_material_data_conversion_and_interpolation():

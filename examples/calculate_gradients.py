@@ -23,9 +23,7 @@ if __name__ == "__main__":
 
     def R_TE(inputs):
         layers = convert_nm_to_m(get_thicknesses_surrounded_by_air(inputs))
-        R_TE, _, _, _ = stackrt(
-            n_k, layers, frequencies, thetas=angles
-        )
+        R_TE, _, _, _ = stackrt(n_k, layers, frequencies, thetas=angles)
         return R_TE[0, 0]
 
     gradients_R_TE = jax.grad(R_TE)(thicknesses)

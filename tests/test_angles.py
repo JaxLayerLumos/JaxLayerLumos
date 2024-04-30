@@ -79,12 +79,12 @@ class TestJaxLayerLumosStackrt(unittest.TestCase):
             ]
         )
 
-        print('R_avg')
+        print("R_avg")
         for elem_1 in R_avg:
             for elem_2 in elem_1:
                 print(elem_2)
 
-        print('T_avg')
+        print("T_avg")
         for elem_1 in T_avg:
             for elem_2 in elem_1:
                 print(elem_2)
