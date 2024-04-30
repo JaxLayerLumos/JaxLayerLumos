@@ -46,5 +46,4 @@ dev = [
     "twine",
     "sphinx",
     "black",
-    "isort",
 ]
