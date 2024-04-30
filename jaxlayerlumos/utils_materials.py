@@ -2,16 +2,8 @@ import jax.numpy as jnp
 import csv
 import json
 from pathlib import Path
-from .utils_spectra import (
-    convert_wavelengths_to_frequencies,
-    convert_frequencies_to_wavelengths,
-)
+from .utils_spectra import convert_wavelengths_to_frequencies
 
-# from scipy.interpolate import interp1d  # Note: Consider JAX-compatible interpolation if needed
-
-# JAX doesn't have direct equivalents for all SciPy functions, so you might still need SciPy for some tasks,
-# especially those not directly related to numerical arrays, such as file I/O or interpolation.
-# For purely numerical tasks, seek JAX or JAX-compatible libraries.
 
 Metals_sigma = {
     "Cu": 5.96e7,

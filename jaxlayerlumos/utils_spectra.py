@@ -2,19 +2,19 @@ import jax.numpy as jnp
 import scipy.constants as scic
 
 
-def convert_frequencies_to_wavelengths(f):
+def convert_frequencies_to_wavelengths(frequencies):
     """
     Convert frequency to wavelength in a JAX-compatible manner.
 
     Parameters:
-    - f: Frequency in Hertz. Can be a float or a JAX array of floats.
+    - frequencies: Frequency in Hertz. Can be a float or a JAX array of floats.
 
     Returns:
-    - Wavelength in meters. Has the same shape as input f.
+    - Wavelength in meters. Has the same shape as input frequencies.
     """
 
-    wvl = scic.c / f
-    return wvl
+    wavelengths = scic.c / frequencies
+    return wavelengths
 
 
 def convert_wavelengths_to_frequencies(wavelengths):
