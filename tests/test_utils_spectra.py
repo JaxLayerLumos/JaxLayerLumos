@@ -37,22 +37,26 @@ class TestUtilsSpectra(unittest.TestCase):
     def test_get_frequencies_visible_light(self):
         num_wavelengths = 1234
 
-        frequencies = utils_spectra.get_frequencies_visible_light(num_wavelengths=num_wavelengths)
+        frequencies = utils_spectra.get_frequencies_visible_light(
+            num_wavelengths=num_wavelengths
+        )
 
         assert frequencies.ndim == 1
         assert frequencies.shape[0] == num_wavelengths
-        np.testing.assert_allclose(np.min(frequencies), 3.84349305e+14)
-        np.testing.assert_allclose(np.max(frequencies), 7.88927521e+14)
+        np.testing.assert_allclose(np.min(frequencies), 3.84349305e14)
+        np.testing.assert_allclose(np.max(frequencies), 7.88927521e14)
 
     def test_get_frequencies_wide_visible_light(self):
         num_wavelengths = 1234
 
-        frequencies = utils_spectra.get_frequencies_wide_visible_light(num_wavelengths=num_wavelengths)
+        frequencies = utils_spectra.get_frequencies_wide_visible_light(
+            num_wavelengths=num_wavelengths
+        )
 
         assert frequencies.ndim == 1
         assert frequencies.shape[0] == num_wavelengths
-        np.testing.assert_allclose(np.min(frequencies), 3.331027e+14)
-        np.testing.assert_allclose(np.max(frequencies), 9.993082e+14)
+        np.testing.assert_allclose(np.min(frequencies), 3.331027e14)
+        np.testing.assert_allclose(np.max(frequencies), 9.993082e14)
 
 
 if __name__ == "__main__":
