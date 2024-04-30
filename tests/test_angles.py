@@ -39,38 +39,58 @@ class TestJaxLayerLumosStackrt(unittest.TestCase):
         # print(R_avg)
         # print(T_avg)
 
-        # Expected results should be updated based on actual TiO2 data and calculation methods
         expected_R_avg = jnp.array(
             [
-                [0.507508, 0.187267, 0.083708],
-                [0.487784, 0.194518, 0.091574],
-                [0.949849, 0.978394, 0.954056],
+                [
+                    0.5075084159634257,
+                    0.18726655434023687,
+                    0.08370762967721315,
+                ],
+                [
+                    0.4877839691834523,
+                    0.1945178061281731,
+                    0.09157449689223793,
+                ],
+                [
+                    0.9498492283810344,
+                    0.9783936773043997,
+                    0.9540558921256859,
+                ],
             ]
         )
 
         expected_T_avg = jnp.array(
             [
-                [0.178391, 0.812733, 0.916292],
-                [0.188011, 0.805482, 0.908426],
-                [0.006496, 0.021606, 0.045944],
+                [
+                    0.17839133609006402,
+                    0.8127334404810548,
+                    0.916292370322787,
+                ],
+                [
+                    0.18801137946236623,
+                    0.8054821885944445,
+                    0.9084255031077624,
+                ],
+                [
+                    0.006495561010086865,
+                    0.021606322148813736,
+                    0.04594410787425793,
+                ],
             ]
         )
 
-        # Verify the results with JAX's testing utilities
-        np.testing.assert_allclose(
-            R_avg,
-            expected_R_avg,
-            rtol=1e-3,
-            atol=1e-8,
-            err_msg="Reflectance values do not match expected results",
-        )
-        np.testing.assert_allclose(
-            T_avg,
-            expected_T_avg,
-            rtol=1e-3,
-            atol=1e-8,
-            err_msg="Transmittance values do not match expected results",
-        )
+        print('R_avg')
+        for elem_1 in R_avg:
+            for elem_2 in elem_1:
+                print(elem_2)
+
+        print('T_avg')
+        for elem_1 in T_avg:
+            for elem_2 in elem_1:
+                print(elem_2)
+
+        np.testing.assert_allclose(R_avg, expected_R_avg)
+        np.testing.assert_allclose(T_avg, expected_T_avg)
 
 
 if __name__ == "__main__":

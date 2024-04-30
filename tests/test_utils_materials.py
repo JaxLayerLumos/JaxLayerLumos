@@ -6,15 +6,10 @@ from jaxlayerlumos.utils_materials import load_material
 
 
 def test_load_material_success():
-    """Test loading a material data successfully with JAX."""
     material_name = "SiO2"
     data = load_material(material_name)
 
-    # Check that the data is not empty
     assert data.size > 0
-
-    # Check for the correct structure: frequency, n, k
-    # Assuming at least one data row exists
     assert len(data[0]) == 3
 
 
