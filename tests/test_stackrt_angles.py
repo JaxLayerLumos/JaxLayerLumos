@@ -3,41 +3,59 @@ import jax.numpy as jnp
 import numpy as np
 import scipy.constants as scic
 
-from jaxlayerlumos.utils_materials import load_material, interpolate_material
-from jaxlayerlumos.jaxlayerlumos import stackrt
+from jaxlayerlumos import stackrt
+from jaxlayerlumos.utils_materials import load_material, interpolate_material, get_n_k_surrounded_by_air
+from jaxlayerlumos.utils_spectra import get_frequencies_wide_visible_light
+from jaxlayerlumos.utils_layers import get_thicknesses_surrounded_by_air
 
 
 class TestJaxLayerLumosStackrt(unittest.TestCase):
-    def test_stackrt_with_angles(self):
-        # Load material data for TiO2
+    def test_sizes(self):
+        num_wavelengths = 123
+        num_angles = 4
+
+        frequencies = get_frequencies_wide_visible_light(num_wavelengths=num_wavelengths)
+        n_stack = get_n_k_surrounded_by_air(["TiO2"], frequencies)
+        d_stack = get_thicknesses_surrounded_by_air(jnp.array([2e-8]))
+        thetas = jnp.linspace(0, 89, num_angles)
+
+        R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas)
+
+        assert isinstance(R_TE, jnp.ndarray)
+        assert isinstance(R_TM, jnp.ndarray)
+        assert isinstance(T_TE, jnp.ndarray)
+        assert isinstance(T_TM, jnp.ndarray)
+        assert R_TE.ndim == 2
+        assert R_TM.ndim == 2
+        assert T_TE.ndim == 2
+        assert T_TM.ndim == 2
+        assert R_TE.shape[0] == R_TM.shape[0] == num_angles
+        assert T_TE.shape[0] == T_TM.shape[0] == num_angles
+        assert R_TE.shape[1] == R_TM.shape[1] == num_wavelengths
+        assert T_TE.shape[1] == T_TM.shape[1] == num_wavelengths
+
+    def test_angles(self):
         TiO2_data = load_material("TiO2")
 
-        # Define wavelength range (in meters)
-        wavelengths = jnp.linspace(300e-9, 900e-9, 3)  # 3 points from 300nm to 900nm
-        frequencies = scic.c / wavelengths  # Convert wavelengths to frequencies
+        wavelengths = jnp.linspace(300e-9, 900e-9, 3)
+        frequencies = scic.c / wavelengths
 
-        # Interpolate n and k values for TiO2 over the specified frequency range
         n_k_TiO2 = interpolate_material(TiO2_data, frequencies)
         n_TiO2 = (
             n_k_TiO2[:, 0] + 1j * n_k_TiO2[:, 1]
-        )  # Combine n and k into a complex refractive index
+        )
 
-        # Define stack configuration
-        n_air = jnp.ones_like(wavelengths)  # Refractive index of air is approximately 1
+        n_air = jnp.ones_like(wavelengths)
         n_stack = jnp.vstack(
             [n_air, n_TiO2, n_air]
-        ).T  # Transpose to match expected shape (Nlayers x Nfreq)
-        d_stack = jnp.array([0, 2e-8, 0])  # Stack thickness for air-TiO2-air
-        thetas = jnp.linspace(0, 89, 3)  # Incident angles from 0 to 89 degrees
+        ).T
+        d_stack = jnp.array([0, 2e-8, 0])
+        thetas = jnp.linspace(0, 89, 3)
 
-        # Calculate R and T over the frequency range for different incident angles
         R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas)
 
-        # Calculate average R and T
         R_avg = (R_TE + R_TM) / 2
         T_avg = (T_TE + T_TM) / 2
-        # print(R_avg)
-        # print(T_avg)
 
         expected_R_avg = jnp.array(
             [
