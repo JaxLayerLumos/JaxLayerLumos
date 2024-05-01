@@ -85,8 +85,6 @@ def stackrt_theta(n, d, f, theta):
     assert isinstance(n, jnp.ndarray)
     assert isinstance(d, jnp.ndarray)
     assert isinstance(f, jnp.ndarray)
-    assert isinstance(theta, (float, jnp.float32, jnp.float64, int, jnp.int32, jnp.int64))
-
     assert n.ndim == 2
     assert d.ndim == 1
     assert f.ndim == 1
