@@ -1,7 +1,7 @@
 import numpy as np
 import time
 import jax.numpy as jnp
-from jaxlayerlumos.jaxlayerlumos import stackrt as stackrt_slow
+from jaxlayerlumos.jaxlayerlumos_new import stackrt as stackrt_slow
 from jaxlayerlumos.jaxlayerlumos_fast import stackrt as stackrt_fast
 
 from jaxlayerlumos.utils_materials import get_n_k_surrounded_by_air
