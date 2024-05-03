@@ -17,7 +17,7 @@ def stackrt_base(wvl_i, theta_k, n_i, d):
     M_TM = jnp.eye(2, dtype=jnp.complex128)
 
     for j in range(0, n_i.shape[0] - 1):
-        n_current  = n_i[j]
+        n_current = n_i[j]
         n_next = n_i[j + 1]
         d_next = d[j + 1]
 
@@ -29,11 +29,21 @@ def stackrt_base(wvl_i, theta_k, n_i, d):
         r_jk_TE = (n_current * cos_theta_k - n_next * cos_theta_t) / (
             n_current * cos_theta_k + n_next * cos_theta_t
         )
-        t_jk_TE = 2 * n_current * cos_theta_k / (n_current * cos_theta_k + n_next * cos_theta_t)
+        t_jk_TE = (
+            2
+            * n_current
+            * cos_theta_k
+            / (n_current * cos_theta_k + n_next * cos_theta_t)
+        )
         r_jk_TM = (n_next * cos_theta_k - n_current * cos_theta_t) / (
             n_next * cos_theta_k + n_current * cos_theta_t
         )
-        t_jk_TM = 2 * n_current * cos_theta_k / (n_next * cos_theta_k + n_current * cos_theta_t)
+        t_jk_TM = (
+            2
+            * n_current
+            * cos_theta_k
+            / (n_next * cos_theta_k + n_current * cos_theta_t)
+        )
 
         M_jk_TE = jnp.array(
             [[1 / t_jk_TE, r_jk_TE / t_jk_TE], [r_jk_TE / t_jk_TE, 1 / t_jk_TE]],

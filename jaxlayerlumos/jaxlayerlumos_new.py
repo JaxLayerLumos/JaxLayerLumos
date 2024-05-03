@@ -6,7 +6,7 @@ from .utils_spectra import convert_frequencies_to_wavelengths
 jax.config.update("jax_enable_x64", True)
 
 
-def stackrt_base(wvl_i, theta_k, n_i, d):
+def stackrt_base(n_i, d, wvl_i, theta_k):
     assert isinstance(n_i, jnp.ndarray)
     assert isinstance(d, jnp.ndarray)
     assert n_i.ndim == 1
@@ -17,7 +17,7 @@ def stackrt_base(wvl_i, theta_k, n_i, d):
     M_TM = jnp.eye(2, dtype=jnp.complex128)
 
     for j in range(0, n_i.shape[0] - 1):
-        n_current  = n_i[j]
+        n_current = n_i[j]
         n_next = n_i[j + 1]
         d_next = d[j + 1]
 
@@ -29,11 +29,21 @@ def stackrt_base(wvl_i, theta_k, n_i, d):
         r_jk_TE = (n_current * cos_theta_k - n_next * cos_theta_t) / (
             n_current * cos_theta_k + n_next * cos_theta_t
         )
-        t_jk_TE = 2 * n_current * cos_theta_k / (n_current * cos_theta_k + n_next * cos_theta_t)
+        t_jk_TE = (
+            2
+            * n_current
+            * cos_theta_k
+            / (n_current * cos_theta_k + n_next * cos_theta_t)
+        )
         r_jk_TM = (n_next * cos_theta_k - n_current * cos_theta_t) / (
             n_next * cos_theta_k + n_current * cos_theta_t
         )
-        t_jk_TM = 2 * n_current * cos_theta_k / (n_next * cos_theta_k + n_current * cos_theta_t)
+        t_jk_TM = (
+            2
+            * n_current
+            * cos_theta_k
+            / (n_next * cos_theta_k + n_current * cos_theta_t)
+        )
 
         M_jk_TE = jnp.array(
             [[1 / t_jk_TE, r_jk_TE / t_jk_TE], [r_jk_TE / t_jk_TE, 1 / t_jk_TE]],
@@ -94,14 +104,17 @@ def stackrt_theta(n, d, f, theta):
     wvl = convert_frequencies_to_wavelengths(f)
     theta_rad = jnp.radians(theta)
 
-    fun_base = lambda x, y: stackrt_base(x, theta_rad, y, d)
-    fun_mapped = jax.vmap(fun_base, (0, 0), (0, 0, 0, 0, 0, 0))
-    r_TE, t_TE, r_TM, t_TM, thetas_k, cos_thetas_t = fun_mapped(wvl, n)
+    fun_mapped = jax.vmap(stackrt_base, (0, None, 0, None), (0, 0, 0, 0, 0, 0))
+    r_TE, t_TE, r_TM, t_TM, thetas_k, cos_thetas_t = fun_mapped(n, d, wvl, theta_rad)
 
     R_TE = jnp.abs(r_TE) ** 2
-    T_TE = jnp.abs(t_TE) ** 2 * jnp.real(n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t))
+    T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
+        n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
+    )
     R_TM = jnp.abs(r_TM) ** 2
-    T_TM = jnp.abs(t_TM) ** 2 * jnp.real(n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t))
+    T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
+        n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
+    )
 
     return R_TE, T_TE, R_TM, T_TM
 
@@ -132,11 +145,8 @@ def stackrt(n, d, f, thetas=None):
     elif isinstance(thetas, (float, int)):
         thetas = jnp.array([thetas])
 
-    # Vectorize stackrt_theta over the angle axis
-    vectorized_stackrt_theta = jax.vmap(stackrt_theta, in_axes=(None, None, None, 0))
-
-    # Apply the vectorized function
-    R_TE, T_TE, R_TM, T_TM = vectorized_stackrt_theta(n, d, f, thetas)
+    fun_mapped = jax.vmap(stackrt_theta, (None, None, None, 0), (0, 0, 0, 0))
+    R_TE, T_TE, R_TM, T_TM = fun_mapped(n, d, f, thetas)
 
     return R_TE, T_TE, R_TM, T_TM
 
