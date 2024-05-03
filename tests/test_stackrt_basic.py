@@ -31,7 +31,7 @@ class TestJaxLayerLumos(unittest.TestCase):
         n_stack = jnp.vstack([n_air, n_Ag, n_air]).T
         d_stack = jnp.hstack([d_air, d_Ag, d_air]).squeeze()
 
-        R_TE, T_TE, R_TM, T_TM = stackrt_theta(n_stack, d_stack, frequencies)
+        R_TE, T_TE, R_TM, T_TM = stackrt_theta(n_stack, d_stack, frequencies, 0.0)
 
         R_avg = (R_TE + R_TM) / 2
         T_avg = (T_TE + T_TM) / 2

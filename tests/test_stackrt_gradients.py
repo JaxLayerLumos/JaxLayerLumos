@@ -33,7 +33,7 @@ class TestJaxLayerLumos(unittest.TestCase):
 
         # Function to compute the first element of R_TE given the thickness
         def compute_R_TE_first_element(d_stack):
-            R_TE, _, _, _ = stackrt_theta(n_stack, d_stack, frequencies)
+            R_TE, _, _, _ = stackrt_theta(n_stack, d_stack, frequencies, 0.0)
             return R_TE[0]  # Focusing on the first element for simplification
 
         # Compute the gradient of R_TE with respect to the layer's thickness
