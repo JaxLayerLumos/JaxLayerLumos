@@ -36,16 +36,20 @@ class TestJaxLayerLumos(unittest.TestCase):
         R_avg = (R_TE + R_TM) / 2
         T_avg = (T_TE + T_TM) / 2
 
-        expected_R_avg = np.array([
-            0.15756072183464492,
-            0.9861316130416324,
-            0.9903173026731295,
-        ])
-        expected_T_avg = np.array([
-            5.871466903536302e-34,
-            1.5866522824891017e-71,
-            5.1290044483503494e-76,
-        ])
+        expected_R_avg = np.array(
+            [
+                0.15756072183464492,
+                0.9861316130416324,
+                0.9903173026731295,
+            ]
+        )
+        expected_T_avg = np.array(
+            [
+                5.871466903536302e-34,
+                1.5866522824891017e-71,
+                5.1290044483503494e-76,
+            ]
+        )
 
         print("R_avg")
         for elem in R_avg:

@@ -4,7 +4,11 @@ import numpy as np
 import scipy.constants as scic
 
 from jaxlayerlumos import stackrt
-from jaxlayerlumos.utils_materials import load_material, interpolate_material, get_n_k_surrounded_by_air
+from jaxlayerlumos.utils_materials import (
+    load_material,
+    interpolate_material,
+    get_n_k_surrounded_by_air,
+)
 from jaxlayerlumos.utils_spectra import get_frequencies_wide_visible_light
 from jaxlayerlumos.utils_layers import get_thicknesses_surrounded_by_air
 
@@ -14,7 +18,9 @@ class TestJaxLayerLumosStackrt(unittest.TestCase):
         num_wavelengths = 123
         num_angles = 4
 
-        frequencies = get_frequencies_wide_visible_light(num_wavelengths=num_wavelengths)
+        frequencies = get_frequencies_wide_visible_light(
+            num_wavelengths=num_wavelengths
+        )
         n_stack = get_n_k_surrounded_by_air(["TiO2"], frequencies)
         d_stack = get_thicknesses_surrounded_by_air(jnp.array([2e-8]))
         thetas = jnp.linspace(0, 89, num_angles)
@@ -41,14 +47,10 @@ class TestJaxLayerLumosStackrt(unittest.TestCase):
         frequencies = scic.c / wavelengths
 
         n_k_TiO2 = interpolate_material(TiO2_data, frequencies)
-        n_TiO2 = (
-            n_k_TiO2[:, 0] + 1j * n_k_TiO2[:, 1]
-        )
+        n_TiO2 = n_k_TiO2[:, 0] + 1j * n_k_TiO2[:, 1]
 
         n_air = jnp.ones_like(wavelengths)
-        n_stack = jnp.vstack(
-            [n_air, n_TiO2, n_air]
-        ).T
+        n_stack = jnp.vstack([n_air, n_TiO2, n_air]).T
         d_stack = jnp.array([0, 2e-8, 0])
         thetas = jnp.linspace(0, 89, 3)
 
