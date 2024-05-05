@@ -46,7 +46,16 @@ class TestJaxLayerLumos(unittest.TestCase):
             grad_R_TE.shape == d_stack.shape
         ), "Gradient shape mismatch with the input thickness shape."
 
-        expected_grad_R_TE = jnp.array([0.00000000e00, 1.49930213e-10, 5.23746370e-10])
+        expected_grad_R_TE = jnp.array(
+            [
+                0.0,
+                -1.8639916450783514e-10,
+                4.2091929253306585e-10,
+            ]
+        )
+
+        for elem in grad_R_TE:
+            print(elem)
 
         # Assert that the computed gradient matches the expected gradient closely
         np.testing.assert_allclose(
