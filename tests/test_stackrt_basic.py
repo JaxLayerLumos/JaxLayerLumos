@@ -3,8 +3,8 @@ import jax.numpy as jnp
 import numpy as np
 import scipy.constants as scic
 
+from jaxlayerlumos.jaxlayerlumos import stackrt_theta
 from jaxlayerlumos.utils_materials import load_material, interpolate_material
-from jaxlayerlumos.jaxlayerlumos import stackrt, stackrt_theta
 
 
 class TestJaxLayerLumos(unittest.TestCase):
@@ -31,22 +31,35 @@ class TestJaxLayerLumos(unittest.TestCase):
         n_stack = jnp.vstack([n_air, n_Ag, n_air]).T
         d_stack = jnp.hstack([d_air, d_Ag, d_air]).squeeze()
 
-        # Assuming stackrt can now handle theta=0 as a special case, eliminating the need for stackrt0
-        R_TE, T_TE, R_TM, T_TM = stackrt_theta(n_stack, d_stack, frequencies)
+        R_TE, T_TE, R_TM, T_TM = stackrt_theta(n_stack, d_stack, frequencies, 0.0)
 
-        # Calculate average R and T
         R_avg = (R_TE + R_TM) / 2
         T_avg = (T_TE + T_TM) / 2
-        # print(R_avg)
-        # print(T_avg)
-        # Expected output needs to be defined based on your new calculations and expectations
-        # This part remains as an exercise since the actual expected values depend on your implementation and material data
-        expected_R_avg = np.array([0.15756072, 0.98613162, 0.99031732])
-        expected_T_avg = np.array([5.87146690e-34, 1.58748575e-71, 5.13012036e-76])
 
-        # Validate the results with a tolerance for floating-point arithmetic
-        np.testing.assert_allclose(R_avg, expected_R_avg, rtol=1e-2, atol=0)
-        np.testing.assert_allclose(T_avg, expected_T_avg, rtol=1e-2, atol=0)
+        expected_R_avg = np.array(
+            [
+                0.09525774381746192,
+                0.9601123170389492,
+                0.9772199561956645,
+            ]
+        )
+        expected_T_avg = np.array(
+            [
+                7.770517514983977e-25,
+                1.760970772881048e-65,
+                1.4500794728372322e-70,
+            ]
+        )
+
+        print("R_avg")
+        for elem in R_avg:
+            print(elem)
+        print("T_avg")
+        for elem in T_avg:
+            print(elem)
+
+        np.testing.assert_allclose(R_avg, expected_R_avg)
+        np.testing.assert_allclose(T_avg, expected_T_avg)
 
 
 if __name__ == "__main__":

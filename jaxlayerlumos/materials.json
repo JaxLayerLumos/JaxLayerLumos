@@ -1,14 +1,19 @@
 {
-    "Ag": "materials/Ag_Yang.csv",
+    "Ag": "materials/Ag_Rakic_LD.csv",
     "Al2O3": "materials/Al2O3_Querry.csv",
-    "Al": "materials/Al_Rakic.csv",
-    "Cr": "materials/Cr_Rakic.csv",
-    "Ni": "materials/Ni_Ordal.csv",
+    "Al": "materials/Al_Rakic_LD.csv",
+    "Au": "materials/Au_Rakic_LD.csv",
+    "Cr": "materials/Cr_Rakic_LD.csv",
+    "Cu": "materials/Cu_Rakic_LD.csv",
+    "Ge": "materials/Ge_Nunley.csv",
+    "Mn": "materials/Mn_Querry.csv",
+    "Ni": "materials/Ni_Rakic_LD.csv",
     "Pd": "materials/Pd_Werner.csv",
+    "Pt": "materials/Pt_Rakic_LD.csv",
     "Si3N4": "materials/Si3N4_Kischkat.csv",
     "SiO2": "materials/SiO2_Kischkat.csv",
     "TiN": "materials/TiN_Beliaev.csv",
     "TiO2": "materials/TiO2_Siefke.csv",
-    "Ti": "materials/Ti_Ordal.csv",
-    "W": "materials/W_Ordal.csv"
+    "Ti": "materials/Ti_Rakic_LD.csv",
+    "W": "materials/W_Rakic_LD.csv"
 }

@@ -1,36 +1,71 @@
 import pytest
 import jax.numpy as jnp
+import numpy as np
 import scipy.constants as scic
 
-from jaxlayerlumos.utils_materials import load_material
+from jaxlayerlumos import utils_materials
+
+
+LIST_MATERIALS = [
+    "Ag",
+    "Al2O3",
+    "Al",
+    "Au",
+    "Cr",
+    "Cu",
+    "Ge",
+    "Mn",
+    "Ni",
+    "Pd",
+    "Pt",
+    "Si3N4",
+    "SiO2",
+    "TiN",
+    "TiO2",
+    "Ti",
+    "W",
+]
+
+
+def test_get_all_materials():
+    all_materials = utils_materials.get_all_materials()
+
+    assert len(all_materials) == len(LIST_MATERIALS)
+
+    for material in all_materials:
+        assert material in LIST_MATERIALS
+
+    for material in LIST_MATERIALS:
+        assert material in all_materials
 
 
 def test_load_material_success():
-    """Test loading a material data successfully with JAX."""
-    material_name = "SiO2"
-    data = load_material(material_name)
+    for material in LIST_MATERIALS:
+        data = utils_materials.load_material(material)
 
-    # Check that the data is not empty
-    assert data.size > 0
-
-    # Check for the correct structure: frequency, n, k
-    # Assuming at least one data row exists
-    assert len(data[0]) == 3
+        assert isinstance(data, jnp.ndarray)
+        assert data.ndim == 2
+        assert data.shape[0] > 0
+        assert data.shape[1] == 3
 
 
 def test_load_material_failure():
-    """Test loading a non-existent material data to ensure it fails gracefully."""
     with pytest.raises(ValueError) as e:
-        load_material("FakeMaterial")
+        utils_materials.load_material("FakeMaterial")
+    np.testing.assert_string_equal(
+        str(e.value), "Material FakeMaterial not found in JaxLayerLumos."
+    )
 
-    assert str(e.value) == "Material FakeMaterial not found in the index."
+    with pytest.raises(ValueError) as e:
+        utils_materials.load_material("Material")
+    np.testing.assert_string_equal(
+        str(e.value), "Material Material not found in JaxLayerLumos."
+    )
 
 
 def test_material_data_conversion_and_interpolation():
-    """Test that the material data is correctly converted from wavelength to frequency
-    and that n and k values are correctly retrieved with JAX."""
     material_name = "SiO2"
-    data = load_material(material_name)
+    data = utils_materials.load_material(material_name)
 
     # Values for a known row of SiO2 data
     expected_wavelength_um = 22.321

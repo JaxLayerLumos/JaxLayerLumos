@@ -33,7 +33,7 @@ class TestJaxLayerLumos(unittest.TestCase):
 
         # Function to compute the first element of R_TE given the thickness
         def compute_R_TE_first_element(d_stack):
-            R_TE, _, _, _ = stackrt_theta(n_stack, d_stack, frequencies)
+            R_TE, _, _, _ = stackrt_theta(n_stack, d_stack, frequencies, 0.0)
             return R_TE[0]  # Focusing on the first element for simplification
 
         # Compute the gradient of R_TE with respect to the layer's thickness
@@ -46,7 +46,16 @@ class TestJaxLayerLumos(unittest.TestCase):
             grad_R_TE.shape == d_stack.shape
         ), "Gradient shape mismatch with the input thickness shape."
 
-        expected_grad_R_TE = jnp.array([0.00000000e00, 1.49930213e-10, 5.23746370e-10])
+        expected_grad_R_TE = jnp.array(
+            [
+                0.0,
+                -1.8639916450783514e-10,
+                4.2091929253306585e-10,
+            ]
+        )
+
+        for elem in grad_R_TE:
+            print(elem)
 
         # Assert that the computed gradient matches the expected gradient closely
         np.testing.assert_allclose(
