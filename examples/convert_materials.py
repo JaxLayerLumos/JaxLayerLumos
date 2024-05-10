@@ -31,9 +31,7 @@ def save_material(str_path, n_material, k_material):
     writer.writerow(['wl', 'n', 'k'])
 
     for ind in range(0, n_material.shape[0]):
-        wavelengths = utils_spectra.convert_frequencies_to_wavelengths(n_material[ind, 0])
-        wavelengths_um = wavelengths * 1e6
-
+        wavelengths_um = n_material[ind, 0]
         writer.writerow([wavelengths_um] + [n_material[ind, 1]] + [k_material[ind, 1]])
 
 
