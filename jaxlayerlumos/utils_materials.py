@@ -43,7 +43,7 @@ def load_material_wavelength_um(material):
                 continue
 
     data = jnp.array(data)
-    data = data[data[:, 0].argsort()]
+#    data = data[data[:, 0].argsort()]
 
     data_n = data[:, [0, 1]]
     data_k = data[:, [0, 2]]

@@ -21,6 +21,9 @@ def convert_material(material):
     wavelengths_um_n, values_n = n_material.T
     wavelengths_um_k, values_k = k_material.T
 
+    wavelengths_um_n, values_n = convert_values(wavelengths_um_n, values_n)
+    wavelengths_um_k, values_k = convert_values(wavelengths_um_k, values_k)
+
     n_material_new = jnp.concatenate([wavelengths_um_n[..., jnp.newaxis], values_n[..., jnp.newaxis]], axis=1)
     k_material_new = jnp.concatenate([wavelengths_um_k[..., jnp.newaxis], values_k[..., jnp.newaxis]], axis=1)
 
