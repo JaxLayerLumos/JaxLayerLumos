@@ -47,11 +47,7 @@ class TestJaxLayerLumos(unittest.TestCase):
         ), "Gradient shape mismatch with the input thickness shape."
 
         expected_grad_R_TE = jnp.array(
-            [
-                0.0,
-                -1.8639916450783514e-10,
-                4.2091929253306585e-10,
-            ]
+            [0.0, -1.8639916450783514e-10, 4.2091929253306585e-10,]
         )
 
         for elem in grad_R_TE:

@@ -6,7 +6,7 @@ from pathlib import Path
 from jaxlayerlumos.utils_spectra import convert_wavelengths_to_frequencies
 
 
-def load_material_json():
+def load_json():
     current_dir = Path(__file__).parent
     materials_file = current_dir / "materials.json"
 
@@ -17,41 +17,28 @@ def load_material_json():
 
 
 def get_all_materials():
-    material_indices, _ = load_material_json()
+    material_indices, _ = load_json()
     return list(material_indices.keys())
 
 
-def load_material(material_name):
-    """
-    Load material data from its CSV file, converting wavelength to frequency. Adapted for JAX.
+def load_material_wavelength_um(material):
+    material_indices, current_dir = load_json()
+    str_file = material_indices.get(material)
 
-    Parameters:
-    - material_name: The name of the material to load.
+    if not str_file:
+        raise ValueError(f"Material {material} not found in JaxLayerLumos.")
 
-    Returns:
-    - A JAX array with columns for frequency (converted from wavelength), n, and k.
-
-    """
-
-    material_indices, current_dir = load_material_json()
-    relative_file_path = material_indices.get(material_name)
-
-    if not relative_file_path:
-        raise ValueError(f"Material {material_name} not found in JaxLayerLumos.")
-
-    csv_file_path = current_dir / relative_file_path
+    str_csv = current_dir / str_file
     data = []
 
-    with open(csv_file_path, "r") as csvfile:
+    with open(str_csv, "r") as csvfile:
         csvreader = csv.reader(csvfile)
-        next(csvreader)  # Skip the header row
+        next(csvreader)
+
         for row in csvreader:
             try:
                 wavelength_um, n, k = map(float, row)
-                frequency = convert_wavelengths_to_frequencies(
-                    wavelength_um * 1e-6
-                )  # Convert um to meters
-                data.append((frequency, n, k))
+                data.append((wavelength_um, n, k))
             except ValueError:
                 continue
 
@@ -60,6 +47,23 @@ def load_material(material_name):
 
     data_n = data[:, [0, 1]]
     data_k = data[:, [0, 2]]
+
+    return data_n, data_k
+
+
+def load_material_wavelength(material):
+    data_n, data_k = load_material_wavelength_um(material)
+
+    data_n[:, 0] = data_n[:, 0] * 1e-6
+    data_k[:, 0] = data_k[:, 0] * 1e-6
+
+    return data_n, data_k
+
+def load_material(material):
+    data_n, data_k = load_material_wavelength(material)
+
+    data_n[:, 0] = convert_wavelengths_to_frequencies(data_n[:, 0])
+    data_k[:, 0] = convert_wavelengths_to_frequencies(data_k[:, 0])
 
     return data_n, data_k
 
@@ -89,11 +93,7 @@ def interpolate_material(material_info, frequencies):
     assert jnp.max(frequencies) <= jnp.max(freqs)
 
     values_interpolated = jnp.interp(
-        frequencies,
-        freqs,
-        values,
-        left="extrapolate",
-        right="extrapolate",
+        frequencies, freqs, values, left="extrapolate", right="extrapolate",
     )
 
     return values_interpolated

@@ -3,6 +3,7 @@ import numpy as np
 
 from jaxlayerlumos import utils_materials
 
+
 def verify_values(frequencies, values):
     unique_frequencies, indices = jnp.unique(frequencies, return_index=True)
     unique_values = values[indices]
@@ -16,6 +17,7 @@ def verify_values(frequencies, values):
 
     np.testing.assert_allclose(sorted_frequencies, frequencies)
     np.testing.assert_allclose(sorted_values, values)
+
 
 def test_material_values():
     num_wavelengths = 2345

@@ -56,8 +56,7 @@ def stackrt_base(n_i, d, wvl_i, theta_k):
 
         delta = 2 * jnp.pi * n_next * d_next * cos_theta_t / wvl_i
         P = jnp.array(
-            [[jnp.exp(-1j * delta), 0], [0, jnp.exp(1j * delta)]],
-            dtype=jnp.complex128,
+            [[jnp.exp(-1j * delta), 0], [0, jnp.exp(1j * delta)]], dtype=jnp.complex128,
         )
         M_TE = jnp.dot(M_TE, jnp.dot(M_jk_TE, P))
         M_TM = jnp.dot(M_TM, jnp.dot(M_jk_TM, P))

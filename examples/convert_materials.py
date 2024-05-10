@@ -16,13 +16,13 @@ def convert_values(frequencies, values):
     return sorted_frequencies, sorted_values
 
 def convert_material(material):
-    n_material, k_material = utils_materials.load_material(material)
+    n_material, k_material = utils_materials.load_material_wavelength_um(material)
 
-    frequencies_n, values_n = n_material.T
-    frequencies_k, values_k = k_material.T
+    wavelengths_um_n, values_n = n_material.T
+    wavelengths_um_k, values_k = k_material.T
 
-    n_material_new = jnp.concatenate([frequencies_n[..., jnp.newaxis], values_n[..., jnp.newaxis]], axis=1)
-    k_material_new = jnp.concatenate([frequencies_k[..., jnp.newaxis], values_k[..., jnp.newaxis]], axis=1)
+    n_material_new = jnp.concatenate([wavelengths_um_n[..., jnp.newaxis], values_n[..., jnp.newaxis]], axis=1)
+    k_material_new = jnp.concatenate([wavelengths_um_k[..., jnp.newaxis], values_k[..., jnp.newaxis]], axis=1)
 
     return n_material_new, k_material_new
 
@@ -40,7 +40,7 @@ def save_material(str_path, n_material, k_material):
 if __name__ == '__main__':
     all_materials = utils_materials.get_all_materials()
     all_materials = ['Ag']
-    material_indices, str_directory = utils_materials.load_material_json()
+    material_indices, str_directory = utils_materials.load_json()
 
     for material in all_materials:
         str_path_material = material_indices.get(material)
