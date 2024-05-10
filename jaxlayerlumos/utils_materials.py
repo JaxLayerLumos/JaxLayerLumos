@@ -3,7 +3,7 @@ import csv
 import json
 from pathlib import Path
 
-from .utils_spectra import convert_wavelengths_to_frequencies
+from jaxlayerlumos.utils_spectra import convert_wavelengths_to_frequencies
 
 
 def load_material_json():
@@ -58,10 +58,13 @@ def load_material(material_name):
     data = jnp.array(data)
     data = data[data[:, 0].argsort()]
 
-    return data
+    data_n = data[:, [0, 1]]
+    data_k = data[:, [0, 2]]
+
+    return data_n, data_k
 
 
-def interpolate_material(material_data, frequencies):
+def interpolate_material(material_info, frequencies):
     """
     Interpolate n and k values for the specified frequencies using JAX.
     Supports linear interpolation and extrapolation.
@@ -75,38 +78,25 @@ def interpolate_material(material_data, frequencies):
 
     """
 
-    # Extract frequency, n, and k columns
-    freqs, n_values, k_values = material_data.T
+    assert isinstance(material_info, jnp.ndarray)
+    assert isinstance(frequencies, jnp.ndarray)
+    assert material_info.ndim == 2
+    assert frequencies.ndim == 1
 
-    # Remove duplicates (if any) while preserving order
-    unique_freqs, indices = jnp.unique(freqs, return_index=True)
-    unique_n_values = n_values[indices]
-    unique_k_values = k_values[indices]
+    freqs, values = material_info.T
 
-    # Ensure frequencies are sorted (usually they should be, but just in case)
-    sorted_indices = jnp.argsort(unique_freqs)
-    sorted_freqs = unique_freqs[sorted_indices]
-    sorted_n_values = unique_n_values[sorted_indices]
-    sorted_k_values = unique_k_values[sorted_indices]
+    assert jnp.min(freqs) <= jnp.min(frequencies)
+    assert jnp.max(frequencies) <= jnp.max(freqs)
 
-    # Interpolate n and k for the given frequencies using JAX's interp function
-    n_interp_values = jnp.interp(
+    values_interpolated = jnp.interp(
         frequencies,
-        sorted_freqs,
-        sorted_n_values,
+        freqs,
+        values,
         left="extrapolate",
         right="extrapolate",
     )
 
-    k_interp_values = jnp.interp(
-        frequencies,
-        sorted_freqs,
-        sorted_k_values,
-        left="extrapolate",
-        right="extrapolate",
-    )
-
-    return jnp.vstack((n_interp_values, k_interp_values)).T
+    return values_interpolated
 
 
 def get_n_k_surrounded_by_air(materials, frequencies):
@@ -120,10 +110,11 @@ def get_n_k_surrounded_by_air(materials, frequencies):
     n_k = jnp.ones((num_layers, num_frequencies), dtype=jnp.complex128)
 
     for ind, material in enumerate(materials):
-        data_material = load_material(material)
-        n_k_material = interpolate_material(data_material, frequencies)
+        data_n, data_k = load_material(material)
+        n_material = interpolate_material(data_n, frequencies)
+        k_material = interpolate_material(data_k, frequencies)
 
-        n_k = n_k.at[ind + 1, :].set(n_k_material[:, 0] + 1j * n_k_material[:, 1])
+        n_k = n_k.at[ind + 1, :].set(n_material + 1j * k_material)
 
     assert jnp.all(jnp.real(n_k[0]) == 1)
     assert jnp.all(jnp.imag(n_k[0]) == 0)

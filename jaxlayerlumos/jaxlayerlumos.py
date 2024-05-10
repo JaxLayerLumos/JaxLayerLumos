@@ -1,7 +1,7 @@
 import jax
 import jax.numpy as jnp
 
-from .utils_spectra import convert_frequencies_to_wavelengths
+from jaxlayerlumos import utils_spectra
 
 jax.config.update("jax_enable_x64", True)
 
@@ -101,7 +101,7 @@ def stackrt_theta(n, d, f, theta):
     assert n.shape[0] == f.shape[0]
     assert n.shape[1] == d.shape[0]
 
-    wvl = convert_frequencies_to_wavelengths(f)
+    wvl = utils_spectra.convert_frequencies_to_wavelengths(f)
     theta_rad = jnp.radians(theta)
 
     fun_mapped = jax.vmap(stackrt_base, (0, None, 0, None), (0, 0, 0, 0, 0, 0))
