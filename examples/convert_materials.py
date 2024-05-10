@@ -5,15 +5,15 @@ from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_spectra
 
 
-def convert_values(frequencies, values):
-    unique_frequencies, indices = jnp.unique(frequencies, return_index=True)
+def convert_values(wavelenths, values):
+    unique_wavelenths, indices = jnp.unique(wavelenths, return_index=True)
     unique_values = values[indices]
 
-    indices = jnp.argsort(unique_frequencies)
-    sorted_frequencies = unique_frequencies[indices]
+    indices = jnp.argsort(unique_wavelenths, descending=True)
+    sorted_wavelenths = unique_wavelenths[indices]
     sorted_values = unique_values[indices]
 
-    return sorted_frequencies, sorted_values
+    return sorted_wavelenths, sorted_values
 
 def convert_material(material):
     n_material, k_material = utils_materials.load_material_wavelength_um(material)
