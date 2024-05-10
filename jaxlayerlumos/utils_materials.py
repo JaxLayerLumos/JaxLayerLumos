@@ -54,16 +54,16 @@ def load_material_wavelength_um(material):
 def load_material_wavelength(material):
     data_n, data_k = load_material_wavelength_um(material)
 
-    data_n[:, 0] = data_n[:, 0] * 1e-6
-    data_k[:, 0] = data_k[:, 0] * 1e-6
+    data_n = data_n.at[:, 0].set(data_n[:, 0] * 1e-6)
+    data_k = data_k.at[:, 0].set(data_k[:, 0] * 1e-6)
 
     return data_n, data_k
 
 def load_material(material):
     data_n, data_k = load_material_wavelength(material)
 
-    data_n[:, 0] = convert_wavelengths_to_frequencies(data_n[:, 0])
-    data_k[:, 0] = convert_wavelengths_to_frequencies(data_k[:, 0])
+    data_n = data_n.at[:, 0].set(convert_wavelengths_to_frequencies(data_n[:, 0]))
+    data_k = data_k.at[:, 0].set(convert_wavelengths_to_frequencies(data_k[:, 0]))
 
     return data_n, data_k
 

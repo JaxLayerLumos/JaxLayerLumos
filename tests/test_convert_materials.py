@@ -20,8 +20,6 @@ def verify_values(frequencies, values):
 
 
 def test_material_values():
-    num_wavelengths = 2345
-
     all_materials = utils_materials.get_all_materials()
 
     for material in all_materials:
