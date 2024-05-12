@@ -51,6 +51,57 @@ def load_material_wavelength_um(material):
     return data_n, data_k
 
 
+def _load_material_wavelength_um(material):
+    material_indices, str_directory = load_json()
+    str_file = material_indices.get(material)
+
+    if not str_file:
+        raise ValueError(f"Material {material} not found in JaxLayerLumos.")
+
+    str_csv = str_directory / str_file
+    data_n = []
+    data_k = []
+
+    with open(str_csv, "r") as csvfile:
+        csvreader = csv.reader(csvfile)
+
+        start_n = False
+        start_k = False
+
+        for row in csvreader:
+            if len(row) == 2:
+                if row[0] == 'wl' and row[1] == 'n':
+                    start_n = True
+                    start_k = False
+                elif row[0] == 'wl' and row[1] == 'k':
+                    start_n = False
+                    start_k = True
+                else:
+                    wavelength_um, value = map(float, row)
+
+                    if start_n and not start_k:
+                        data_n.append([wavelength_um, value])
+                    elif not start_n and start_k:
+                        data_k.append([wavelength_um, value])
+                    else:
+                        raise ValueError
+            elif len(row) == 1:
+                assert row[0] == ''
+            else:
+                raise ValueError
+
+    data_n = jnp.array(data_n)
+    data_k = jnp.array(data_k)
+    assert data_n.shape[0] > 0 or data_k.shape[0] > 0
+
+    if data_n.shape[0] == 0:
+        data_n = jnp.concatenate([data_k[:, 0][..., jnp.newaxis], jnp.zeros((data_k.shape[0], 1))], axis=1)
+    if data_k.shape[0] == 0:
+        data_k = jnp.concatenate([data_n[:, 0][..., jnp.newaxis], jnp.zeros((data_n.shape[0], 1))], axis=1)
+
+    return data_n, data_k
+
+
 def load_material_wavelength(material):
     data_n, data_k = load_material_wavelength_um(material)
 
