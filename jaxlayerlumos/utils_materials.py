@@ -22,36 +22,6 @@ def get_all_materials():
 
 
 def load_material_wavelength_um(material):
-    material_indices, current_dir = load_json()
-    str_file = material_indices.get(material)
-
-    if not str_file:
-        raise ValueError(f"Material {material} not found in JaxLayerLumos.")
-
-    str_csv = current_dir / str_file
-    data = []
-
-    with open(str_csv, "r") as csvfile:
-        csvreader = csv.reader(csvfile)
-        next(csvreader)
-
-        for row in csvreader:
-            try:
-                wavelength_um, n, k = map(float, row)
-                data.append((wavelength_um, n, k))
-            except ValueError:
-                continue
-
-    data = jnp.array(data)
-    #    data = data[data[:, 0].argsort()]
-
-    data_n = data[:, [0, 1]]
-    data_k = data[:, [0, 2]]
-
-    return data_n, data_k
-
-
-def _load_material_wavelength_um(material):
     material_indices, str_directory = load_json()
     str_file = material_indices.get(material)
 
