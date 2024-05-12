@@ -43,7 +43,7 @@ def load_material_wavelength_um(material):
                 continue
 
     data = jnp.array(data)
-#    data = data[data[:, 0].argsort()]
+    #    data = data[data[:, 0].argsort()]
 
     data_n = data[:, [0, 1]]
     data_k = data[:, [0, 2]]
@@ -58,6 +58,7 @@ def load_material_wavelength(material):
     data_k = data_k.at[:, 0].set(data_k[:, 0] * 1e-6)
 
     return data_n, data_k
+
 
 def load_material(material):
     data_n, data_k = load_material_wavelength(material)
@@ -93,7 +94,11 @@ def interpolate_material(material_info, frequencies):
     assert jnp.max(frequencies) <= jnp.max(freqs)
 
     values_interpolated = jnp.interp(
-        frequencies, freqs, values, left="extrapolate", right="extrapolate",
+        frequencies,
+        freqs,
+        values,
+        left="extrapolate",
+        right="extrapolate",
     )
 
     return values_interpolated

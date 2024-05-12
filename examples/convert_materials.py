@@ -15,6 +15,7 @@ def convert_values(wavelenths, values):
 
     return sorted_wavelenths, sorted_values
 
+
 def convert_material(material):
     n_material, k_material = utils_materials.load_material_wavelength_um(material)
 
@@ -24,21 +25,26 @@ def convert_material(material):
     wavelengths_um_n, values_n = convert_values(wavelengths_um_n, values_n)
     wavelengths_um_k, values_k = convert_values(wavelengths_um_k, values_k)
 
-    n_material_new = jnp.concatenate([wavelengths_um_n[..., jnp.newaxis], values_n[..., jnp.newaxis]], axis=1)
-    k_material_new = jnp.concatenate([wavelengths_um_k[..., jnp.newaxis], values_k[..., jnp.newaxis]], axis=1)
+    n_material_new = jnp.concatenate(
+        [wavelengths_um_n[..., jnp.newaxis], values_n[..., jnp.newaxis]], axis=1
+    )
+    k_material_new = jnp.concatenate(
+        [wavelengths_um_k[..., jnp.newaxis], values_k[..., jnp.newaxis]], axis=1
+    )
 
     return n_material_new, k_material_new
 
+
 def save_material(str_path, n_material, k_material):
-    writer = csv.writer(open(str_path, 'w'), delimiter = ",")
-    writer.writerow(['wl', 'n', 'k'])
+    writer = csv.writer(open(str_path, "w"), delimiter=",")
+    writer.writerow(["wl", "n", "k"])
 
     for ind in range(0, n_material.shape[0]):
         wavelengths_um = n_material[ind, 0]
         writer.writerow([wavelengths_um] + [n_material[ind, 1]] + [k_material[ind, 1]])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     all_materials = utils_materials.get_all_materials()
     material_indices, str_directory = utils_materials.load_json()
 
@@ -48,3 +54,7 @@ if __name__ == '__main__':
 
         n_material, k_material = convert_material(material)
         save_material(str_path, n_material, k_material)
+
+        print(material)
+        print(n_material.shape, k_material.shape)
+        print("")
