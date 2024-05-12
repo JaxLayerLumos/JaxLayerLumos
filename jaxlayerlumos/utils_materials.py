@@ -85,8 +85,8 @@ def _load_material_wavelength_um(material):
                         data_k.append([wavelength_um, value])
                     else:
                         raise ValueError
-            elif len(row) == 1:
-                assert row[0] == ''
+            elif len(row) == 0:
+                pass
             else:
                 raise ValueError
 
