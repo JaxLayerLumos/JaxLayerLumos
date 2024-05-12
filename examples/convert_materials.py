@@ -37,12 +37,15 @@ def convert_material(material):
 
 def save_material(str_path, n_material, k_material):
     writer = csv.writer(open(str_path, "w"), delimiter=",")
-    writer.writerow(["wl", "n", "k"])
 
-    for ind in range(0, n_material.shape[0]):
-        wavelengths_um = n_material[ind, 0]
-        writer.writerow([wavelengths_um] + [n_material[ind, 1]] + [k_material[ind, 1]])
+    writer.writerow(["wl", "n"])
+    for row in n_material:
+        writer.writerow(row)
 
+    writer.writerow([])
+    writer.writerow(["wl", "k"])
+    for row in k_material:
+        writer.writerow(row)
 
 if __name__ == "__main__":
     all_materials = utils_materials.get_all_materials()
