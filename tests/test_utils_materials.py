@@ -41,12 +41,16 @@ def test_get_all_materials():
 
 def test_load_material_success():
     for material in LIST_MATERIALS:
-        data = utils_materials.load_material(material)
+        data_n, data_k = utils_materials.load_material(material)
 
-        assert isinstance(data, jnp.ndarray)
-        assert data.ndim == 2
-        assert data.shape[0] > 0
-        assert data.shape[1] == 3
+        assert isinstance(data_n, jnp.ndarray)
+        assert isinstance(data_k, jnp.ndarray)
+        assert data_n.ndim == 2
+        assert data_k.ndim == 2
+        assert data_n.shape[0] > 0
+        assert data_k.shape[0] > 0
+        assert data_n.shape[1] == 2
+        assert data_k.shape[1] == 2
 
 
 def test_load_material_failure():
@@ -65,14 +69,13 @@ def test_load_material_failure():
 
 def test_material_data_conversion_and_interpolation():
     material_name = "SiO2"
-    data = utils_materials.load_material(material_name)
+    data_n, data_k = utils_materials.load_material(material_name)
+    data = jnp.concatenate([data_n, data_k[:, 1][..., jnp.newaxis]], axis=1)
 
-    # Values for a known row of SiO2 data
     expected_wavelength_um = 22.321
     expected_n = 1.804
     expected_k = 1.536
 
-    # Convert the expected wavelength to frequency for comparison
     expected_frequency_hz = scic.c / (expected_wavelength_um * 1e-6)
 
     # Find the row in the data where the frequency matches the expected frequency

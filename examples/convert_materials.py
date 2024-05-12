@@ -40,7 +40,6 @@ def save_material(str_path, n_material, k_material):
 
 if __name__ == '__main__':
     all_materials = utils_materials.get_all_materials()
-    all_materials = ['Ag']
     material_indices, str_directory = utils_materials.load_json()
 
     for material in all_materials:

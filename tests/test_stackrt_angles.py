@@ -41,16 +41,17 @@ class TestJaxLayerLumosStackrt(unittest.TestCase):
         assert T_TE.shape[1] == T_TM.shape[1] == num_wavelengths
 
     def test_angles(self):
-        TiO2_data = load_material("TiO2")
+        data_n, data_k = load_material("TiO2")
 
         wavelengths = jnp.linspace(300e-9, 900e-9, 3)
         frequencies = scic.c / wavelengths
 
-        n_k_TiO2 = interpolate_material(TiO2_data, frequencies)
-        n_TiO2 = n_k_TiO2[:, 0] + 1j * n_k_TiO2[:, 1]
+        n_TiO2 = interpolate_material(data_n, frequencies)
+        k_TiO2 = interpolate_material(data_k, frequencies)
+        n_k_TiO2 = n_TiO2 + 1j * k_TiO2
 
         n_air = jnp.ones_like(wavelengths)
-        n_stack = jnp.vstack([n_air, n_TiO2, n_air]).T
+        n_stack = jnp.vstack([n_air, n_k_TiO2, n_air]).T
         d_stack = jnp.array([0, 2e-8, 0])
         thetas = jnp.linspace(0, 89, 3)
 

@@ -9,26 +9,22 @@ from jaxlayerlumos.utils_materials import load_material, interpolate_material
 
 class TestJaxLayerLumos(unittest.TestCase):
     def test_stackrt(self):
-        # Load material data for SiO2 (example previously used 'Ag', ensure you replace with 'SiO2' or the correct material if available)
-        # This assumes 'load_material' and 'interpolate_material' are adapted for JAX
-        Ag_data = load_material(
-            "Ag"
-        )  # Make sure your data includes SiO2 or adjust accordingly
+        data_n, data_k = load_material("Ag")
 
         # Define a small wavelength range for testing
         wavelengths = jnp.linspace(300e-9, 900e-9, 3)  # from 300nm to 900nm
         frequencies = scic.c / wavelengths  # Convert wavelengths to frequencies
 
         # Interpolate n and k values for SiO2 over the specified frequency range
-        n_k_Ag = interpolate_material(Ag_data, frequencies)
-        n_Ag = n_k_Ag[:, 0] + 1j * n_k_Ag[:, 1]
+        n_Ag = interpolate_material(data_n, frequencies)
+        k_Ag = interpolate_material(data_k, frequencies)
+        n_k_Ag = n_Ag + 1j * k_Ag
 
-        # Stack configuration
         n_air = jnp.ones_like(frequencies)
         d_air = jnp.array([0])
         d_Ag = jnp.array([2e-6])
 
-        n_stack = jnp.vstack([n_air, n_Ag, n_air]).T
+        n_stack = jnp.vstack([n_air, n_k_Ag, n_air]).T
         d_stack = jnp.hstack([d_air, d_Ag, d_air]).squeeze()
 
         R_TE, T_TE, R_TM, T_TM = stackrt_theta(n_stack, d_stack, frequencies, 0.0)
