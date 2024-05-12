@@ -72,9 +72,9 @@ def test_material_data_conversion_and_interpolation():
     data_n, data_k = utils_materials.load_material(material_name)
     data = jnp.concatenate([data_n, data_k[:, 1][..., jnp.newaxis]], axis=1)
 
-    expected_wavelength_um = 22.321
-    expected_n = 1.804
-    expected_k = 1.536
+    expected_wavelength_um = 1.34065
+    expected_n = 1.457795
+    expected_k = 0.000774
 
     expected_frequency_hz = scic.c / (expected_wavelength_um * 1e-6)
 

@@ -8,12 +8,22 @@ def verify_values(frequencies, values):
     unique_frequencies, indices = jnp.unique(frequencies, return_index=True)
     unique_values = values[indices]
 
+    print(frequencies[0], frequencies[-1])
+    print(unique_frequencies[0], unique_frequencies[-1])
+    print(values[0], values[-1])
+    print(unique_values[0], unique_values[-1])
+
     np.testing.assert_allclose(unique_frequencies, frequencies)
     np.testing.assert_allclose(unique_values, values)
 
     indices = jnp.argsort(frequencies)
     sorted_frequencies = frequencies[indices]
     sorted_values = values[indices]
+
+    print(frequencies[0], frequencies[-1])
+    print(sorted_frequencies[0], sorted_frequencies[-1])
+    print(values[0], values[-1])
+    print(sorted_values[0], sorted_values[-1])
 
     np.testing.assert_allclose(sorted_frequencies, frequencies)
     np.testing.assert_allclose(sorted_values, values)
