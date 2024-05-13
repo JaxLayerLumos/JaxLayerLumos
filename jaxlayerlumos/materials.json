@@ -6,7 +6,7 @@
     "BK7": "materials/BK7-N-BK7.csv",
     "Cr": "materials/Cr-Rakic-LD.csv",
     "Cu": "materials/Cu-Rakic-LD.csv",
-    "FusedSilica": "Fused-Silica-Malitson.csv",
+    "FusedSilica": "materials/FusedSilica-Malitson.csv",
     "Ge": "materials/Ge-Nunley.csv",
     "Mn": "materials/Mn-Querry.csv",
     "Ni": "materials/Ni-Rakic-LD.csv",
