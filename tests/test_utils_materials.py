@@ -4,6 +4,7 @@ import numpy as np
 import scipy.constants as scic
 
 from jaxlayerlumos import utils_materials
+from jaxlayerlumos import utils_spectra
 
 
 LIST_MATERIALS = [
@@ -67,6 +68,42 @@ def test_load_material_failure():
     np.testing.assert_string_equal(
         str(e.value), "Material Material not found in JaxLayerLumos."
     )
+
+
+def test_material_visible_light():
+    num_wavelengths = 3456
+    frequencies = utils_spectra.get_frequencies_visible_light(
+        num_wavelengths=num_wavelengths
+    )
+
+    for material in LIST_MATERIALS:
+        n_material, k_material = utils_materials.interpolate_material(
+            material, frequencies
+        )
+
+
+def test_material_wide_visible_light():
+    num_wavelengths = 3456
+    frequencies = utils_spectra.get_frequencies_wide_visible_light(
+        num_wavelengths=num_wavelengths
+    )
+
+    for material in LIST_MATERIALS:
+        n_material, k_material = utils_materials.interpolate_material(
+            material, frequencies
+        )
+
+
+def test_material_super_wide_light():
+    num_wavelengths = 3456
+    wavelengths = jnp.linspace(1 * scic.nano, 100000000 * scic.nano, num_wavelengths)
+    frequencies = utils_spectra.convert_wavelengths_to_frequencies(wavelengths)
+
+    for material in LIST_MATERIALS:
+        with pytest.raises(AssertionError):
+            n_material, k_material = utils_materials.interpolate_material(
+                material, frequencies
+            )
 
 
 def test_material_data_conversion_and_interpolation():

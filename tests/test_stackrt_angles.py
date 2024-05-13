@@ -1,23 +1,21 @@
 import jax.numpy as jnp
 import numpy as np
-import scipy.constants as scic
 
 from jaxlayerlumos import stackrt
-from jaxlayerlumos.utils_materials import (
-    interpolate_material,
-    get_n_k_surrounded_by_air,
-)
-from jaxlayerlumos.utils_spectra import get_frequencies_wide_visible_light
-from jaxlayerlumos.utils_layers import get_thicknesses_surrounded_by_air
+from jaxlayerlumos import utils_materials
+from jaxlayerlumos import utils_spectra
+from jaxlayerlumos import utils_layers
 
 
 def test_sizes():
     num_wavelengths = 123
     num_angles = 4
 
-    frequencies = get_frequencies_wide_visible_light(num_wavelengths=num_wavelengths)
-    n_stack = get_n_k_surrounded_by_air(["TiO2"], frequencies)
-    d_stack = get_thicknesses_surrounded_by_air(jnp.array([2e-8]))
+    frequencies = utils_spectra.get_frequencies_wide_visible_light(
+        num_wavelengths=num_wavelengths
+    )
+    n_stack = utils_materials.get_n_k_surrounded_by_air(["TiO2"], frequencies)
+    d_stack = utils_layers.get_thicknesses_surrounded_by_air(jnp.array([2e-8]))
     thetas = jnp.linspace(0, 89, num_angles)
 
     R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas)
@@ -37,13 +35,15 @@ def test_sizes():
 
 
 def test_angles():
-    wavelengths = jnp.linspace(300e-9, 900e-9, 3)
-    frequencies = scic.c / wavelengths
+    num_wavelengths = 5
+    frequencies = utils_spectra.get_frequencies_visible_light(
+        num_wavelengths=num_wavelengths
+    )
 
-    n_TiO2, k_TiO2 = interpolate_material("TiO2", frequencies)
+    n_TiO2, k_TiO2 = utils_materials.interpolate_material("TiO2", frequencies)
     n_k_TiO2 = n_TiO2 + 1j * k_TiO2
 
-    n_air = jnp.ones_like(wavelengths)
+    n_air = jnp.ones_like(frequencies)
     n_stack = jnp.vstack([n_air, n_k_TiO2, n_air]).T
     d_stack = jnp.array([0, 2e-8, 0])
     thetas = jnp.linspace(0, 89, 3)
@@ -56,19 +56,25 @@ def test_angles():
     expected_R_avg = jnp.array(
         [
             [
-                0.5075084159634257,
-                0.18726655434023687,
-                0.08370762967721315,
+                0.4770790218584379,
+                0.2918301244526284,
+                0.20026632179451573,
+                0.14616448215891184,
+                0.11132762140037065,
             ],
             [
-                0.4877839691834523,
-                0.1945178061281731,
-                0.09157449689223793,
+                0.4558617206305765,
+                0.2910941832925791,
+                0.20684237462156152,
+                0.15476340159980778,
+                0.11998132563573674,
             ],
             [
-                0.9498492283810344,
-                0.9783936773043997,
-                0.9540558921256859,
+                0.9903190571800133,
+                0.9857622632656011,
+                0.979727833282493,
+                0.9726668981700657,
+                0.9646925772238752,
             ],
         ]
     )
@@ -76,19 +82,25 @@ def test_angles():
     expected_T_avg = jnp.array(
         [
             [
-                0.17839133609006402,
-                0.8127334404810548,
-                0.916292370322787,
+                0.5198973861437665,
+                0.7081681748619181,
+                0.7997336666045016,
+                0.8538355175673582,
+                0.8886723785996291,
             ],
             [
-                0.18801137946236623,
-                0.8054821885944445,
-                0.9084255031077624,
+                0.5410727876996986,
+                0.7089041021153872,
+                0.793157613579433,
+                0.8452365981191836,
+                0.8800186743642635,
             ],
             [
-                0.006495561010086865,
-                0.021606322148813736,
-                0.04594410787425793,
+                0.009481699666494146,
+                0.014237605935075181,
+                0.020272165555583664,
+                0.027333101794498202,
+                0.035307422776128854,
             ],
         ]
     )
