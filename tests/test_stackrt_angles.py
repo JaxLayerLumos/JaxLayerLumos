@@ -4,7 +4,6 @@ import scipy.constants as scic
 
 from jaxlayerlumos import stackrt
 from jaxlayerlumos.utils_materials import (
-    load_material,
     interpolate_material,
     get_n_k_surrounded_by_air,
 )
@@ -38,13 +37,10 @@ def test_sizes():
 
 
 def test_angles():
-    data_n, data_k = load_material("TiO2")
-
     wavelengths = jnp.linspace(300e-9, 900e-9, 3)
     frequencies = scic.c / wavelengths
 
-    n_TiO2 = interpolate_material(data_n, frequencies)
-    k_TiO2 = interpolate_material(data_k, frequencies)
+    n_TiO2, k_TiO2 = interpolate_material("TiO2", frequencies)
     n_k_TiO2 = n_TiO2 + 1j * k_TiO2
 
     n_air = jnp.ones_like(wavelengths)

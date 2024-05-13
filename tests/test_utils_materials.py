@@ -94,10 +94,5 @@ def test_material_data_conversion_and_interpolation():
     # Extract the actual n and k values from the data
     _, actual_n, actual_k = row
 
-    # Check that the actual n and k values match the expected values within a tolerance
-    assert jnp.isclose(
-        actual_n, expected_n, atol=1e-6
-    ), f"Expected n: {expected_n}, but got: {actual_n}"
-    assert jnp.isclose(
-        actual_k, expected_k, atol=1e-6
-    ), f"Expected k: {expected_k}, but got: {actual_k}"
+    assert jnp.isclose(actual_n, expected_n)
+    assert jnp.isclose(actual_k, expected_k)

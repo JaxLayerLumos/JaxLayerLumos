@@ -47,6 +47,7 @@ def save_material(str_path, n_material, k_material):
     for row in k_material:
         writer.writerow(row)
 
+
 if __name__ == "__main__":
     all_materials = utils_materials.get_all_materials()
     material_indices, str_directory = utils_materials.load_json()

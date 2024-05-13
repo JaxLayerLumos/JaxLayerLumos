@@ -18,6 +18,7 @@ def test_convert_frequencies_to_wavelengths():
 
     np.testing.assert_allclose(frequencies_, frequencies)
 
+
 def test_convert_wavelengths_to_frequencies():
     num_wavelengths = 101
 
@@ -32,6 +33,7 @@ def test_convert_wavelengths_to_frequencies():
 
     np.testing.assert_allclose(wavelengths_, wavelengths)
 
+
 def test_get_frequencies_visible_light():
     num_wavelengths = 1234
 
@@ -43,6 +45,7 @@ def test_get_frequencies_visible_light():
     assert frequencies.shape[0] == num_wavelengths
     np.testing.assert_allclose(np.min(frequencies), 3.84349305e14)
     np.testing.assert_allclose(np.max(frequencies), 7.88927521e14)
+
 
 def test_get_frequencies_wide_visible_light():
     num_wavelengths = 1234

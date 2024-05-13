@@ -35,10 +35,10 @@ def test_material_values():
     for material in all_materials:
         n_material, k_material = utils_materials.load_material(material)
 
-        print(f'{material} n')
+        print(f"{material} n")
         frequencies_n, values_n = n_material.T
         verify_values(frequencies_n, values_n)
 
-        print(f'{material} k')
+        print(f"{material} k")
         frequencies_k, values_k = k_material.T
         verify_values(frequencies_k, values_k)

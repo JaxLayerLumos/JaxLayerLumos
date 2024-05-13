@@ -40,10 +40,10 @@ def load_material_wavelength_um(material):
 
         for row in csvreader:
             if len(row) == 2:
-                if row[0] == 'wl' and row[1] == 'n':
+                if row[0] == "wl" and row[1] == "n":
                     start_n = True
                     start_k = False
-                elif row[0] == 'wl' and row[1] == 'k':
+                elif row[0] == "wl" and row[1] == "k":
                     start_n = False
                     start_k = True
                 else:
@@ -65,9 +65,13 @@ def load_material_wavelength_um(material):
     assert data_n.shape[0] > 0 or data_k.shape[0] > 0
 
     if data_n.shape[0] == 0:
-        data_n = jnp.concatenate([data_k[:, 0][..., jnp.newaxis], jnp.zeros((data_k.shape[0], 1))], axis=1)
+        data_n = jnp.concatenate(
+            [data_k[:, 0][..., jnp.newaxis], jnp.zeros((data_k.shape[0], 1))], axis=1
+        )
     if data_k.shape[0] == 0:
-        data_k = jnp.concatenate([data_n[:, 0][..., jnp.newaxis], jnp.zeros((data_n.shape[0], 1))], axis=1)
+        data_k = jnp.concatenate(
+            [data_n[:, 0][..., jnp.newaxis], jnp.zeros((data_n.shape[0], 1))], axis=1
+        )
 
     return data_n, data_k
 
@@ -90,26 +94,13 @@ def load_material(material):
     return data_n, data_k
 
 
-def interpolate_material(material_info, frequencies):
-    """
-    Interpolate n and k values for the specified frequencies using JAX.
-    Supports linear interpolation and extrapolation.
-
-    Parameters:
-    - material_data: The data for the material, as returned by load_material. Expected to be a JAX array.
-    - frequencies: A list or JAX array of frequencies to interpolate n and k for.
-
-    Returns:
-    - Interpolated values of n and k as a JAX array.
-
-    """
-
-    assert isinstance(material_info, jnp.ndarray)
+def interpolate(freqs_values, frequencies):
+    assert isinstance(freqs_values, jnp.ndarray)
     assert isinstance(frequencies, jnp.ndarray)
-    assert material_info.ndim == 2
+    assert freqs_values.ndim == 2
     assert frequencies.ndim == 1
 
-    freqs, values = material_info.T
+    freqs, values = freqs_values.T
 
     assert jnp.min(freqs) <= jnp.min(frequencies)
     assert jnp.max(frequencies) <= jnp.max(freqs)
@@ -125,6 +116,18 @@ def interpolate_material(material_info, frequencies):
     return values_interpolated
 
 
+def interpolate_material(material, frequencies):
+    assert isinstance(frequencies, jnp.ndarray)
+    assert frequencies.ndim == 1
+
+    data_n, data_k = load_material(material)
+
+    n_material = interpolate(data_n, frequencies)
+    k_material = interpolate(data_k, frequencies)
+
+    return n_material, k_material
+
+
 def get_n_k_surrounded_by_air(materials, frequencies):
     assert isinstance(materials, list)
     assert isinstance(frequencies, jnp.ndarray)
@@ -136,10 +139,7 @@ def get_n_k_surrounded_by_air(materials, frequencies):
     n_k = jnp.ones((num_layers, num_frequencies), dtype=jnp.complex128)
 
     for ind, material in enumerate(materials):
-        data_n, data_k = load_material(material)
-        n_material = interpolate_material(data_n, frequencies)
-        k_material = interpolate_material(data_k, frequencies)
-
+        n_material, k_material = interpolate_material(material, frequencies)
         n_k = n_k.at[ind + 1, :].set(n_material + 1j * k_material)
 
     assert jnp.all(jnp.real(n_k[0]) == 1)
