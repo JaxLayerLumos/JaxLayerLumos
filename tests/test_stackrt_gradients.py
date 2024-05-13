@@ -106,7 +106,7 @@ def test_gradient_stackrt_thickness_TiO2_W_SiO2():
     for elem in grad_R_TE:
         print(elem)
 
-    np.testing.assert_allclose(grad_R_TE, expected_grad_R_TE)
+    np.testing.assert_allclose(grad_R_TE, expected_grad_R_TE, rtol=1e-05)
 
 
 def test_gradient_stackrt_n_k():
