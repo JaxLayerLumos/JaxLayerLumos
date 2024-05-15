@@ -3,10 +3,10 @@ import csv
 import json
 from pathlib import Path
 
-from .utils_spectra import convert_wavelengths_to_frequencies
+from jaxlayerlumos.utils_spectra import convert_wavelengths_to_frequencies
 
 
-def load_material_json():
+def load_json():
     current_dir = Path(__file__).parent
     materials_file = current_dir / "materials.json"
 
@@ -17,96 +17,115 @@ def load_material_json():
 
 
 def get_all_materials():
-    material_indices, _ = load_material_json()
+    material_indices, _ = load_json()
     return list(material_indices.keys())
 
 
-def load_material(material_name):
-    """
-    Load material data from its CSV file, converting wavelength to frequency. Adapted for JAX.
+def load_material_wavelength_um(material):
+    material_indices, str_directory = load_json()
+    str_file = material_indices.get(material)
 
-    Parameters:
-    - material_name: The name of the material to load.
+    if not str_file:
+        raise ValueError(f"Material {material} not found in JaxLayerLumos.")
 
-    Returns:
-    - A JAX array with columns for frequency (converted from wavelength), n, and k.
+    str_csv = str_directory / str_file
+    data_n = []
+    data_k = []
 
-    """
-
-    material_indices, current_dir = load_material_json()
-    relative_file_path = material_indices.get(material_name)
-
-    if not relative_file_path:
-        raise ValueError(f"Material {material_name} not found in JaxLayerLumos.")
-
-    csv_file_path = current_dir / relative_file_path
-    data = []
-
-    with open(csv_file_path, "r") as csvfile:
+    with open(str_csv, "r") as csvfile:
         csvreader = csv.reader(csvfile)
-        next(csvreader)  # Skip the header row
+
+        start_n = False
+        start_k = False
+
         for row in csvreader:
-            try:
-                wavelength_um, n, k = map(float, row)
-                frequency = convert_wavelengths_to_frequencies(
-                    wavelength_um * 1e-6
-                )  # Convert um to meters
-                data.append((frequency, n, k))
-            except ValueError:
-                continue
+            if len(row) == 2:
+                if row[0] == "wl" and row[1] == "n":
+                    start_n = True
+                    start_k = False
+                elif row[0] == "wl" and row[1] == "k":
+                    start_n = False
+                    start_k = True
+                else:
+                    wavelength_um, value = map(float, row)
 
-    data = jnp.array(data)
-    data = data[data[:, 0].argsort()]
+                    if start_n and not start_k:
+                        data_n.append([wavelength_um, value])
+                    elif not start_n and start_k:
+                        data_k.append([wavelength_um, value])
+                    else:
+                        raise ValueError
+            elif len(row) == 0:
+                pass
+            else:
+                raise ValueError
 
-    return data
+    data_n = jnp.array(data_n)
+    data_k = jnp.array(data_k)
+    assert data_n.shape[0] > 0 or data_k.shape[0] > 0
+
+    if data_n.shape[0] == 0:
+        data_n = jnp.concatenate(
+            [data_k[:, 0][..., jnp.newaxis], jnp.zeros((data_k.shape[0], 1))], axis=1
+        )
+    if data_k.shape[0] == 0:
+        data_k = jnp.concatenate(
+            [data_n[:, 0][..., jnp.newaxis], jnp.zeros((data_n.shape[0], 1))], axis=1
+        )
+
+    return data_n, data_k
 
 
-def interpolate_material(material_data, frequencies):
-    """
-    Interpolate n and k values for the specified frequencies using JAX.
-    Supports linear interpolation and extrapolation.
+def load_material_wavelength(material):
+    data_n, data_k = load_material_wavelength_um(material)
 
-    Parameters:
-    - material_data: The data for the material, as returned by load_material. Expected to be a JAX array.
-    - frequencies: A list or JAX array of frequencies to interpolate n and k for.
+    data_n = data_n.at[:, 0].set(data_n[:, 0] * 1e-6)
+    data_k = data_k.at[:, 0].set(data_k[:, 0] * 1e-6)
 
-    Returns:
-    - Interpolated values of n and k as a JAX array.
+    return data_n, data_k
 
-    """
 
-    # Extract frequency, n, and k columns
-    freqs, n_values, k_values = material_data.T
+def load_material(material):
+    data_n, data_k = load_material_wavelength(material)
 
-    # Remove duplicates (if any) while preserving order
-    unique_freqs, indices = jnp.unique(freqs, return_index=True)
-    unique_n_values = n_values[indices]
-    unique_k_values = k_values[indices]
+    data_n = data_n.at[:, 0].set(convert_wavelengths_to_frequencies(data_n[:, 0]))
+    data_k = data_k.at[:, 0].set(convert_wavelengths_to_frequencies(data_k[:, 0]))
 
-    # Ensure frequencies are sorted (usually they should be, but just in case)
-    sorted_indices = jnp.argsort(unique_freqs)
-    sorted_freqs = unique_freqs[sorted_indices]
-    sorted_n_values = unique_n_values[sorted_indices]
-    sorted_k_values = unique_k_values[sorted_indices]
+    return data_n, data_k
 
-    # Interpolate n and k for the given frequencies using JAX's interp function
-    n_interp_values = jnp.interp(
+
+def interpolate(freqs_values, frequencies):
+    assert isinstance(freqs_values, jnp.ndarray)
+    assert isinstance(frequencies, jnp.ndarray)
+    assert freqs_values.ndim == 2
+    assert frequencies.ndim == 1
+
+    freqs, values = freqs_values.T
+
+    assert jnp.min(freqs) <= jnp.min(frequencies)
+    assert jnp.max(frequencies) <= jnp.max(freqs)
+
+    values_interpolated = jnp.interp(
         frequencies,
-        sorted_freqs,
-        sorted_n_values,
+        freqs,
+        values,
         left="extrapolate",
         right="extrapolate",
     )
 
-    k_interp_values = jnp.interp(
-        frequencies,
-        sorted_freqs,
-        sorted_k_values,
-        left="extrapolate",
-        right="extrapolate",
-    )
+    return values_interpolated
 
-    return jnp.vstack((n_interp_values, k_interp_values)).T
+
+def interpolate_material(material, frequencies):
+    assert isinstance(frequencies, jnp.ndarray)
+    assert frequencies.ndim == 1
+
+    data_n, data_k = load_material(material)
+
+    n_material = interpolate(data_n, frequencies)
+    k_material = interpolate(data_k, frequencies)
+
+    return n_material, k_material
 
 
 def get_n_k_surrounded_by_air(materials, frequencies):
@@ -120,10 +139,8 @@ def get_n_k_surrounded_by_air(materials, frequencies):
     n_k = jnp.ones((num_layers, num_frequencies), dtype=jnp.complex128)
 
     for ind, material in enumerate(materials):
-        data_material = load_material(material)
-        n_k_material = interpolate_material(data_material, frequencies)
-
-        n_k = n_k.at[ind + 1, :].set(n_k_material[:, 0] + 1j * n_k_material[:, 1])
+        n_material, k_material = interpolate_material(material, frequencies)
+        n_k = n_k.at[ind + 1, :].set(n_material + 1j * k_material)
 
     assert jnp.all(jnp.real(n_k[0]) == 1)
     assert jnp.all(jnp.imag(n_k[0]) == 0)

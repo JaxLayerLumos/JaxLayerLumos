@@ -3,30 +3,17 @@ import scipy.constants as scic
 
 
 def convert_frequencies_to_wavelengths(frequencies):
-    """
-    Convert frequency to wavelength in a JAX-compatible manner.
-
-    Parameters:
-    - frequencies: Frequency in Hertz. Can be a float or a JAX array of floats.
-
-    Returns:
-    - Wavelength in meters. Has the same shape as input frequencies.
-    """
+    assert isinstance(frequencies, jnp.ndarray)
+    assert frequencies.ndim == 1
 
     wavelengths = scic.c / frequencies
     return wavelengths
 
 
 def convert_wavelengths_to_frequencies(wavelengths):
-    """
-    Convert wavelength to frequency in a JAX-compatible manner.
+    assert isinstance(wavelengths, jnp.ndarray)
+    assert wavelengths.ndim == 1
 
-    Parameters:
-    - wavelengths: Wavelength in meters. Can be a float or a JAX array of floats.
-
-    Returns:
-    - Frequency in Hertz. Has the same shape as input wavelengths.
-    """
     frequencies = scic.c / wavelengths
     return frequencies
 
