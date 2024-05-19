@@ -80,12 +80,14 @@ def test_load_material_failure():
 def test_interpolate():
     freqs_values = jnp.array([[100.0, 10.0], [200.0, 20.0], [350, 35.0]])
     frequencies = jnp.array([100.0, 150.0, 175.0, 210.0, 300.0])
-    frequencies_extrapolation = jnp.array([90.0, 100.0, 150.0, 175.0, 210.0, 300.0, 390.0])
+    frequencies_extrapolation = jnp.array(
+        [90.0, 100.0, 150.0, 175.0, 210.0, 300.0, 390.0]
+    )
 
     with pytest.raises(AssertionError):
-        utils_materials.interpolate('abc', frequencies)
+        utils_materials.interpolate("abc", frequencies)
     with pytest.raises(AssertionError):
-        utils_materials.interpolate(freqs_values, 'abc')
+        utils_materials.interpolate(freqs_values, "abc")
     with pytest.raises(AssertionError):
         utils_materials.interpolate(freqs_values, frequencies_extrapolation)
 
@@ -93,6 +95,7 @@ def test_interpolate():
     values_truth = jnp.array([10.0, 15.0, 17.5, 21.0, 30.0])
 
     np.testing.assert_allclose(values_interpolated, values_truth)
+
 
 def test_material_visible_light():
     num_wavelengths = 3456
@@ -153,9 +156,10 @@ def test_material_data_conversion_and_interpolation():
     assert jnp.isclose(actual_n, expected_n)
     assert jnp.isclose(actual_k, expected_k)
 
+
 def test_get_n_k_surrounded_by_air():
     num_wavelengths = 34
-    materials = ['Ag', 'Au', 'W', 'TiO2', 'Si3N4']
+    materials = ["Ag", "Au", "W", "TiO2", "Si3N4"]
     frequencies = utils_spectra.get_frequencies_visible_light(
         num_wavelengths=num_wavelengths
     )
@@ -173,4 +177,4 @@ def test_get_n_k_surrounded_by_air():
     assert jnp.allclose(n_k[20, 2], 0.32581145 + 3.05379202j)
     assert jnp.allclose(n_k[30, 3], 3.74494455 + 2.78771241j)
     assert jnp.allclose(n_k[20, 4], 2.39396291 + 2.95673696e-09j)
-    assert jnp.allclose(n_k[10, 5], 2.03410384 + 0.j)
+    assert jnp.allclose(n_k[10, 5], 2.03410384 + 0.0j)
