@@ -25,7 +25,7 @@ def plot_refractive_indices(material, wavelengths, n_material, k_material):
     ax.set_xlim([np.min(wavelengths), np.max(wavelengths)])
     ax.grid()
 
-    ax.set_xlabel("Wavelengths (nm)", fontsize=18)
+    ax.set_xlabel("Wavelength (nm)", fontsize=18)
     ax.set_ylabel("n, k", fontsize=18)
     ax.legend(fontsize=18)
 
