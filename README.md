@@ -23,13 +23,13 @@ Our mission is to offer a lightweight, flexible, and fast alternative to commerc
 
 ### Installation
 
-JaxLayerLumos can be easily installed by the following command
+JaxLayerLumos can be easily installed by the following command.
 
 ```bash
 pip install jaxlayerlumos
 ```
 
-In addition, JaxLayerLumos can be installed from source.
+Alternatively, JaxLayerLumos can be installed from source.
 
 ```bash
 pip install .
