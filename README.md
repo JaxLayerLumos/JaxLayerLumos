@@ -1,4 +1,4 @@
-# JaxLayerLumos
+# JaxLayerLumos: A JAX-based Efficient Transfer-Matrix Method Framework for Optical Simulations
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/layerlumos.jpg" width="400" />
@@ -23,7 +23,13 @@ Our mission is to offer a lightweight, flexible, and fast alternative to commerc
 
 ### Installation
 
-JaxLayerLumos can be easily installed by the following command in the root directory.
+JaxLayerLumos can be easily installed by the following command.
+
+```bash
+pip install jaxlayerlumos
+```
+
+Alternatively, JaxLayerLumos can be installed from source.
 
 ```bash
 pip install .
