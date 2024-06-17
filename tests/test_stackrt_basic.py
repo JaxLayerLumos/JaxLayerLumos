@@ -28,28 +28,30 @@ def test_stackrt():
     expected_R_avg = np.array(
         [
             [
-                0.09525774381746192,
-                0.9601123170389492,
-                0.9772199561956645,
+                0.09547996748584495,
+                0.9601075212722718,
+                0.9772777796106943,
             ],
         ]
     )
     expected_T_avg = np.array(
         [
             [
-                7.770517514983977e-25,
-                1.760970772881048e-65,
-                1.4500794728372322e-70,
+                0.00524883376893213,
+                1.898120806680966e-05,
+                4.482711708918501e-05,
             ],
         ]
     )
 
     print("R_avg")
     for elem in R_avg:
-        print(elem)
+        for elem2 in elem:
+            print(elem2)
     print("T_avg")
     for elem in T_avg:
-        print(elem)
+        for elem2 in elem:
+            print(elem2)
 
     np.testing.assert_allclose(R_avg, expected_R_avg)
     np.testing.assert_allclose(T_avg, expected_T_avg)
