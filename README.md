@@ -39,10 +39,10 @@ pip install .
 
 Explore a collection of examples illustrating various use cases and capabilities of JaxLayerLumos in the `examples` directory.
 
-## Comparisons to Lumerical
+## Comparisons to Ansys Optics
 
 Simulation results of JaxLayerLumos are compared to the results of [stackrt](https://optics.ansys.com/hc/en-us/articles/360034406254-stackrt-Script-command), which is included in [Ansys Optics Software](https://www.ansys.com/products/optics).
-Our results are matched to the Lumerical results with sufficiently small errors.
+Our results are matched to the Ansys Optics results with sufficiently small errors.
 
 <p align="center">
 <img src="examples/comparisons/tmm_Ag_100.0nm_angle_0.0_deg.png" width="400" />
