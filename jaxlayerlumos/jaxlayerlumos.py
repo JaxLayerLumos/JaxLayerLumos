@@ -54,8 +54,9 @@ def stackrt_base(n_i, d, wvl_i, theta_k):
             dtype=jnp.complex128,
         )
 
+        upper_bound = 650.0 # Jungtaek: I manually chose this number by testing a sufficient number of architecutures.  It might be fixed in future.
         delta = 2 * jnp.pi * n_next * d_next * cos_theta_t / wvl_i
-        delta = jnp.clip(jnp.real(delta), -709.78, 709.78) + 1j * jnp.fmod(jnp.imag(delta), 2 * jnp.pi)
+        delta = jnp.real(delta) + 1j * jnp.clip(jnp.imag(delta), -upper_bound, upper_bound)
         P = jnp.array(
             [[jnp.exp(-1j * delta), 0], [0, jnp.exp(1j * delta)]],
             dtype=jnp.complex128,
