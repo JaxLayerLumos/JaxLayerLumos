@@ -42,11 +42,27 @@ Explore a collection of examples illustrating various use cases and capabilities
 ## Comparisons to Lumerical
 
 <p align="center">
-<img src="examples/comparisons/tmm_Ag_100.0nm_angle_0.0_deg.png" width="350" />
-<img src="examples/comparisons/tmm_Ag_100.0nm_angle_45.0_deg.png" width="350" />
+<img src="examples/comparisons/tmm_Ag_100.0nm_angle_0.0_deg.png" width="400" />
+<img src="examples/comparisons/tmm_Ag_100.0nm_angle_45.0_deg.png" width="400" />
 <br>
-<img src="examples/comparisons/tmm_Ag_100.0nm_angle_75.0_deg.png" width="350" />
-<img src="examples/comparisons/tmm_Ag_100.0nm_angle_89.0_deg.png" width="350" />
+<img src="examples/comparisons/tmm_Ag_100.0nm_angle_75.0_deg.png" width="400" />
+<img src="examples/comparisons/tmm_Ag_100.0nm_angle_89.0_deg.png" width="400" />
+</p>
+
+<p align="center">
+<img src="examples/comparisons/tmm_Ag_10.0nm_Al_11.0nm_Ag_12.0nm_angle_0.0_deg.png" width="400" />
+<img src="examples/comparisons/tmm_Ag_10.0nm_Al_11.0nm_Ag_12.0nm_angle_45.0_deg.png" width="400" />
+<br>
+<img src="examples/comparisons/tmm_Ag_10.0nm_Al_11.0nm_Ag_12.0nm_angle_75.0_deg.png" width="400" />
+<img src="examples/comparisons/tmm_Ag_10.0nm_Al_11.0nm_Ag_12.0nm_angle_89.0_deg.png" width="400" />
+</p>
+
+<p align="center">
+<img src="examples/comparisons/tmm_TiO2_20.0nm_Ag_5.0nm_TiO2_30.0nm_angle_0.0_deg.png" width="400" />
+<img src="examples/comparisons/tmm_TiO2_20.0nm_Ag_5.0nm_TiO2_30.0nm_angle_45.0_deg.png" width="400" />
+<br>
+<img src="examples/comparisons/tmm_TiO2_20.0nm_Ag_5.0nm_TiO2_30.0nm_angle_75.0_deg.png" width="400" />
+<img src="examples/comparisons/tmm_TiO2_20.0nm_Ag_5.0nm_TiO2_30.0nm_angle_89.0_deg.png" width="400" />
 </p>
 
 ## License
