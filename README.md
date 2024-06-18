@@ -41,7 +41,7 @@ Explore a collection of examples illustrating various use cases and capabilities
 
 ## Comparisons to Ansys Optics
 
-Simulation results of JaxLayerLumos are compared to the results of [stackrt](https://optics.ansys.com/hc/en-us/articles/360034406254-stackrt-Script-command), which is included in [Ansys Optics Software](https://www.ansys.com/products/optics).
+Simulation results of JaxLayerLumos are compared to the results of [stackrt](https://optics.ansys.com/hc/en-us/articles/360034406254-stackrt-Script-command), which is included in [Ansys Optics](https://www.ansys.com/products/optics).
 Our results are matched to the Ansys Optics results with sufficiently small errors.
 
 <p align="center">
