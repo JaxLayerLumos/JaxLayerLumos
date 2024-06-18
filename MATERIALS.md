@@ -1,6 +1,6 @@
 # Supported Materials
 
-Ag, Air, Al2O3, Al, aSi, Au, BK7, Cr, cSi, Cu, FusedSilica, GaAs, GaP, Ge, ITO, Mn, Ni, Pd, Pt, Si3N4, SiO2, TiN, TiO2, Ti, W, ZnO
+Ag, Air, Al2O3, Al, aSi, Au, BK7, Cr, cSi, Cu, Fe, FusedSilica, GaAs, GaP, Ge, InP, ITO, Mg, Mn, Ni, Pb, Pd, Pt, Sapphire, Si3N4, SiO2, TiN, TiO2, Ti, W, ZnO, Zn
 
 - Ag
 
@@ -42,6 +42,10 @@ Ag, Air, Al2O3, Al, aSi, Au, BK7, Cr, cSi, Cu, FusedSilica, GaAs, GaP, Ge, ITO, 
 
 <p align='center'><img src='examples/refractive_indices/Cu.png' width='400' /></p>
 
+- Fe
+
+<p align='center'><img src='examples/refractive_indices/Fe.png' width='400' /></p>
+
 - FusedSilica
 
 <p align='center'><img src='examples/refractive_indices/FusedSilica.png' width='400' /></p>
@@ -58,9 +62,17 @@ Ag, Air, Al2O3, Al, aSi, Au, BK7, Cr, cSi, Cu, FusedSilica, GaAs, GaP, Ge, ITO, 
 
 <p align='center'><img src='examples/refractive_indices/Ge.png' width='400' /></p>
 
+- InP
+
+<p align='center'><img src='examples/refractive_indices/InP.png' width='400' /></p>
+
 - ITO
 
 <p align='center'><img src='examples/refractive_indices/ITO.png' width='400' /></p>
+
+- Mg
+
+<p align='center'><img src='examples/refractive_indices/Mg.png' width='400' /></p>
 
 - Mn
 
@@ -70,6 +82,10 @@ Ag, Air, Al2O3, Al, aSi, Au, BK7, Cr, cSi, Cu, FusedSilica, GaAs, GaP, Ge, ITO, 
 
 <p align='center'><img src='examples/refractive_indices/Ni.png' width='400' /></p>
 
+- Pb
+
+<p align='center'><img src='examples/refractive_indices/Pb.png' width='400' /></p>
+
 - Pd
 
 <p align='center'><img src='examples/refractive_indices/Pd.png' width='400' /></p>
@@ -77,6 +93,10 @@ Ag, Air, Al2O3, Al, aSi, Au, BK7, Cr, cSi, Cu, FusedSilica, GaAs, GaP, Ge, ITO, 
 - Pt
 
 <p align='center'><img src='examples/refractive_indices/Pt.png' width='400' /></p>
+
+- Sapphire
+
+<p align='center'><img src='examples/refractive_indices/Sapphire.png' width='400' /></p>
 
 - Si3N4
 
@@ -105,4 +125,8 @@ Ag, Air, Al2O3, Al, aSi, Au, BK7, Cr, cSi, Cu, FusedSilica, GaAs, GaP, Ge, ITO, 
 - ZnO
 
 <p align='center'><img src='examples/refractive_indices/ZnO.png' width='400' /></p>
+
+- Zn
+
+<p align='center'><img src='examples/refractive_indices/Zn.png' width='400' /></p>
 
