@@ -39,6 +39,15 @@ pip install .
 
 Explore a collection of examples illustrating various use cases and capabilities of JaxLayerLumos in the `examples` directory.
 
+## Comparisons to Lumerical
+
+<p align="center">
+<img src="examples/comparisons/tmm_Ag_100.0nm_angle_0.0_deg.png" width="150" />
+<img src="examples/comparisons/tmm_Ag_100.0nm_angle_45.0_deg.png" width="150" />
+<img src="examples/comparisons/tmm_Ag_100.0nm_angle_75.0_deg.png" width="150" />
+<img src="examples/comparisons/tmm_Ag_100.0nm_angle_89.0_deg.png" width="150" />
+</p>
+
 ## License
 
 JaxLayerLumos is released under the [MIT License](LICENSE), promoting open and unrestricted access to software for academic and commercial use.
