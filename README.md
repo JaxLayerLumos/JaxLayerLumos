@@ -41,6 +41,9 @@ Explore a collection of examples illustrating various use cases and capabilities
 
 ## Comparisons to Lumerical
 
+Simulation results of JaxLayerLumos are compared to the results of [stackrt](https://optics.ansys.com/hc/en-us/articles/360034406254-stackrt-Script-command), which is included in [Ansys Optics Software](https://www.ansys.com/products/optics).
+Our results are matched to the Lumerical results with sufficiently small errors.
+
 <p align="center">
 <img src="examples/comparisons/tmm_Ag_100.0nm_angle_0.0_deg.png" width="400" />
 <img src="examples/comparisons/tmm_Ag_100.0nm_angle_45.0_deg.png" width="400" />
@@ -64,6 +67,10 @@ Explore a collection of examples illustrating various use cases and capabilities
 <img src="examples/comparisons/tmm_TiO2_20.0nm_Ag_5.0nm_TiO2_30.0nm_angle_75.0_deg.png" width="400" />
 <img src="examples/comparisons/tmm_TiO2_20.0nm_Ag_5.0nm_TiO2_30.0nm_angle_89.0_deg.png" width="400" />
 </p>
+
+## Materials
+
+Materials suppored by JaxLayerLumos are described in [MATERIALS.md](MATERIALS.md).
 
 ## License
 
