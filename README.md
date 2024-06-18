@@ -37,7 +37,7 @@ pip install .
 
 ### Examples
 
-Explore a collection of examples illustrating various use cases and capabilities of JaxLayerLumos in the `examples` directory.
+A collection of examples in the `examples` directory exhibits various use cases and capabilities of JaxLayerLumos.
 
 ## Comparisons to Ansys Optics
 

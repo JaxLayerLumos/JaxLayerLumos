@@ -1,10 +1,14 @@
 # Supported Materials
 
-Ag, Al2O3, Al, Au, BK7, Cr, Cu, FusedSilica, Ge, Mn, Ni, Pd, Pt, Si3N4, SiO2, TiN, TiO2, Ti, W
+Ag, Air, Al2O3, Al, Au, BK7, Cr, Cu, FusedSilica, GaAs, Ge, Mn, Ni, Pd, Pt, Si3N4, SiO2, TiN, TiO2, Ti, W
 
 - Ag
 
 <p align='center'><img src='examples/refractive_indices/Ag.png' width='400' /></p>
+
+- Air
+
+<p align='center'><img src='examples/refractive_indices/Air.png' width='400' /></p>
 
 - Al2O3
 
@@ -33,6 +37,10 @@ Ag, Al2O3, Al, Au, BK7, Cr, Cu, FusedSilica, Ge, Mn, Ni, Pd, Pt, Si3N4, SiO2, Ti
 - FusedSilica
 
 <p align='center'><img src='examples/refractive_indices/FusedSilica.png' width='400' /></p>
+
+- GaAs
+
+<p align='center'><img src='examples/refractive_indices/GaAs.png' width='400' /></p>
 
 - Ge
 
