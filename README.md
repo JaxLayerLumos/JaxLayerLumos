@@ -42,11 +42,11 @@ Explore a collection of examples illustrating various use cases and capabilities
 ## Comparisons to Lumerical
 
 <p align="center">
-<img src="examples/comparisons/tmm_Ag_100.0nm_angle_0.0_deg.png" width="250" />
-<img src="examples/comparisons/tmm_Ag_100.0nm_angle_45.0_deg.png" width="250" />
+<img src="examples/comparisons/tmm_Ag_100.0nm_angle_0.0_deg.png" width="350" />
+<img src="examples/comparisons/tmm_Ag_100.0nm_angle_45.0_deg.png" width="350" />
 <br>
-<img src="examples/comparisons/tmm_Ag_100.0nm_angle_75.0_deg.png" width="250" />
-<img src="examples/comparisons/tmm_Ag_100.0nm_angle_89.0_deg.png" width="250" />
+<img src="examples/comparisons/tmm_Ag_100.0nm_angle_75.0_deg.png" width="350" />
+<img src="examples/comparisons/tmm_Ag_100.0nm_angle_89.0_deg.png" width="350" />
 </p>
 
 ## License
