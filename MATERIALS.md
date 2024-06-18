@@ -1,4 +1,6 @@
-# Material List
+# Supported Materials
+
+Ag, Al2O3, Al, Au, BK7, Cr, Cu, FusedSilica, Ge, Mn, Ni, Pd, Pt, Si3N4, SiO2, TiN, TiO2, Ti, W
 
 - Ag
 
