@@ -18,15 +18,20 @@ LIST_MATERIALS = [
     "Cr",
     "cSi",
     "Cu",
+    "Fe",
     "FusedSilica",
     "GaAs",
     "GaP",
     "Ge",
+    "InP",
     "ITO",
+    "Mg",
     "Mn",
     "Ni",
+    "Pb",
     "Pd",
     "Pt",
+    "Sapphire",
     "Si3N4",
     "SiO2",
     "TiN",
@@ -34,6 +39,7 @@ LIST_MATERIALS = [
     "Ti",
     "W",
     "ZnO",
+    "Zn",
 ]
 
 
