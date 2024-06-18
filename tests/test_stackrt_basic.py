@@ -46,10 +46,12 @@ def test_stackrt():
 
     print("R_avg")
     for elem in R_avg:
-        print(elem)
+        for elem2 in elem:
+            print(elem2)
     print("T_avg")
     for elem in T_avg:
-        print(elem)
+        for elem2 in elem:
+            print(elem2)
 
     np.testing.assert_allclose(R_avg, expected_R_avg)
     np.testing.assert_allclose(T_avg, expected_T_avg)
