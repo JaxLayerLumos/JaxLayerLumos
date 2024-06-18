@@ -1,15 +1,19 @@
 {
     "Ag": "materials/Ag-Rakic-LD.csv",
-    "Air": "materials/Air-Peck.csv",
+    "Air": "materials/Air-Peck-1972.csv",
     "Al2O3": "materials/Al2O3-Querry.csv",
     "Al": "materials/Al-Rakic-LD.csv",
+    "aSi": "materials/aSi-Pierce-1972.csv",
     "Au": "materials/Au-Rakic-LD.csv",
     "BK7": "materials/BK7-N-BK7.csv",
     "Cr": "materials/Cr-Rakic-LD.csv",
+    "cSi": "materials/cSi-Schinke-2015.csv",
     "Cu": "materials/Cu-Rakic-LD.csv",
     "FusedSilica": "materials/FusedSilica-Malitson.csv",
-    "GaAs": "materials/GaAs-Rakic.csv",
+    "GaAs": "materials/GaAs-Rakic-1996.csv",
+    "GaP": "materials/GaP-Adachi-1989.csv",
     "Ge": "materials/Ge-Nunley.csv",
+    "ITO": "materials/ITO-Konig-2014.csv",
     "Mn": "materials/Mn-Querry.csv",
     "Ni": "materials/Ni-Rakic-LD.csv",
     "Pd": "materials/Pd-Rakic-LD.csv",
@@ -19,5 +23,6 @@
     "TiN": "materials/TiN-Beliaev.csv",
     "TiO2": "materials/TiO2-Siefke.csv",
     "Ti": "materials/Ti-Rakic-LD.csv",
-    "W": "materials/W-Rakic-LD.csv"
+    "W": "materials/W-Rakic-LD.csv",
+    "ZnO": "materials/ZnO-Aguilar-2019.csv"
 }

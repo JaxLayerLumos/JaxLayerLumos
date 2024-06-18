@@ -12,13 +12,17 @@ LIST_MATERIALS = [
     "Air",
     "Al2O3",
     "Al",
+    "aSi",
     "Au",
     "BK7",
     "Cr",
+    "cSi",
     "Cu",
     "FusedSilica",
     "GaAs",
+    "GaP",
     "Ge",
+    "ITO",
     "Mn",
     "Ni",
     "Pd",
@@ -29,6 +33,7 @@ LIST_MATERIALS = [
     "TiO2",
     "Ti",
     "W",
+    "ZnO",
 ]
 
 
@@ -118,6 +123,8 @@ def test_material_wide_visible_light():
     )
 
     for material in LIST_MATERIALS:
+        print(material)
+
         n_material, k_material = utils_materials.interpolate_material(
             material, frequencies
         )
