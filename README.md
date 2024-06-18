@@ -70,7 +70,7 @@ Our results are matched to the Lumerical results with sufficiently small errors.
 
 ## Materials
 
-Materials suppored by JaxLayerLumos are described in [MATERIALS.md](MATERIALS.md).
+Materials suppored by JaxLayerLumos are described in [this file](MATERIALS.md).
 
 ## License
 
