@@ -9,6 +9,7 @@ from jaxlayerlumos import utils_spectra
 
 LIST_MATERIALS = [
     "Ag",
+    "Air",
     "Al2O3",
     "Al",
     "Au",
@@ -16,6 +17,7 @@ LIST_MATERIALS = [
     "Cr",
     "Cu",
     "FusedSilica",
+    "GaAs",
     "Ge",
     "Mn",
     "Ni",

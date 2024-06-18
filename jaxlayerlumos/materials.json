@@ -1,5 +1,6 @@
 {
     "Ag": "materials/Ag-Rakic-LD.csv",
+    "Air": "materials/Air-Peck.csv",
     "Al2O3": "materials/Al2O3-Querry.csv",
     "Al": "materials/Al-Rakic-LD.csv",
     "Au": "materials/Au-Rakic-LD.csv",
@@ -7,6 +8,7 @@
     "Cr": "materials/Cr-Rakic-LD.csv",
     "Cu": "materials/Cu-Rakic-LD.csv",
     "FusedSilica": "materials/FusedSilica-Malitson.csv",
+    "GaAs": "materials/GaAs-Rakic.csv",
     "Ge": "materials/Ge-Nunley.csv",
     "Mn": "materials/Mn-Querry.csv",
     "Ni": "materials/Ni-Rakic-LD.csv",
