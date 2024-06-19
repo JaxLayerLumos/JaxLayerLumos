@@ -37,7 +37,7 @@ pip install .
 
 ### Examples
 
-Explore a collection of examples illustrating various use cases and capabilities of JaxLayerLumos in the `examples` directory.
+A collection of examples in the `examples` directory exhibits various use cases and capabilities of JaxLayerLumos.
 
 ## Comparisons to Ansys Optics
 
@@ -68,9 +68,9 @@ Our results are matched to the Ansys Optics results with sufficiently small erro
 <img src="examples/comparisons/tmm_TiO2_20.0nm_Ag_5.0nm_TiO2_30.0nm_angle_89.0_deg.png" width="400" />
 </p>
 
-## Materials
+## Supported Materials
 
-Materials suppored by JaxLayerLumos are described in [this file](MATERIALS.md).
+Materials supported by JaxLayerLumos are described in [this file](MATERIALS.md).
 
 ## License
 

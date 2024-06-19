@@ -9,24 +9,37 @@ from jaxlayerlumos import utils_spectra
 
 LIST_MATERIALS = [
     "Ag",
+    "Air",
     "Al2O3",
     "Al",
+    "aSi",
     "Au",
     "BK7",
     "Cr",
+    "cSi",
     "Cu",
+    "Fe",
     "FusedSilica",
+    "GaAs",
+    "GaP",
     "Ge",
+    "InP",
+    "ITO",
+    "Mg",
     "Mn",
     "Ni",
+    "Pb",
     "Pd",
     "Pt",
+    "Sapphire",
     "Si3N4",
     "SiO2",
     "TiN",
     "TiO2",
     "Ti",
     "W",
+    "ZnO",
+    "Zn",
 ]
 
 
@@ -116,6 +129,8 @@ def test_material_wide_visible_light():
     )
 
     for material in LIST_MATERIALS:
+        print(material)
+
         n_material, k_material = utils_materials.interpolate_material(
             material, frequencies
         )
