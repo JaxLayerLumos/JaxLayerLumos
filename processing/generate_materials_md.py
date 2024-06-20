@@ -19,7 +19,7 @@ if __name__ == "__main__":
             file_materials.write("\n")
             file_materials.write("\n")
             file_materials.write(
-                f"<p align='center'><img src='examples/refractive_indices/{material}.png' width='400' /></p>"
+                f"<p align='center'><img src='assets/refractive_indices/{material}.png' width='400' /></p>"
             )
             file_materials.write("\n")
             file_materials.write("\n")
