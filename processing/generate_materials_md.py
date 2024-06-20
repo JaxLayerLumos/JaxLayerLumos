@@ -10,7 +10,7 @@ if __name__ == "__main__":
         file_materials.write("\n")
 
         str_all_material = ", ".join(all_materials)
-        file_materials.write(f"{str_all_material}")
+        file_materials.write(f"{len(all_materials)} materials: {str_all_material}")
         file_materials.write("\n")
         file_materials.write("\n")
 

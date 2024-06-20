@@ -1,6 +1,6 @@
 # Supported Materials
 
-Ag, Air, Al2O3, Al, aSi, Au, BK7, Cr, cSi, Cu, Fe, FusedSilica, GaAs, GaP, Ge, InP, ITO, Mg, Mn, Ni, Pb, Pd, Pt, Sapphire, Si3N4, SiO2, TiN, TiO2, Ti, W, ZnO, Zn
+32 materials: Ag, Air, Al2O3, Al, aSi, Au, BK7, Cr, cSi, Cu, Fe, FusedSilica, GaAs, GaP, Ge, InP, ITO, Mg, Mn, Ni, Pb, Pd, Pt, Sapphire, Si3N4, SiO2, TiN, TiO2, Ti, W, ZnO, Zn
 
 - Ag
 
