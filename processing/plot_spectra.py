@@ -60,7 +60,7 @@ def plot_spectra(
     plt.suptitle(str_file, fontsize=fontsize)
     plt.subplots_adjust(top=0.95)
 
-    str_directory = "./comparisons"
+    str_directory = "../assets/comparisons"
     if not os.path.exists(str_directory):
         os.mkdir(str_directory)
 
