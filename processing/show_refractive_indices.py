@@ -31,7 +31,7 @@ def plot_refractive_indices(material, wavelengths, n_material, k_material):
 
     plt.tight_layout()
 
-    str_directory = "./refractive_indices"
+    str_directory = "../assets/refractive_indices"
     if not os.path.exists(str_directory):
         os.mkdir(str_directory)
 

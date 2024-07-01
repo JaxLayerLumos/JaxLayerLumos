@@ -10,7 +10,7 @@ if __name__ == "__main__":
         file_materials.write("\n")
 
         str_all_material = ", ".join(all_materials)
-        file_materials.write(f"{str_all_material}")
+        file_materials.write(f"{len(all_materials)} materials: {str_all_material}")
         file_materials.write("\n")
         file_materials.write("\n")
 
@@ -19,7 +19,7 @@ if __name__ == "__main__":
             file_materials.write("\n")
             file_materials.write("\n")
             file_materials.write(
-                f"<p align='center'><img src='examples/refractive_indices/{material}.png' width='400' /></p>"
+                f"<p align='center'><img src='assets/refractive_indices/{material}.png' width='400' /></p>"
             )
             file_materials.write("\n")
             file_materials.write("\n")
