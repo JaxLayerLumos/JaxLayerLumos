@@ -12,7 +12,7 @@ packages = [
 
 [project]
 name = "jaxlayerlumos"
-version = "0.3.0"
+version = "0.3.1"
 description = "A JAX-based efficient transfer-matrix method framework for optical simulations"
 readme = "README.md"
 requires-python = ">=3.8"
