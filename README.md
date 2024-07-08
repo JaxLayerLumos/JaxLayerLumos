@@ -4,6 +4,13 @@
 <img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/layerlumos.jpg" width="400" />
 </p>
 
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12602789.svg)](https://doi.org/10.5281/zenodo.12602789)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/jaxlayerlumos)](https://pypi.org/project/jaxlayerlumos/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+
 ## Overview
 
 **JaxLayerLumos** is an open-source software designed for scientists, engineers, and researchers in optics and photonics. It provides a powerful yet intuitive interface for calculating the reflection and transmission (RT) of light through multi-layer optical structures. By inputting the refractive index, thickness of each layer, and the frequency vector, users can analyze how light interacts with layered materials, including the option to adjust for incidence angles.
