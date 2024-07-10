@@ -1,8 +1,5 @@
-import unittest
 import jax.numpy as jnp
 import jax
-import numpy as np
-import scipy.constants as scic
 
 from jaxlayerlumos import stackrt
 from jaxlayerlumos.utils_materials import get_n_k_surrounded_by_air
