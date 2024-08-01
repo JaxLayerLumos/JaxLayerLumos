@@ -34,8 +34,8 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mil152/jaxlayerlumos"
-Source = "https://github.com/mil152/jaxlayerlumos"
+Homepage = "https://github.com/JaxLayerLumos/JaxLayerLumos"
+Source = "https://github.com/JaxLayerLumos/JaxLayerLumos"
 
 [project.optional-dependencies]
 dev = [
