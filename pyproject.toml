@@ -12,7 +12,7 @@ packages = [
 
 [project]
 name = "jaxlayerlumos"
-version = "0.3.0"
+version = "0.3.1"
 description = "A JAX-based efficient transfer-matrix method framework for optical simulations"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -34,8 +34,8 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/mil152/jaxlayerlumos"
-Source = "https://github.com/mil152/jaxlayerlumos"
+Homepage = "https://github.com/JaxLayerLumos/JaxLayerLumos"
+Source = "https://github.com/JaxLayerLumos/JaxLayerLumos"
 
 [project.optional-dependencies]
 dev = [
