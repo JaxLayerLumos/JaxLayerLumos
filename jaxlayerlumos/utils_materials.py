@@ -35,30 +35,57 @@ def load_material_wavelength_um(material):
     with open(str_csv, "r") as csvfile:
         csvreader = csv.reader(csvfile)
 
-        start_n = False
-        start_k = False
+        header = next(csvreader, None)
 
-        for row in csvreader:
-            if len(row) == 2:
-                if row[0] == "wl" and row[1] == "n":
-                    start_n = True
-                    start_k = False
-                elif row[0] == "wl" and row[1] == "k":
-                    start_n = False
-                    start_k = True
-                else:
-                    wavelength_um, value = map(float, row)
+        if header is None:
+            raise ValueError(f"File {str_csv} is empty.")
 
-                    if start_n and not start_k:
-                        data_n.append([wavelength_um, value])
-                    elif not start_n and start_k:
-                        data_k.append([wavelength_um, value])
+        # Check if the file is in Format 1 or Format 2
+        if header == ['wl', 'n']:
+            # Format 1: Separate 'wl,n' and 'wl,k' sections
+            start_n = True
+            start_k = False
+
+            for row in csvreader:
+                if len(row) == 2:
+                    if row[0] == 'wl' and row[1] == 'k':
+                        start_n = False
+                        start_k = True
+                        continue
+                    elif row[0] == '' and row[1] == '':
+                        continue  # Skip empty lines
                     else:
-                        raise ValueError
-            elif len(row) == 0:
-                pass
-            else:
-                raise ValueError
+                        try:
+                            wavelength_um, value = map(float, row)
+                            if start_n and not start_k:
+                                data_n.append([wavelength_um, value])
+                            elif not start_n and start_k:
+                                data_k.append([wavelength_um, value])
+                            else:
+                                raise ValueError("Invalid data format in file.")
+                        except ValueError:
+                            raise ValueError("Invalid data format in file.")
+                elif len(row) == 0:
+                    continue  # Skip empty lines
+                else:
+                    raise ValueError("Invalid data format in file.")
+
+        elif header == ['wl', 'n', 'k']:
+            # Format 2: Header 'wl,n,k' with data rows containing three values
+            for row in csvreader:
+                if len(row) == 3:
+                    try:
+                        wavelength_um, n_value, k_value = map(float, row)
+                        data_n.append([wavelength_um, n_value])
+                        data_k.append([wavelength_um, k_value])
+                    except ValueError:
+                        raise ValueError("Invalid data format in file.")
+                elif len(row) == 0:
+                    continue  # Skip empty lines
+                else:
+                    raise ValueError("Invalid data format in file.")
+        else:
+            raise ValueError("Unknown file format.")
 
     data_n = jnp.array(data_n)
     data_k = jnp.array(data_k)
@@ -102,7 +129,7 @@ def interpolate(freqs_values, frequencies):
 
     freqs, values = freqs_values.T
 
-    assert jnp.min(freqs) <= jnp.min(frequencies)
+    assert jnp.min(freqs) <= jnp.min(frequencies) + 1
     assert jnp.max(frequencies) <= jnp.max(freqs)
 
     values_interpolated = jnp.interp(
