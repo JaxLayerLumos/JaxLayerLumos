@@ -25,8 +25,12 @@ def stackrt_eps_mu(eps_r, mu_r, d, f, theta):
 
     theta_rad = jnp.radians(theta)
 
-    fun_mapped = jax.vmap(stackrt_eps_mu_base, (0, 0, None, 0, None), (0, 0, 0, 0, 0, 0))
-    r_TE, t_TE, r_TM, t_TM, thetas_k, cos_thetas_t = fun_mapped(eps_r, mu_r, d, f, theta_rad)
+    fun_mapped = jax.vmap(
+        stackrt_eps_mu_base, (0, 0, None, 0, None), (0, 0, 0, 0, 0, 0)
+    )
+    r_TE, t_TE, r_TM, t_TM, thetas_k, cos_thetas_t = fun_mapped(
+        eps_r, mu_r, d, f, theta_rad
+    )
 
     n = jnp.conj(jnp.sqrt(eps_r * mu_r))
 
@@ -66,24 +70,19 @@ def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k):
     k = 2 * jnp.pi / c * f * jnp.conj(jnp.sqrt(eps_r * mu_r))
     eta = jnp.conj(jnp.sqrt(mu_r / eps_r))
 
-
     sin_theta_layer = [jnp.sin(jnp.radians(theta_k))]
     sin_theta = [sin_theta_layer]
     for j in range(num_layers - 1):
         sin_theta_layer = (k[j] * sin_theta_layer) / k[j + 1]
         sin_theta.append(sin_theta_layer)
 
-    cos_theta_t = jnp.sqrt(1 - sin_theta ** 2)
+    cos_theta_t = jnp.sqrt(1 - sin_theta**2)
     kz = k * cos_theta_t
-
 
     upper_bound = 600.0
     delta = d[:, jnp.newaxis] * kz
 
-    delta = jnp.real(delta) + 1j * jnp.clip(
-        jnp.imag(delta), -upper_bound, upper_bound
-    )
-
+    delta = jnp.real(delta) + 1j * jnp.clip(jnp.imag(delta), -upper_bound, upper_bound)
 
     Z_TE = eta / cos_theta_t
     Z_TM = eta * cos_theta_t
@@ -92,7 +91,6 @@ def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k):
     M_TM = jnp.repeat(jnp.eye(2)[..., jnp.newaxis], len(f), axis=2)
 
     for j in range(num_layers - 1):
-
 
         r_jk_TE = (Z_TE[j + 1, :] - Z_TE[j, :]) / (Z_TE[j + 1, :] + Z_TE[j, :])
         t_jk_TE = (2 * Z_TE[j + 1, :]) / (Z_TE[j + 1, :] + Z_TE[j, :])
@@ -125,8 +123,8 @@ def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k):
         P[0, 0, :] = jnp.exp(-1j * delta[j + 1, :])
         P[1, 1, :] = jnp.exp(1j * delta[j + 1, :])
 
-        M_TE = jnp.einsum('ijk,jlk->ilk', M_TE, jnp.einsum('ijk,jlk->ilk', D_jk_TE, P))
-        M_TM = jnp.einsum('ijk,jlk->ilk', M_TM, jnp.einsum('ijk,jlk->ilk', D_jk_TM, P))
+        M_TE = jnp.einsum("ijk,jlk->ilk", M_TE, jnp.einsum("ijk,jlk->ilk", D_jk_TE, P))
+        M_TM = jnp.einsum("ijk,jlk->ilk", M_TM, jnp.einsum("ijk,jlk->ilk", D_jk_TM, P))
 
     r_TE_i = M_TE[1, 0, :] / M_TE[0, 0, :]
     t_TE_i = 1 / M_TE[0, 0, :]
@@ -253,8 +251,6 @@ def stackrt_theta(n, d, f, theta):
     )
 
     return R_TE, T_TE, R_TM, T_TM
-
-
 
 
 def stackrt(n, d, f, thetas=None):
