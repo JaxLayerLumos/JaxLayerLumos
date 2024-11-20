@@ -70,25 +70,25 @@ def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k):
     k = 2 * jnp.pi / c * f * jnp.conj(jnp.sqrt(eps_r * mu_r))
     eta = jnp.conj(jnp.sqrt(mu_r / eps_r))
 
-    sin_theta_layer = [jnp.sin(jnp.radians(theta_k))]
-    sin_theta = [sin_theta_layer]
+    sin_theta_layer = jnp.expand_dims(jnp.sin(theta_k), axis=0)
+    sin_theta_list = [sin_theta_layer]
     for j in range(num_layers - 1):
         sin_theta_layer = (k[j] * sin_theta_layer) / k[j + 1]
-        sin_theta.append(sin_theta_layer)
+        sin_theta_list.append(sin_theta_layer)
 
+    sin_theta = jnp.vstack(sin_theta_list)
     cos_theta_t = jnp.sqrt(1 - sin_theta**2)
     kz = k * cos_theta_t
 
     upper_bound = 600.0
     delta = d[:, jnp.newaxis] * kz
-
     delta = jnp.real(delta) + 1j * jnp.clip(jnp.imag(delta), -upper_bound, upper_bound)
 
     Z_TE = eta / cos_theta_t
     Z_TM = eta * cos_theta_t
 
-    M_TE = jnp.repeat(jnp.eye(2)[..., jnp.newaxis], len(f), axis=2)
-    M_TM = jnp.repeat(jnp.eye(2)[..., jnp.newaxis], len(f), axis=2)
+    M_TE = jnp.eye(2, dtype=jnp.complex128)
+    M_TM = jnp.eye(2, dtype=jnp.complex128)
 
     for j in range(num_layers - 1):
 
@@ -105,12 +105,11 @@ def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k):
             r_jk_TM = -jnp.ones(len(f))
             t_jk_TM = jnp.ones(len(f))
 
-        D_jk_TE = jnp.zeros((2, 2, len(f)), dtype=complex)
-        D_jk_TE[0, 0, :] = 1
-        D_jk_TE[1, 1, :] = 1
-        D_jk_TE[0, 1, :] = r_jk_TE
-        D_jk_TE[1, 0, :] = r_jk_TE
-        D_jk_TE /= t_jk_TE[jnp.newaxis, jnp.newaxis, :]
+        D_jk_TE = jnp.array([
+            [1, r_jk_TE],
+            [r_jk_TE, 1]
+        ]) / t_jk_TE[jnp.newaxis, jnp.newaxis, :]
+        
 
         D_jk_TM = jnp.zeros((2, 2, len(f)), dtype=complex)
         D_jk_TM[0, 0, :] = 1
