@@ -6,6 +6,137 @@ from jaxlayerlumos import utils_spectra
 jax.config.update("jax_enable_x64", True)
 
 
+def stackrt_eps_mu(eps_r, mu_r, d, f, theta):
+
+    assert isinstance(eps_r, jnp.ndarray)
+    assert isinstance(mu_r, jnp.ndarray)
+    assert isinstance(d, jnp.ndarray)
+    assert isinstance(f, jnp.ndarray)
+    assert eps_r.ndim == 2
+    assert mu_r.ndim == 2
+    assert d.ndim == 1
+    assert f.ndim == 1
+
+    assert eps_r.shape[0] == f.shape[0]
+    assert eps_r.shape[1] == d.shape[0]
+
+    assert mu_r.shape[0] == f.shape[0]
+    assert mu_r.shape[1] == d.shape[0]
+
+    theta_rad = jnp.radians(theta)
+
+    fun_mapped = jax.vmap(stackrt_eps_mu_base, (0, 0, None, 0, None), (0, 0, 0, 0, 0, 0))
+    r_TE, t_TE, r_TM, t_TM, thetas_k, cos_thetas_t = fun_mapped(eps_r, mu_r, d, f, theta_rad)
+
+    n = jnp.conj(jnp.sqrt(eps_r * mu_r))
+
+    R_TE = jnp.abs(r_TE) ** 2
+    T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
+        n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
+    )
+    R_TM = jnp.abs(r_TM) ** 2
+    T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
+        n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
+    )
+
+    return R_TE, T_TE, R_TM, T_TM
+
+
+def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k):
+    assert isinstance(eps_r, jnp.ndarray)
+    assert isinstance(mu_r, jnp.ndarray)
+    assert isinstance(d, jnp.ndarray)
+    assert eps_r.ndim == 1
+    assert d.ndim == 1
+    assert eps_r.shape[0] == d.shape[0]
+
+    assert mu_r.ndim == 1
+    assert d.ndim == 1
+    assert mu_r.shape[0] == d.shape[0]
+
+    # Convert frequency from GHz to Hz
+    f = f_i * 1e9
+
+    # Convert slab thickness from mm to m
+    d = d * 1e-3
+
+    num_layers = len(d)
+
+    c = 299792458  # Speed of light in m/s
+    k = 2 * jnp.pi / c * f * jnp.conj(jnp.sqrt(eps_r * mu_r))
+    eta = jnp.conj(jnp.sqrt(mu_r / eps_r))
+
+
+    sin_theta_layer = [jnp.sin(jnp.radians(theta_k))]
+    sin_theta = [sin_theta_layer]
+    for j in range(num_layers - 1):
+        sin_theta_layer = (k[j] * sin_theta_layer) / k[j + 1]
+        sin_theta.append(sin_theta_layer)
+
+    cos_theta_t = jnp.sqrt(1 - sin_theta ** 2)
+    kz = k * cos_theta_t
+
+
+    upper_bound = 600.0
+    delta = d[:, jnp.newaxis] * kz
+
+    delta = jnp.real(delta) + 1j * jnp.clip(
+        jnp.imag(delta), -upper_bound, upper_bound
+    )
+
+
+    Z_TE = eta / cos_theta_t
+    Z_TM = eta * cos_theta_t
+
+    M_TE = jnp.repeat(jnp.eye(2)[..., jnp.newaxis], len(f), axis=2)
+    M_TM = jnp.repeat(jnp.eye(2)[..., jnp.newaxis], len(f), axis=2)
+
+    for j in range(num_layers - 1):
+
+
+        r_jk_TE = (Z_TE[j + 1, :] - Z_TE[j, :]) / (Z_TE[j + 1, :] + Z_TE[j, :])
+        t_jk_TE = (2 * Z_TE[j + 1, :]) / (Z_TE[j + 1, :] + Z_TE[j, :])
+
+        r_jk_TM = (Z_TM[j + 1, :] - Z_TM[j, :]) / (Z_TM[j + 1, :] + Z_TM[j, :])
+        t_jk_TM = (2 * Z_TM[j + 1, :]) / (Z_TM[j + 1, :] + Z_TM[j, :])
+
+        if j == num_layers - 2 and eps_r == jnp.inf * 1j:
+            # check for PEC
+            r_jk_TE = -jnp.ones(len(f))
+            t_jk_TE = jnp.ones(len(f))
+            r_jk_TM = -jnp.ones(len(f))
+            t_jk_TM = jnp.ones(len(f))
+
+        D_jk_TE = jnp.zeros((2, 2, len(f)), dtype=complex)
+        D_jk_TE[0, 0, :] = 1
+        D_jk_TE[1, 1, :] = 1
+        D_jk_TE[0, 1, :] = r_jk_TE
+        D_jk_TE[1, 0, :] = r_jk_TE
+        D_jk_TE /= t_jk_TE[jnp.newaxis, jnp.newaxis, :]
+
+        D_jk_TM = jnp.zeros((2, 2, len(f)), dtype=complex)
+        D_jk_TM[0, 0, :] = 1
+        D_jk_TM[1, 1, :] = 1
+        D_jk_TM[0, 1, :] = r_jk_TM
+        D_jk_TM[1, 0, :] = r_jk_TM
+        D_jk_TM /= t_jk_TM[jnp.newaxis, jnp.newaxis, :]
+
+        P = jnp.zeros((2, 2, len(f)), dtype=complex)
+        P[0, 0, :] = jnp.exp(-1j * delta[j + 1, :])
+        P[1, 1, :] = jnp.exp(1j * delta[j + 1, :])
+
+        M_TE = jnp.einsum('ijk,jlk->ilk', M_TE, jnp.einsum('ijk,jlk->ilk', D_jk_TE, P))
+        M_TM = jnp.einsum('ijk,jlk->ilk', M_TM, jnp.einsum('ijk,jlk->ilk', D_jk_TM, P))
+
+    r_TE_i = M_TE[1, 0, :] / M_TE[0, 0, :]
+    t_TE_i = 1 / M_TE[0, 0, :]
+
+    r_TM_i = M_TM[1, 0, :] / M_TM[0, 0, :]
+    t_TM_i = 1 / M_TM[0, 0, :]
+
+    return r_TE_i, t_TE_i, r_TM_i, t_TM_i, theta_k, cos_theta_t
+
+
 def stackrt_base(n_i, d, wvl_i, theta_k):
     assert isinstance(n_i, jnp.ndarray)
     assert isinstance(d, jnp.ndarray)
@@ -122,6 +253,8 @@ def stackrt_theta(n, d, f, theta):
     )
 
     return R_TE, T_TE, R_TM, T_TM
+
+
 
 
 def stackrt(n, d, f, thetas=None):

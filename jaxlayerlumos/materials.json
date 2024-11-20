@@ -30,5 +30,21 @@
     "Ti": "materials/Ti-Rakic-LD-1998.csv",
     "W": "materials/W-Rakic-LD-1998.csv",
     "ZnO": "materials/ZnO-Aguilar-2019.csv",
-    "Zn": "materials/Zn-Werner-DFT-2009.csv"
+    "Zn": "materials/Zn-Werner-DFT-2009.csv",
+    "Mat1": "materialsRAM/Mat1-Michielssen-20.csv",
+    "Mat2": "materialsRAM/Mat2-Michielssen-20.csv",
+    "Mat3": "materialsRAM/Mat3-Michielssen-20.csv",
+    "Mat4": "materialsRAM/Mat4-Michielssen-20.csv",
+    "Mat5": "materialsRAM/Mat5-Michielssen-20.csv",
+    "Mat6": "materialsRAM/Mat6-Michielssen-20.csv",
+    "Mat7": "materialsRAM/Mat7-Michielssen-20.csv",
+    "Mat8": "materialsRAM/Mat8-Michielssen-20.csv",
+    "Mat9": "materialsRAM/Mat9-Michielssen-20.csv",
+    "Mat10": "materialsRAM/Mat10-Michielssen-20.csv",
+    "Mat11": "materialsRAM/Mat11-Michielssen-20.csv",
+    "Mat12": "materialsRAM/Mat12-Michielssen-20.csv",
+    "Mat13": "materialsRAM/Mat13-Michielssen-20.csv",
+    "Mat14": "materialsRAM/Mat14-Michielssen-20.csv",
+    "Mat15": "materialsRAM/Mat15-Michielssen-20.csv",
+    "Mat16": "materialsRAM/Mat16-Michielssen-20.csv"
 }
