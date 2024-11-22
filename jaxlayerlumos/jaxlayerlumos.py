@@ -70,18 +70,19 @@ def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k):
     k = 2 * jnp.pi / c * f * jnp.conj(jnp.sqrt(eps_r * mu_r))
     eta = jnp.conj(jnp.sqrt(mu_r / eps_r))
 
-    sin_theta_layer = jnp.expand_dims(jnp.sin(theta_k), axis=0)
+    #sin_theta_layer = jnp.expand_dims(jnp.sin(theta_k), axis=0)
+    sin_theta_layer = jnp.sin(theta_k)
     sin_theta_list = [sin_theta_layer]
     for j in range(num_layers - 1):
         sin_theta_layer = (k[j] * sin_theta_layer) / k[j + 1]
         sin_theta_list.append(sin_theta_layer)
 
-    sin_theta = jnp.vstack(sin_theta_list)
+    sin_theta = jnp.array(sin_theta_list)
     cos_theta_t = jnp.sqrt(1 - sin_theta**2)
     kz = k * cos_theta_t
 
     upper_bound = 600.0
-    delta = d[:, jnp.newaxis] * kz
+    delta = d * kz
     delta = jnp.real(delta) + 1j * jnp.clip(jnp.imag(delta), -upper_bound, upper_bound)
 
     Z_TE = eta / cos_theta_t
@@ -92,44 +93,44 @@ def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k):
 
     for j in range(num_layers - 1):
 
-        r_jk_TE = (Z_TE[j + 1, :] - Z_TE[j, :]) / (Z_TE[j + 1, :] + Z_TE[j, :])
-        t_jk_TE = (2 * Z_TE[j + 1, :]) / (Z_TE[j + 1, :] + Z_TE[j, :])
+        r_jk_TE = (Z_TE[j + 1] - Z_TE[j]) / (Z_TE[j + 1] + Z_TE[j])
+        t_jk_TE = (2 * Z_TE[j + 1]) / (Z_TE[j + 1] + Z_TE[j])
 
-        r_jk_TM = (Z_TM[j + 1, :] - Z_TM[j, :]) / (Z_TM[j + 1, :] + Z_TM[j, :])
-        t_jk_TM = (2 * Z_TM[j + 1, :]) / (Z_TM[j + 1, :] + Z_TM[j, :])
+        r_jk_TM = (Z_TM[j + 1] - Z_TM[j]) / (Z_TM[j + 1] + Z_TM[j])
+        t_jk_TM = (2 * Z_TM[j + 1]) / (Z_TM[j + 1] + Z_TM[j])
 
-        if j == num_layers - 2 and eps_r == jnp.inf * 1j:
-            # check for PEC
+        if j == num_layers - 2 and eps_r[j+1] == 1e9j:
+            # check for PEC for last layer
             r_jk_TE = -jnp.ones(len(f))
             t_jk_TE = jnp.ones(len(f))
             r_jk_TM = -jnp.ones(len(f))
             t_jk_TM = jnp.ones(len(f))
 
-        D_jk_TE = jnp.array([
-            [1, r_jk_TE],
-            [r_jk_TE, 1]
-        ]) / t_jk_TE[jnp.newaxis, jnp.newaxis, :]
-        
+        D_jk_TE = jnp.array(
+            [[1 / t_jk_TE, r_jk_TE / t_jk_TE],
+             [r_jk_TE / t_jk_TE, 1 / t_jk_TE]],
+            dtype=jnp.complex128,
+        )
 
-        D_jk_TM = jnp.zeros((2, 2, len(f)), dtype=complex)
-        D_jk_TM[0, 0, :] = 1
-        D_jk_TM[1, 1, :] = 1
-        D_jk_TM[0, 1, :] = r_jk_TM
-        D_jk_TM[1, 0, :] = r_jk_TM
-        D_jk_TM /= t_jk_TM[jnp.newaxis, jnp.newaxis, :]
+        D_jk_TM = jnp.array(
+            [[1 / t_jk_TM, r_jk_TE / t_jk_TM],
+             [r_jk_TM / t_jk_TM, 1 / t_jk_TM]],
+            dtype=jnp.complex128,
+        )
 
-        P = jnp.zeros((2, 2, len(f)), dtype=complex)
-        P[0, 0, :] = jnp.exp(-1j * delta[j + 1, :])
-        P[1, 1, :] = jnp.exp(1j * delta[j + 1, :])
+        P = jnp.array(
+            [[jnp.exp(-1j * delta[j+1]), 0], [0, jnp.exp(1j * delta[j+1])]],
+            dtype=jnp.complex128,
+        )
 
-        M_TE = jnp.einsum("ijk,jlk->ilk", M_TE, jnp.einsum("ijk,jlk->ilk", D_jk_TE, P))
-        M_TM = jnp.einsum("ijk,jlk->ilk", M_TM, jnp.einsum("ijk,jlk->ilk", D_jk_TM, P))
+        M_TE = jnp.dot(M_TE, jnp.dot(D_jk_TE, P))
+        M_TM = jnp.dot(M_TM, jnp.dot(D_jk_TM, P))
 
-    r_TE_i = M_TE[1, 0, :] / M_TE[0, 0, :]
-    t_TE_i = 1 / M_TE[0, 0, :]
+    r_TE_i = M_TE[1, 0] / M_TE[0, 0]
+    t_TE_i = 1 / M_TE[0, 0]
 
-    r_TM_i = M_TM[1, 0, :] / M_TM[0, 0, :]
-    t_TM_i = 1 / M_TM[0, 0, :]
+    r_TM_i = M_TM[1, 0] / M_TM[0, 0]
+    t_TM_i = 1 / M_TM[0, 0]
 
     return r_TE_i, t_TE_i, r_TM_i, t_TM_i, theta_k, cos_theta_t
 

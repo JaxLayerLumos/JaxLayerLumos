@@ -16,7 +16,8 @@ def test_stackrt_radar():
     mu_air = jnp.ones_like(frequencies)
     d_air = jnp.array([0])
 
-    eps_PEC = jnp.ones_like(frequencies) * (jnp.inf * 1j)
+    large_PEC_number = 1e9
+    eps_PEC = jnp.ones_like(frequencies) * (large_PEC_number * 1j)
     mu_PEC = jnp.ones_like(frequencies)
 
     eps_stack = jnp.vstack([eps_air, eps_stack, eps_PEC]).T
