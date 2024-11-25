@@ -2,66 +2,7 @@ import jax
 import jax.numpy as jnp
 
 from jaxlayerlumos import utils_spectra
-
-jax.config.update("jax_enable_x64", True)
-
-
-def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, is_back_layer_PEC=False):
-    assert isinstance(eps_r, jnp.ndarray)
-    assert isinstance(mu_r, jnp.ndarray)
-    assert isinstance(d, jnp.ndarray)
-    assert isinstance(f, jnp.ndarray)
-    assert eps_r.ndim == 2
-    assert mu_r.ndim == 2
-    assert d.ndim == 1
-    assert f.ndim == 1
-
-    assert eps_r.shape[0] == f.shape[0]
-    assert eps_r.shape[1] == d.shape[0]
-
-    assert mu_r.shape[0] == f.shape[0]
-    assert mu_r.shape[1] == d.shape[0]
-
-    theta_rad = jnp.radians(theta)
-
-    fun_mapped = jax.vmap(
-        stackrt_eps_mu_base, (0, 0, None, 0, None, None), (0, 0, 0, 0, 0, 0)
-    )
-    r_TE, t_TE, r_TM, t_TM, thetas_k, cos_thetas_t = fun_mapped(
-        eps_r, mu_r, d, f, theta_rad, is_back_layer_PEC
-    )
-
-    n = jnp.conj(jnp.sqrt(eps_r * mu_r))
-
-    R_TE = jnp.abs(r_TE) ** 2
-    T_TE = jnp.abs(t_TE) ** 2
-    # T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
-    #        n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
-    # )
-    R_TM = jnp.abs(r_TM) ** 2
-    T_TM = jnp.abs(t_TM) ** 2
-    # T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
-    #     n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
-    # )
-    if is_back_layer_PEC:
-        T_TE = jnp.zeros_like(R_TE)
-        T_TM = jnp.zeros_like(R_TM)
-
-    return R_TE, T_TE, R_TM, T_TM
-
-
-def stackrt_eps_mu(eps_r, mu_r, d, f, thetas, is_back_layer_PEC=False):
-    if thetas is None:
-        thetas = jnp.array([0])
-    elif isinstance(thetas, (float, int)):
-        thetas = jnp.array([thetas])
-
-    fun_mapped = jax.vmap(
-        stackrt_eps_mu_theta, (None, None, None, None, 0, None), (0, 0, 0, 0)
-    )
-    R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, d, f, thetas, is_back_layer_PEC)
-
-    return R_TE, T_TE, R_TM, T_TM
+from jaxlayerlumos import utils_units
 
 
 def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k, is_back_layer_PEC=False):
@@ -78,7 +19,7 @@ def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k, is_back_layer_PEC=False):
 
     num_layers = len(d)
 
-    c = 299792458  # Speed of light in m/s
+    c = utils_units.get_light_speed()
     k = 2 * jnp.pi / c * f_i * jnp.conj(jnp.sqrt(eps_r * mu_r))
     eta = jnp.conj(jnp.sqrt(mu_r / eps_r))
 
@@ -141,10 +82,65 @@ def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k, is_back_layer_PEC=False):
     r_TM_i = M_TM[1, 0] / M_TM[0, 0]
     t_TM_i = 1 / M_TM[0, 0]
     theta_k = jnp.arccos(cos_theta_t[-1])
+
     return r_TE_i, t_TE_i, r_TM_i, t_TM_i, theta_k, cos_theta_t[-1]
 
 
-def stackrt_base(n_i, d, f, theta_k):
+def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, is_back_layer_PEC=False):
+    assert isinstance(eps_r, jnp.ndarray)
+    assert isinstance(mu_r, jnp.ndarray)
+    assert isinstance(d, jnp.ndarray)
+    assert isinstance(f, jnp.ndarray)
+    assert eps_r.ndim == 2
+    assert mu_r.ndim == 2
+    assert d.ndim == 1
+    assert f.ndim == 1
+
+    assert eps_r.shape[0] == f.shape[0]
+    assert eps_r.shape[1] == d.shape[0]
+
+    assert mu_r.shape[0] == f.shape[0]
+    assert mu_r.shape[1] == d.shape[0]
+
+    theta_rad = jnp.radians(theta)
+
+    fun_mapped = jax.vmap(
+        stackrt_eps_mu_base, (0, 0, None, 0, None, None), (0, 0, 0, 0, 0, 0)
+    )
+
+    r_TE, t_TE, r_TM, t_TM, thetas_k, cos_thetas_t = fun_mapped(
+        eps_r, mu_r, d, f, theta_rad, is_back_layer_PEC
+    )
+
+    n = jnp.conj(jnp.sqrt(eps_r * mu_r))
+
+    R_TE = jnp.abs(r_TE) ** 2
+    T_TE = jnp.abs(t_TE) ** 2
+    R_TM = jnp.abs(r_TM) ** 2
+    T_TM = jnp.abs(t_TM) ** 2
+
+    if is_back_layer_PEC:
+        T_TE = jnp.zeros_like(R_TE)
+        T_TM = jnp.zeros_like(R_TM)
+
+    return R_TE, T_TE, R_TM, T_TM
+
+
+def stackrt_eps_mu(eps_r, mu_r, d, f, thetas, is_back_layer_PEC=False):
+    if thetas is None:
+        thetas = jnp.array([0])
+    elif isinstance(thetas, (float, int)):
+        thetas = jnp.array([thetas])
+
+    fun_mapped = jax.vmap(
+        stackrt_eps_mu_theta, (None, None, None, None, 0, None), (0, 0, 0, 0)
+    )
+    R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, d, f, thetas, is_back_layer_PEC)
+
+    return R_TE, T_TE, R_TM, T_TM
+
+
+def stackrt_n_k_base(n_i, d, f, theta_k):
     assert isinstance(n_i, jnp.ndarray)
     assert isinstance(d, jnp.ndarray)
     assert n_i.ndim == 1
@@ -161,90 +157,78 @@ def stackrt_base(n_i, d, f, theta_k):
     return r_TE_i, t_TE_i, r_TM_i, t_TM_i, theta_k, cos_theta_t
 
 
-def stackrt_theta(n, d, f, theta):
-    """
-    Calculate the reflection and transmission coefficients for a multilayer stack
-    at different frequencies under an arbitrary angle of incidence.
+def stackrt_n_k_theta(refractive_indices, thicknesses, frequencies, theta):
+    assert isinstance(refractive_indices, jnp.ndarray)
+    assert isinstance(thicknesses, jnp.ndarray)
+    assert isinstance(frequencies, jnp.ndarray)
 
-    :param n: The refractive indices of the layers for each frequency.
-              Shape should be (Nfreq, Nlayers), where Nfreq is the number of
-              frequencies and Nlayers is the number of layers.
-    :param d: The thicknesses of the layers. Shape should be (Nlayers,).
-    :param f: The frequencies at which to calculate the coefficients.
-              Shape should be (Nfreq,).
-    :param theta: The incident angle in degrees. Defaults to 0 for normal incidence.
-    :returns: A tuple containing:
-              - R_TE (numpy.ndarray): Reflectance for TE polarization. Shape is (Nfreq,).
-              - T_TE (numpy.ndarray): Transmittance for TE polarization. Shape is (Nfreq,).
-              - R_TM (numpy.ndarray): Reflectance for TM polarization. Shape is (Nfreq,).
-              - T_TM (numpy.ndarray): Transmittance for TM polarization. Shape is (Nfreq,).
+    assert refractive_indices.ndim == 2
+    assert thicknesses.ndim == 1
+    assert frequencies.ndim == 1
 
-    """
+    assert refractive_indices.shape[0] == frequencies.shape[0]
+    assert refractive_indices.shape[1] == thicknesses.shape[0]
 
-    assert isinstance(n, jnp.ndarray)
-    assert isinstance(d, jnp.ndarray)
-    assert isinstance(f, jnp.ndarray)
-    assert n.ndim == 2
-    assert d.ndim == 1
-    assert f.ndim == 1
-    assert n.shape[0] == f.shape[0]
-    assert n.shape[1] == d.shape[0]
-
-    # wvl = utils_spectra.convert_frequencies_to_wavelengths(f)
     theta_rad = jnp.radians(theta)
 
-    fun_mapped = jax.vmap(stackrt_base, (0, None, 0, None), (0, 0, 0, 0, 0, 0))
-    r_TE, t_TE, r_TM, t_TM, thetas_k, cos_thetas_t = fun_mapped(n, d, f, theta_rad)
+    fun_mapped = jax.vmap(stackrt_n_k_base, (0, None, 0, None), (0, 0, 0, 0, 0, 0))
+    r_TE, t_TE, r_TM, t_TM, thetas_k, cos_thetas_t = fun_mapped(refractive_indices, thicknesses, frequencies, theta_rad)
 
     R_TE = jnp.abs(r_TE) ** 2
     T_TE = jnp.abs(t_TE) ** 2
-    # T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
-    #     n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
-    # )
+
     R_TM = jnp.abs(r_TM) ** 2
     T_TM = jnp.abs(t_TM) ** 2
-    # T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
-    #     n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
-    # )
 
     return R_TE, T_TE, R_TM, T_TM
 
 
-def stackrt(n, d, f, thetas=None):
+def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas=None):
     """
-    Calculate the reflection and transmission coefficients for a multilayer stack
-    at different frequencies and incidence angles, adapted for JAX.
+    Calculate reflection and transmission coefficients for a multilayer stack at
+    different frequencies and incidence angles.
 
     Parameters:
-    - n: The refractive indices of the layers for each frequency.
-         Shape should be (Nfreq, Nlayers), where Nfreq is the number of frequencies and Nlayers is the number of layers.
-    - d: The thicknesses of the layers. Shape should be (Nlayers,).
-    - f: The frequencies at which to calculate the coefficients. Shape should be (Nfreq,).
-    - thetas: The incidence angle(s) in degrees. Can be a single value or an array of angles. Defaults to [0].
+    - refractive_indices: The refractive indices of the layers for each frequency.
+        Shape should be (Nfreq, Nlayers), where Nfreq is the number of frequencies
+        and Nlayers is the number of layers.
+    - thicknesses: The thicknesses of the layers. Shape should be (Nlayers, ).
+    - frequencies: The frequencies at which to calculate the coefficients. Shape
+        should be (Nfreq, ).
+    - thetas: The incidence angle(s) in degrees. Can be a single value or an array
+        of angles. If it is None, it will be [0].
 
     Returns:
     - A tuple containing:
-      - R_TE (jax.numpy.ndarray): Reflectance for TE polarization. Shape is (Nfreq,).
-      - T_TE (jax.numpy.ndarray): Transmittance for TE polarization. Shape is (Nfreq,).
-      - R_TM (jax.numpy.ndarray): Reflectance for TM polarization. Shape is (Nfreq,).
-      - T_TM (jax.numpy.ndarray): Transmittance for TM polarization. Shape is (Nfreq,).
+      - R_TE (jax.numpy.ndarray): Reflectance for TE polarization.
+            Shape is (Nfreq, ).
+      - T_TE (jax.numpy.ndarray): Transmittance for TE polarization.
+            Shape is (Nfreq, ).
+      - R_TM (jax.numpy.ndarray): Reflectance for TM polarization.
+            Shape is (Nfreq, ).
+      - T_TM (jax.numpy.ndarray): Transmittance for TM polarization.
+            Shape is (Nfreq, ).
 
     """
+
+    assert isinstance(refractive_indices, jnp.ndarray)
+    assert isinstance(thicknesses, jnp.ndarray)
+    assert isinstance(frequencies, jnp.ndarray)
+    assert isinstance(thetas, (type(None), jnp.ndarray, float, int))
+
+    assert refractive_indices.ndim == 2
+    assert thicknesses.ndim == 1
+    assert frequencies.ndim == 1
+
+    assert refractive_indices.shape[0] == frequencies.shape[0]
+    assert refractive_indices.shape[1] == thicknesses.shape[0]
 
     if thetas is None:
         thetas = jnp.array([0])
     elif isinstance(thetas, (float, int)):
         thetas = jnp.array([thetas])
 
-    fun_mapped = jax.vmap(stackrt_theta, (None, None, None, 0), (0, 0, 0, 0))
-    R_TE, T_TE, R_TM, T_TM = fun_mapped(n, d, f, thetas)
+    fun_mapped = jax.vmap(stackrt_n_k_theta, (None, None, None, 0), (0, 0, 0, 0))
+    R_TE, T_TE, R_TM, T_TM = fun_mapped(refractive_indices, thicknesses, frequencies, thetas)
 
     return R_TE, T_TE, R_TM, T_TM
-
-
-def stackrt0(n, d, f):
-    return stackrt(n, d, f, thetas=jnp.array([0]))
-
-
-def stackrt45(n, d, f):
-    return stackrt(n, d, f, thetas=jnp.array([45]))

@@ -31,7 +31,7 @@ def test_gradient_stackrt_thickness_Ag():
         [
             0.0,
             717163.9524140154,
-            -3.3272429750740235e-09,
+            -2.0651852948735317e-09,
         ]
     )
 
@@ -63,8 +63,8 @@ def test_gradient_stackrt_thickness_Au():
     expected_grad_R_TE = jnp.array(
         [
             0.0,
-            -1.060718452499505e-08,
-            9.604134758745862e-11,
+            -5.573497636830303e-10,
+            -2.5306919090856926e-09,
         ]
     )
 

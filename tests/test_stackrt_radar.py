@@ -7,6 +7,7 @@ from jaxlayerlumos import stackrt_eps_mu
 
 import matplotlib.pyplot as plt
 
+
 def test_stackrt_radar():
     frequencies = jnp.linspace(0.1e9, 1e9, 3) # in GHz
     # material_stack = jnp.array([3])
@@ -51,7 +52,6 @@ def test_stackrt_radar():
         ]
     )
 
-
     print("R_db")
     for elem in R_db:
         print(elem)
@@ -61,4 +61,3 @@ def test_stackrt_radar():
             print(elem2)
 
     np.testing.assert_allclose(R_db, expected_R_db)
-
