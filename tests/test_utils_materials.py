@@ -117,7 +117,7 @@ def test_material_visible_light():
     )
 
     for material in LIST_MATERIALS:
-        n_material, k_material = utils_materials.interpolate_material(
+        n_material, k_material = utils_materials.interpolate_material_n_k(
             material, frequencies
         )
 
@@ -131,7 +131,7 @@ def test_material_wide_visible_light():
     for material in LIST_MATERIALS:
         print(material)
 
-        n_material, k_material = utils_materials.interpolate_material(
+        n_material, k_material = utils_materials.interpolate_material_n_k(
             material, frequencies
         )
 
@@ -143,7 +143,7 @@ def test_material_super_wide_light():
 
     for material in LIST_MATERIALS:
         with pytest.raises(AssertionError):
-            n_material, k_material = utils_materials.interpolate_material(
+            n_material, k_material = utils_materials.interpolate_material_n_k(
                 material, frequencies
             )
 
