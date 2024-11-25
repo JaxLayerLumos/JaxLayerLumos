@@ -36,7 +36,7 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, is_back_layer_P
     cos_theta_t = jnp.sqrt(1 - sin_theta**2)
     kz = k * cos_theta_t
 
-    upper_bound = 600.0
+    upper_bound = 200.0
     delta = thicknesses * kz
     delta = jnp.real(delta) + 1j * jnp.clip(jnp.imag(delta), -upper_bound, upper_bound)
 
