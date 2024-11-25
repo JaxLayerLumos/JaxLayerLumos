@@ -143,7 +143,7 @@ def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k, is_back_layer_PEC=False):
 
     r_TM_i = M_TM[1, 0] / M_TM[0, 0]
     t_TM_i = 1 / M_TM[0, 0]
-
+    theta_k = jnp.arccos(cos_theta_t[-1])
     return r_TE_i, t_TE_i, r_TM_i, t_TM_i, theta_k, cos_theta_t[-1]
 
 def stackrt_base(n_i, d, f, theta_k):
