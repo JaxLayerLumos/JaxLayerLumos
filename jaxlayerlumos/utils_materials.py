@@ -198,8 +198,9 @@ def interpolate_material_eps_mu(material, frequencies):
     return eps_r_real, eps_r_imag, mu_r_real, mu_r_imag
 
 
-def get_eps_mu_Michielssen(materialInd, f):
+def get_eps_mu_Michielssen(materialInd, f_Hz):
     # Gets parameters from Michiellsen
+    f = f_Hz/1e9 # in GHz
     M_epsr = jnp.vstack(
         [
             jnp.tile(

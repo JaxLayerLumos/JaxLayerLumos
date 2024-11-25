@@ -40,13 +40,15 @@ def test_angles():
         num_wavelengths=num_wavelengths
     )
 
-    n_TiO2, k_TiO2 = utils_materials.interpolate_material("TiO2", frequencies)
+    n_TiO2, k_TiO2 = utils_materials.interpolate_material_n_k("TiO2", frequencies)
     n_k_TiO2 = n_TiO2 + 1j * k_TiO2
 
     n_air = jnp.ones_like(frequencies)
     n_stack = jnp.vstack([n_air, n_k_TiO2, n_air]).T
     d_stack = jnp.array([0, 2e-8, 0])
     thetas = jnp.linspace(0, 89, 3)
+
+    # thetas = jnp.array([44.5])
 
     R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas)
 

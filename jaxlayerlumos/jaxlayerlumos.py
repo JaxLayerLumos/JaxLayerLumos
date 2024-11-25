@@ -6,8 +6,8 @@ from jaxlayerlumos import utils_spectra
 jax.config.update("jax_enable_x64", True)
 
 
-def stackrt_eps_mu(eps_r, mu_r, d, f, theta):
 
+def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, is_back_layer_PEC = False):
     assert isinstance(eps_r, jnp.ndarray)
     assert isinstance(mu_r, jnp.ndarray)
     assert isinstance(d, jnp.ndarray)
@@ -26,27 +26,45 @@ def stackrt_eps_mu(eps_r, mu_r, d, f, theta):
     theta_rad = jnp.radians(theta)
 
     fun_mapped = jax.vmap(
-        stackrt_eps_mu_base, (0, 0, None, 0, None), (0, 0, 0, 0, 0, 0)
+        stackrt_eps_mu_base, (0, 0, None, 0, None, None), (0, 0, 0, 0, 0, 0)
     )
     r_TE, t_TE, r_TM, t_TM, thetas_k, cos_thetas_t = fun_mapped(
-        eps_r, mu_r, d, f, theta_rad
+        eps_r, mu_r, d, f, theta_rad, is_back_layer_PEC
     )
 
     n = jnp.conj(jnp.sqrt(eps_r * mu_r))
 
     R_TE = jnp.abs(r_TE) ** 2
-    T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
-        n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
-    )
+    T_TE = jnp.abs(t_TE) ** 2
+    #T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
+#        n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
+    #)
     R_TM = jnp.abs(r_TM) ** 2
-    T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
-        n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
-    )
+    T_TM = jnp.abs(t_TM) ** 2
+    # T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
+    #     n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
+    # )
+    if is_back_layer_PEC:
+        T_TE = jnp.zeros_like(R_TE)
+        T_TM = jnp.zeros_like(R_TM)
+
+    return R_TE, T_TE, R_TM, T_TM
+
+def stackrt_eps_mu(eps_r, mu_r, d, f, thetas, is_back_layer_PEC = False):
+
+    if thetas is None:
+        thetas = jnp.array([0])
+    elif isinstance(thetas, (float, int)):
+        thetas = jnp.array([thetas])
+
+    fun_mapped = jax.vmap(stackrt_eps_mu_theta, (None, None, None, None, 0, None), (0, 0, 0, 0))
+    R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, d, f, thetas, is_back_layer_PEC)
 
     return R_TE, T_TE, R_TM, T_TM
 
 
-def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k):
+
+def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k, is_back_layer_PEC=False):
     assert isinstance(eps_r, jnp.ndarray)
     assert isinstance(mu_r, jnp.ndarray)
     assert isinstance(d, jnp.ndarray)
@@ -58,16 +76,11 @@ def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k):
     assert d.ndim == 1
     assert mu_r.shape[0] == d.shape[0]
 
-    # Convert frequency from GHz to Hz
-    f = f_i * 1e9
-
-    # Convert slab thickness from mm to m
-    d = d * 1e-3
 
     num_layers = len(d)
 
     c = 299792458  # Speed of light in m/s
-    k = 2 * jnp.pi / c * f * jnp.conj(jnp.sqrt(eps_r * mu_r))
+    k = 2 * jnp.pi / c * f_i * jnp.conj(jnp.sqrt(eps_r * mu_r))
     eta = jnp.conj(jnp.sqrt(mu_r / eps_r))
 
     #sin_theta_layer = jnp.expand_dims(jnp.sin(theta_k), axis=0)
@@ -99,12 +112,11 @@ def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k):
         r_jk_TM = (Z_TM[j + 1] - Z_TM[j]) / (Z_TM[j + 1] + Z_TM[j])
         t_jk_TM = (2 * Z_TM[j + 1]) / (Z_TM[j + 1] + Z_TM[j])
 
-        if j == num_layers - 2 and eps_r[j+1] == 1e9j:
-            # check for PEC for last layer
-            r_jk_TE = -jnp.ones(len(f))
-            t_jk_TE = jnp.ones(len(f))
-            r_jk_TM = -jnp.ones(len(f))
-            t_jk_TM = jnp.ones(len(f))
+        if j == num_layers - 2 and is_back_layer_PEC:
+            r_jk_TE = -jnp.ones_like(r_jk_TE)
+            t_jk_TE = jnp.ones_like(t_jk_TE)
+            r_jk_TM = -jnp.ones_like(r_jk_TM)
+            t_jk_TM = jnp.ones_like(t_jk_TM)
 
         D_jk_TE = jnp.array(
             [[1 / t_jk_TE, r_jk_TE / t_jk_TE],
@@ -113,7 +125,7 @@ def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k):
         )
 
         D_jk_TM = jnp.array(
-            [[1 / t_jk_TM, r_jk_TE / t_jk_TM],
+            [[1 / t_jk_TM, r_jk_TM / t_jk_TM],
              [r_jk_TM / t_jk_TM, 1 / t_jk_TM]],
             dtype=jnp.complex128,
         )
@@ -132,10 +144,24 @@ def stackrt_eps_mu_base(eps_r, mu_r, d, f_i, theta_k):
     r_TM_i = M_TM[1, 0] / M_TM[0, 0]
     t_TM_i = 1 / M_TM[0, 0]
 
+    return r_TE_i, t_TE_i, r_TM_i, t_TM_i, theta_k, cos_theta_t[-1]
+
+def stackrt_base(n_i, d, f, theta_k):
+    assert isinstance(n_i, jnp.ndarray)
+    assert isinstance(d, jnp.ndarray)
+    assert n_i.ndim == 1
+    assert d.ndim == 1
+    assert n_i.shape[0] == d.shape[0]
+
+    eps_r = jnp.conj(n_i**2)
+    mu_r = jnp.ones_like(eps_r)
+
+    r_TE_i, t_TE_i, r_TM_i, t_TM_i, theta_k, cos_theta_t = stackrt_eps_mu_base(eps_r, mu_r, d, f, theta_k)
+
     return r_TE_i, t_TE_i, r_TM_i, t_TM_i, theta_k, cos_theta_t
 
 
-def stackrt_base(n_i, d, wvl_i, theta_k):
+def stackrt_base_old(n_i, d, wvl_i, theta_k):
     assert isinstance(n_i, jnp.ndarray)
     assert isinstance(d, jnp.ndarray)
     assert n_i.ndim == 1
@@ -235,20 +261,22 @@ def stackrt_theta(n, d, f, theta):
     assert n.shape[0] == f.shape[0]
     assert n.shape[1] == d.shape[0]
 
-    wvl = utils_spectra.convert_frequencies_to_wavelengths(f)
+    # wvl = utils_spectra.convert_frequencies_to_wavelengths(f)
     theta_rad = jnp.radians(theta)
 
     fun_mapped = jax.vmap(stackrt_base, (0, None, 0, None), (0, 0, 0, 0, 0, 0))
-    r_TE, t_TE, r_TM, t_TM, thetas_k, cos_thetas_t = fun_mapped(n, d, wvl, theta_rad)
+    r_TE, t_TE, r_TM, t_TM, thetas_k, cos_thetas_t = fun_mapped(n, d, f, theta_rad)
 
     R_TE = jnp.abs(r_TE) ** 2
-    T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
-        n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
-    )
+    T_TE = jnp.abs(t_TE) ** 2
+    # T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
+    #     n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
+    # )
     R_TM = jnp.abs(r_TM) ** 2
-    T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
-        n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
-    )
+    T_TM = jnp.abs(t_TM) ** 2
+    # T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
+    #     n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
+    # )
 
     return R_TE, T_TE, R_TM, T_TM
 

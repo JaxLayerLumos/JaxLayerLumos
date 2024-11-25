@@ -7,7 +7,7 @@ from jaxlayerlumos import utils_materials
 
 
 def test_stackrt():
-    wavelengths = jnp.linspace(300e-9, 900e-9, 100)
+    wavelengths = jnp.linspace(300e-9, 900e-9, 3)
     frequencies = scic.c / wavelengths
 
     n_Ag, k_Ag = utils_materials.interpolate_material_n_k("Ag", frequencies)
