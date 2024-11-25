@@ -19,7 +19,7 @@ def test_stackrt_n_k_base_sizes():
     d_stack = utils_layers.get_thicknesses_surrounded_by_air(jnp.array([2e-8]))
 
     index = 1
-    r_TE, t_TE, r_TM, t_TM, theta, cos_theta = jll.stackrt_n_k_base(
+    r_TE, t_TE, r_TM, t_TM = jll.stackrt_n_k_base(
         n_stack[index], d_stack, wavelengths[index], 37.2
     )
 
@@ -27,14 +27,10 @@ def test_stackrt_n_k_base_sizes():
     assert isinstance(r_TM, jnp.ndarray)
     assert isinstance(t_TE, jnp.ndarray)
     assert isinstance(t_TM, jnp.ndarray)
-    assert isinstance(theta, jnp.ndarray)
-    assert isinstance(cos_theta, jnp.ndarray)
     assert r_TE.ndim == 0
     assert r_TM.ndim == 0
     assert t_TE.ndim == 0
     assert t_TM.ndim == 0
-    assert theta.ndim == 0
-    assert cos_theta.ndim == 0
 
 
 def test_stackrt_n_k_theta_sizes():
