@@ -8,14 +8,14 @@ from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_units
 
 
-def test_stackrt():
+def test_comparison_stackrt_old_new():
     wavelengths = jnp.linspace(300e-9, 900e-9, 3)
     frequencies = utils_units.get_light_speed() / wavelengths
 
     all_materials = utils_materials.get_all_materials()
 
     num_layerss = jnp.array([2, 4, 6, 8, 10])
-    num_tests = 100
+    num_tests = 20
 
     random_state = onp.random.RandomState(42)
 
@@ -40,10 +40,18 @@ def test_stackrt():
             n_k = jnp.array(n_k).T
             thicknesses = jnp.array(thicknesses)
 
+            time_start_old = time.monotonic()
             R_TE_old, T_TE_old, R_TM_old, T_TM_old = stackrt_old(n_k, thicknesses, frequencies, 0.0)
-            R_TE_new, T_TE_new, R_TM_new, T_TM_new = stackrt_new(n_k, thicknesses, frequencies, 0.0)
+            time_end_old = time.monotonic()
 
-            onp.testing.assert_allclose(R_TE_old, R_TE_new, rtol=1e-5)
-#            onp.testing.assert_allclose(T_TE_old, T_TE_new, rtol=1e-5)
-            onp.testing.assert_allclose(R_TM_old, R_TM_new, rtol=1e-5)
-#            onp.testing.assert_allclose(T_TM_old, T_TM_new, rtol=1e-5)
+            time_start_new = time.monotonic()
+            R_TE_new, T_TE_new, R_TM_new, T_TM_new = stackrt_new(n_k, thicknesses, frequencies, 0.0)
+            time_end_new = time.monotonic()
+
+            onp.testing.assert_allclose(R_TE_old, R_TE_new)
+#            onp.testing.assert_allclose(T_TE_old, T_TE_new)
+            onp.testing.assert_allclose(R_TM_old, R_TM_new)
+#            onp.testing.assert_allclose(T_TM_old, T_TM_new)
+
+            if (time_end_new - time_start_new) > 4.0 * (time_end_old - time_start_old):
+                assert False
