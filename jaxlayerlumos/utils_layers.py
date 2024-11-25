@@ -11,3 +11,11 @@ def get_thicknesses_surrounded_by_air(thicknesses):
 
 def convert_nm_to_m(thicknesses):
     return thicknesses * scic.nano
+
+
+def convert_mm_to_m(thicknesses):
+    return thicknesses * scic.milli
+
+
+def convert_cm_to_m(thicknesses):
+    return thicknesses * scic.centi
