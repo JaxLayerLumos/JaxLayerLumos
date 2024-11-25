@@ -12,13 +12,14 @@ packages = [
 
 [project]
 name = "jaxlayerlumos"
-version = "0.3.1"
+version = "0.3.2"
 description = "A JAX-based efficient transfer-matrix method framework for optical simulations"
 readme = "README.md"
 requires-python = ">=3.8"
 authors = [
     {name = "Mingxuan Li", email = "mil152@pitt.edu"},
     {name = "Jungtaek Kim", email = "jungtaek.kim.mail@gmail.com"},
+    {name = "Paul W. Leu", email = "pleu@pitt.edu"},
 ]
 dependencies = [
     "jax",
