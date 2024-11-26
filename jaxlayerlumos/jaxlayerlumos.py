@@ -55,10 +55,12 @@ def stackrt_eps_mu_base(
         t_jk_TM = (2 * Z_TM[j + 1]) / (Z_TM[j + 1] + Z_TM[j])
 
         if j == num_layers - 2 and is_back_layer_PEC:
-            r_jk_TE = -jnp.ones_like(r_jk_TE)
-            t_jk_TE = jnp.ones_like(t_jk_TE)
-            r_jk_TM = -jnp.ones_like(r_jk_TM)
-            t_jk_TM = jnp.ones_like(t_jk_TM)
+            # r_jk_TE = -jnp.ones_like(r_jk_TE)
+            r_jk_TE, r_jk_TM = -1, -1
+            t_jk_TE, t_jk_TM = 1, 1
+            # jnp.ones_like(t_jk_TE)
+            # r_jk_TM = -jnp.ones_like(r_jk_TM)
+            # t_jk_TM = jnp.ones_like(t_jk_TM)
 
         D_jk_TE = jnp.array(
             [[1 / t_jk_TE, r_jk_TE / t_jk_TE], [r_jk_TE / t_jk_TE, 1 / t_jk_TE]],
