@@ -39,9 +39,6 @@ def stackrt_eps_mu_base(
     Z_TE = eta / cos_theta_t
     Z_TM = eta * cos_theta_t
 
-    M_TE = jnp.eye(2, dtype=jnp.complex128)
-    M_TM = jnp.eye(2, dtype=jnp.complex128)
-
     r_jk_TE = (Z_TE[1:] - Z_TE[:-1]) / (Z_TE[1:] + Z_TE[:-1])
     t_jk_TE = (2 * Z_TE[1:]) / (Z_TE[1:] + Z_TE[:-1])
 
