@@ -26,13 +26,13 @@ def stackrt_eps_mu_base(
     eta = jnp.conj(jnp.sqrt(mu_r / eps_r))
 
     sin_theta = jnp.expand_dims(jnp.sin(thetas_k), axis=0)
-
-    for j in range(0, num_layers - 1):
-        sin_theta_layer = (k[j] * sin_theta[-1]) / k[j + 1]
-
-        sin_theta = jnp.concatenate(
-            [sin_theta, jnp.expand_dims(sin_theta_layer, axis=0)], axis=0
-        )
+    sin_theta = sin_theta * k[0] / k
+    # for j in range(0, num_layers - 1):
+    #     sin_theta_layer = (k[j] * sin_theta[-1]) / k[j + 1]
+    #
+    #     sin_theta = jnp.concatenate(
+    #         [sin_theta, jnp.expand_dims(sin_theta_layer, axis=0)], axis=0
+    #     )
 
     cos_theta_t = jnp.sqrt(1 - sin_theta**2)
     kz = k * cos_theta_t
