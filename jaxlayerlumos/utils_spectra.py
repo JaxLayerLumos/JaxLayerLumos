@@ -20,14 +20,18 @@ def convert_wavelengths_to_frequencies(wavelengths):
 
 
 def get_frequencies_visible_light(num_wavelengths=1001):
-    wavelengths = jnp.linspace(380 * utils_units.get_nano(), 780 * utils_units.get_nano(), num_wavelengths)
+    wavelengths = jnp.linspace(
+        380 * utils_units.get_nano(), 780 * utils_units.get_nano(), num_wavelengths
+    )
     frequencies = convert_wavelengths_to_frequencies(wavelengths)
 
     return frequencies
 
 
 def get_frequencies_wide_visible_light(num_wavelengths=1001):
-    wavelengths = jnp.linspace(300 * utils_units.get_nano(), 900 * utils_units.get_nano(), num_wavelengths)
+    wavelengths = jnp.linspace(
+        300 * utils_units.get_nano(), 900 * utils_units.get_nano(), num_wavelengths
+    )
     frequencies = convert_wavelengths_to_frequencies(wavelengths)
 
     return frequencies

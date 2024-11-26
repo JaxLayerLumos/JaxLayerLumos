@@ -5,7 +5,9 @@ from jaxlayerlumos import utils_spectra
 from jaxlayerlumos import utils_units
 
 
-def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, is_back_layer_PEC=False):
+def stackrt_eps_mu_base(
+    eps_r, mu_r, thicknesses, f_i, thetas_k, is_back_layer_PEC=False
+):
     assert isinstance(eps_r, jnp.ndarray)
     assert isinstance(mu_r, jnp.ndarray)
     assert isinstance(thicknesses, jnp.ndarray)
@@ -25,13 +27,12 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, is_back_layer_P
 
     sin_theta = jnp.expand_dims(jnp.sin(thetas_k), axis=0)
 
-    for j in range(num_layers - 1):
+    for j in range(0, num_layers - 1):
         sin_theta_layer = (k[j] * sin_theta[-1]) / k[j + 1]
 
-        sin_theta = jnp.concatenate([
-            sin_theta,
-            jnp.expand_dims(sin_theta_layer, axis=0)
-        ], axis=0)
+        sin_theta = jnp.concatenate(
+            [sin_theta, jnp.expand_dims(sin_theta_layer, axis=0)], axis=0
+        )
 
     cos_theta_t = jnp.sqrt(1 - sin_theta**2)
     kz = k * cos_theta_t
@@ -46,7 +47,7 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, is_back_layer_P
     M_TE = jnp.eye(2, dtype=jnp.complex128)
     M_TM = jnp.eye(2, dtype=jnp.complex128)
 
-    for j in range(num_layers - 1):
+    for j in range(0, num_layers - 1):
         r_jk_TE = (Z_TE[j + 1] - Z_TE[j]) / (Z_TE[j + 1] + Z_TE[j])
         t_jk_TE = (2 * Z_TE[j + 1]) / (Z_TE[j + 1] + Z_TE[j])
 
@@ -108,11 +109,9 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, is_back_layer_PEC=False):
         stackrt_eps_mu_base, (0, 0, None, 0, None, None), (0, 0, 0, 0)
     )
 
-    r_TE, t_TE, r_TM, t_TM = fun_mapped(
-        eps_r, mu_r, d, f, theta_rad, is_back_layer_PEC
-    )
+    r_TE, t_TE, r_TM, t_TM = fun_mapped(eps_r, mu_r, d, f, theta_rad, is_back_layer_PEC)
 
-    n = jnp.conj(jnp.sqrt(eps_r * mu_r))
+    #    n = jnp.conj(jnp.sqrt(eps_r * mu_r))
 
     R_TE = jnp.abs(r_TE) ** 2
     T_TE = jnp.abs(t_TE) ** 2
@@ -173,7 +172,9 @@ def stackrt_n_k_theta(refractive_indices, thicknesses, frequencies, theta):
     theta_rad = jnp.radians(theta)
 
     fun_mapped = jax.vmap(stackrt_n_k_base, (0, None, 0, None), (0, 0, 0, 0))
-    r_TE, t_TE, r_TM, t_TM = fun_mapped(refractive_indices, thicknesses, frequencies, theta_rad)
+    r_TE, t_TE, r_TM, t_TM = fun_mapped(
+        refractive_indices, thicknesses, frequencies, theta_rad
+    )
 
     R_TE = jnp.abs(r_TE) ** 2
     T_TE = jnp.abs(t_TE) ** 2
@@ -230,6 +231,8 @@ def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas=None):
         thetas = jnp.array([thetas])
 
     fun_mapped = jax.vmap(stackrt_n_k_theta, (None, None, None, 0), (0, 0, 0, 0))
-    R_TE, T_TE, R_TM, T_TM = fun_mapped(refractive_indices, thicknesses, frequencies, thetas)
+    R_TE, T_TE, R_TM, T_TM = fun_mapped(
+        refractive_indices, thicknesses, frequencies, thetas
+    )
 
     return R_TE, T_TE, R_TM, T_TM

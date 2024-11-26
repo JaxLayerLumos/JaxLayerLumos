@@ -9,13 +9,15 @@ import matplotlib.pyplot as plt
 
 
 def test_stackrt_radar():
-    frequencies = jnp.linspace(0.1e9, 1e9, 3) # in GHz
+    frequencies = jnp.linspace(0.1e9, 1e9, 3)  # in GHz
     # material_stack = jnp.array([3])
     # eps_stack, mu_stack = utils_materials.get_eps_mu_Michielssen(material_stack, frequencies)
     # d_stack = jnp.array([2]) * 1e-3
 
     material_stack = jnp.array([11, 16, 7, 4, 4])
-    eps_stack, mu_stack = utils_materials.get_eps_mu_Michielssen(material_stack, frequencies)
+    eps_stack, mu_stack = utils_materials.get_eps_mu_Michielssen(
+        material_stack, frequencies
+    )
     d_stack = jnp.array([0.7742, 0.8485, 1.4878, 1.9883, 1.9863]) * 1e-3
 
     eps_air = jnp.ones_like(frequencies)
@@ -28,12 +30,14 @@ def test_stackrt_radar():
 
     is_back_layer_PEC = True
 
-    R_TE, T_TE, R_TM, T_TM = stackrt_eps_mu(eps_stack, mu_stack, d_stack, frequencies, 0.0, is_back_layer_PEC)
+    R_TE, T_TE, R_TM, T_TM = stackrt_eps_mu(
+        eps_stack, mu_stack, d_stack, frequencies, 0.0, is_back_layer_PEC
+    )
 
     R_avg = (R_TE + R_TM) / 2
     T_avg = (T_TE + T_TM) / 2
 
-    R_db = 10*jnp.log10(R_avg).squeeze()
+    R_db = 10 * jnp.log10(R_avg).squeeze()
 
     # plt.close('all')
     # plt.semilogx(frequencies/1e9, R_db, label=r'$rSlab\_TE\_db$')

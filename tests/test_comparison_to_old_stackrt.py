@@ -30,7 +30,9 @@ def test_comparison_stackrt_old_new():
             thicknesses = [thickness_air]
 
             for material in materials:
-                n_material, k_material = utils_materials.interpolate_material_n_k(material, frequencies)
+                n_material, k_material = utils_materials.interpolate_material_n_k(
+                    material, frequencies
+                )
                 n_k_material = n_material + 1j * k_material
                 thickness_material = random_state.uniform(0.01, 10.0)
 
@@ -41,17 +43,21 @@ def test_comparison_stackrt_old_new():
             thicknesses = jnp.array(thicknesses)
 
             time_start_old = time.monotonic()
-            R_TE_old, T_TE_old, R_TM_old, T_TM_old = stackrt_old(n_k, thicknesses, frequencies, 0.0)
+            R_TE_old, T_TE_old, R_TM_old, T_TM_old = stackrt_old(
+                n_k, thicknesses, frequencies, 0.0
+            )
             time_end_old = time.monotonic()
 
             time_start_new = time.monotonic()
-            R_TE_new, T_TE_new, R_TM_new, T_TM_new = stackrt_new(n_k, thicknesses, frequencies, 0.0)
+            R_TE_new, T_TE_new, R_TM_new, T_TM_new = stackrt_new(
+                n_k, thicknesses, frequencies, 0.0
+            )
             time_end_new = time.monotonic()
 
             onp.testing.assert_allclose(R_TE_old, R_TE_new)
-#            onp.testing.assert_allclose(T_TE_old, T_TE_new)
+            #            onp.testing.assert_allclose(T_TE_old, T_TE_new)
             onp.testing.assert_allclose(R_TM_old, R_TM_new)
-#            onp.testing.assert_allclose(T_TM_old, T_TM_new)
+            #            onp.testing.assert_allclose(T_TM_old, T_TM_new)
 
             if (time_end_new - time_start_new) > 4.0 * (time_end_old - time_start_old):
                 assert False
