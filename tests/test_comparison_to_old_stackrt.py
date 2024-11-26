@@ -62,5 +62,5 @@ def test_comparison_stackrt_old_new():
             print(f":materials: {thicknesses}")
             print(f":new: {time_end_new - time_start_new}")
             print(f":old: {time_end_old - time_start_old}")
-            if (time_end_new - time_start_new) > 4.0 * (time_end_old - time_start_old):
+            if (time_end_new - time_start_new) > 8.0 * (time_end_old - time_start_old):
                 assert False

@@ -1,8 +1,6 @@
 import jax
 import jax.numpy as jnp
 
-from jax import lax, vmap
-
 from jaxlayerlumos import utils_spectra
 from jaxlayerlumos import utils_units
 
@@ -42,43 +40,37 @@ def stackrt_eps_mu_base(
     M_TE = jnp.eye(2, dtype=jnp.complex128)
     M_TM = jnp.eye(2, dtype=jnp.complex128)
 
-    r_jk_TE = (Z_TE[1:] - Z_TE[:-1]) / (Z_TE[1:] + Z_TE[:-1])
-    t_jk_TE = (2 * Z_TE[1:]) / (Z_TE[1:] + Z_TE[:-1])
+    for j in range(0, num_layers - 1):
+        r_jk_TE = (Z_TE[j + 1] - Z_TE[j]) / (Z_TE[j + 1] + Z_TE[j])
+        t_jk_TE = (2 * Z_TE[j + 1]) / (Z_TE[j + 1] + Z_TE[j])
 
-    r_jk_TM = (Z_TM[1:] - Z_TM[:-1]) / (Z_TM[1:] + Z_TM[:-1])
-    t_jk_TM = (2 * Z_TM[1:]) / (Z_TM[1:] + Z_TM[:-1])
+        r_jk_TM = (Z_TM[j + 1] - Z_TM[j]) / (Z_TM[j + 1] + Z_TM[j])
+        t_jk_TM = (2 * Z_TM[j + 1]) / (Z_TM[j + 1] + Z_TM[j])
 
-    if is_back_layer_PEC:
-        r_jk_TE = r_jk_TE.at[-1].set(-1.0)
-        t_jk_TE = t_jk_TE.at[-1].set(1.0)
-        r_jk_TM = r_jk_TM.at[-1].set(-1.0)
-        t_jk_TM = t_jk_TM.at[-1].set(1.0)
+        if j == num_layers - 2 and is_back_layer_PEC:
+            # r_jk_TE = -jnp.ones_like(r_jk_TE)
+            r_jk_TE, r_jk_TM = -1, -1
+            t_jk_TE, t_jk_TM = 1, 1
+            # jnp.ones_like(t_jk_TE)
+            # r_jk_TM = -jnp.ones_like(r_jk_TM)
+            # t_jk_TM = jnp.ones_like(t_jk_TM)
 
-    D_TE = jnp.array(
-        [[1 / t_jk_TE, r_jk_TE / t_jk_TE], [r_jk_TE / t_jk_TE, 1 / t_jk_TE]],
-        dtype=jnp.complex128,
-    )
-    D_TM = jnp.array(
-             [[1 / t_jk_TM, r_jk_TM / t_jk_TM], [r_jk_TM / t_jk_TM, 1 / t_jk_TM]],
-             dtype=jnp.complex128,
-    )
-    D_TE = D_TE.transpose(2, 0, 1)
-    D_TM = D_TM.transpose(2, 0, 1)
+        D_jk_TE = jnp.array(
+            [[1 / t_jk_TE, r_jk_TE / t_jk_TE], [r_jk_TE / t_jk_TE, 1 / t_jk_TE]],
+            dtype=jnp.complex128,
+        )
 
-    exp_neg_jdelta = jnp.exp(-1j * delta[1:])
-    exp_pos_jdelta = jnp.exp(1j * delta[1:])
-    exp_diagonals = jnp.stack([exp_neg_jdelta, exp_pos_jdelta], axis=1)  # Shape: (num_interfaces, 2)
-    P = vmap(jnp.diag)(exp_diagonals)
-    #P = P_matrices.transpose(1, 2, 0)
+        D_jk_TM = jnp.array(
+            [[1 / t_jk_TM, r_jk_TM / t_jk_TM], [r_jk_TM / t_jk_TM, 1 / t_jk_TM]],
+            dtype=jnp.complex128,
+        )
 
-    DP_TE = D_TE @ P
-    DP_TM = D_TM @ P
-
-    def matmul_scan(a, b):
-        return jnp.matmul(a, b)
-
-    M_TE = lax.associative_scan(matmul_scan, DP_TE)[-1]
-    M_TM = lax.associative_scan(matmul_scan, DP_TM)[-1]
+        P = jnp.array(
+            [[jnp.exp(-1j * delta[j + 1]), 0], [0, jnp.exp(1j * delta[j + 1])]],
+            dtype=jnp.complex128,
+        )
+        M_TE = jnp.dot(M_TE, jnp.dot(D_jk_TE, P))
+        M_TM = jnp.dot(M_TM, jnp.dot(D_jk_TM, P))
 
     r_TE_i = M_TE[1, 0] / M_TE[0, 0]
     t_TE_i = 1 / M_TE[0, 0]
