@@ -169,12 +169,19 @@ def stackrt_n_k_theta(refractive_indices, thicknesses, frequencies, theta):
     assert refractive_indices.shape[0] == frequencies.shape[0]
     assert refractive_indices.shape[1] == thicknesses.shape[0]
 
+    eps_r = jnp.conj(refractive_indices ** 2)
+    mu_r = jnp.ones_like(eps_r)
     theta_rad = jnp.radians(theta)
 
-    fun_mapped = jax.vmap(stackrt_n_k_base, (0, None, 0, None), (0, 0, 0, 0))
+    fun_mapped = jax.vmap(stackrt_eps_mu_base, (0, 0, None, 0, None), (0, 0, 0, 0))
     r_TE, t_TE, r_TM, t_TM = fun_mapped(
-        refractive_indices, thicknesses, frequencies, theta_rad
+        eps_r, mu_r, thicknesses, frequencies, theta_rad
     )
+
+    # fun_mapped = jax.vmap(stackrt_n_k_base, (0, None, 0, None), (0, 0, 0, 0))
+    # r_TE, t_TE, r_TM, t_TM = fun_mapped(
+    #     refractive_indices, thicknesses, frequencies, theta_rad
+    # )
 
     R_TE = jnp.abs(r_TE) ** 2
     T_TE = jnp.abs(t_TE) ** 2
