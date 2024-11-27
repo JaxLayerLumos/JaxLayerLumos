@@ -1,11 +1,10 @@
 import jax
 import jax.numpy as jnp
-
-from jax import lax, vmap
+from functools import partial
+from jax import lax, vmap, jit
 
 from jaxlayerlumos import utils_spectra
 from jaxlayerlumos import utils_units
-
 
 def stackrt_eps_mu_base(
     eps_r, mu_r, thicknesses, f_i, thetas_k, is_back_layer_PEC=False
@@ -51,22 +50,27 @@ def stackrt_eps_mu_base(
         r_jk_TM = r_jk_TM.at[-1].set(-1.0)
         t_jk_TM = t_jk_TM.at[-1].set(1.0)
 
-    D_TE = jnp.array(
-        [[1 / t_jk_TE, r_jk_TE / t_jk_TE], [r_jk_TE / t_jk_TE, 1 / t_jk_TE]],
-        dtype=jnp.complex128,
-    )
-    D_TM = jnp.array(
-             [[1 / t_jk_TM, r_jk_TM / t_jk_TM], [r_jk_TM / t_jk_TM, 1 / t_jk_TM]],
-             dtype=jnp.complex128,
-    )
-    D_TE = D_TE.transpose(2, 0, 1)
-    D_TM = D_TM.transpose(2, 0, 1)
+    t_inv_TE = 1 / t_jk_TE
+    r_over_t_TE = r_jk_TE / t_jk_TE
+    D_TE = jnp.stack([
+        jnp.stack([t_inv_TE, r_over_t_TE], axis=-1),
+        jnp.stack([r_over_t_TE, t_inv_TE], axis=-1)
+    ], axis=-2)  # Shape: (num_layers - 1, 2, 2)
+
+    t_inv_TM = 1 / t_jk_TM
+    r_over_t_TM = r_jk_TM / t_jk_TM
+    D_TM = jnp.stack([
+        jnp.stack([t_inv_TM, r_over_t_TM], axis=-1),
+        jnp.stack([r_over_t_TM, t_inv_TM], axis=-1)
+    ], axis=-2)
 
     exp_neg_jdelta = jnp.exp(-1j * delta[1:])
     exp_pos_jdelta = jnp.exp(1j * delta[1:])
-    exp_diagonals = jnp.stack([exp_neg_jdelta, exp_pos_jdelta], axis=1)  # Shape: (num_interfaces, 2)
-    P = vmap(jnp.diag)(exp_diagonals)
-    #P = P_matrices.transpose(1, 2, 0)
+    zeros = jnp.zeros_like(exp_neg_jdelta)
+    P = jnp.stack([
+        jnp.stack([exp_neg_jdelta, zeros], axis=-1),
+        jnp.stack([zeros, exp_pos_jdelta], axis=-1)
+    ], axis=-2)
 
     DP_TE = D_TE @ P
     DP_TM = D_TM @ P
@@ -104,10 +108,10 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, is_back_layer_PEC=False):
 
     theta_rad = jnp.radians(theta)
 
+    stackrt_eps_mu_base_partial = partial(stackrt_eps_mu_base, is_back_layer_PEC=is_back_layer_PEC)
     fun_mapped = jax.vmap(
-        stackrt_eps_mu_base, (0, 0, None, 0, None, None), (0, 0, 0, 0)
+        stackrt_eps_mu_base_partial, (0, 0, None, 0, None), (0, 0, 0, 0)
     )
-
     r_TE, t_TE, r_TM, t_TM = fun_mapped(eps_r, mu_r, d, f, theta_rad, is_back_layer_PEC)
 
     #    n = jnp.conj(jnp.sqrt(eps_r * mu_r))
@@ -138,7 +142,25 @@ def stackrt_eps_mu(eps_r, mu_r, d, f, thetas, is_back_layer_PEC=False):
     return R_TE, T_TE, R_TM, T_TM
 
 
-def stackrt_n_k_theta(refractive_indices, thicknesses, frequencies, theta):
+def stackrt_n_k_base(refractive_indices_i, thicknesses, frequencies_i, thetas_k):
+    assert isinstance(refractive_indices_i, jnp.ndarray)
+    assert isinstance(thicknesses, jnp.ndarray)
+
+    assert refractive_indices_i.ndim == 1
+    assert thicknesses.ndim == 1
+    assert refractive_indices_i.shape[0] == thicknesses.shape[0]
+
+    eps_r = jnp.conj(refractive_indices_i**2)
+    mu_r = jnp.ones_like(eps_r)
+
+    r_TE_i, t_TE_i, r_TM_i, t_TM_i = stackrt_eps_mu_base(
+        eps_r, mu_r, thicknesses, frequencies_i, thetas_k
+    )
+
+    return r_TE_i, t_TE_i, r_TM_i, t_TM_i
+
+
+def stackrt_n_k_theta(refractive_indices, thicknesses, frequencies, theta, is_back_layer_PEC=False):
     assert isinstance(refractive_indices, jnp.ndarray)
     assert isinstance(thicknesses, jnp.ndarray)
     assert isinstance(frequencies, jnp.ndarray)
@@ -154,10 +176,16 @@ def stackrt_n_k_theta(refractive_indices, thicknesses, frequencies, theta):
     mu_r = jnp.ones_like(eps_r)
     theta_rad = jnp.radians(theta)
 
-    fun_mapped = jax.vmap(stackrt_eps_mu_base, (0, 0, None, 0, None), (0, 0, 0, 0))
+    stackrt_eps_mu_base_partial = partial(stackrt_eps_mu_base, is_back_layer_PEC=is_back_layer_PEC)
+    fun_mapped = jax.vmap(stackrt_eps_mu_base_partial, (0, 0, None, 0, None), (0, 0, 0, 0))
     r_TE, t_TE, r_TM, t_TM = fun_mapped(
         eps_r, mu_r, thicknesses, frequencies, theta_rad
     )
+
+    # fun_mapped = jax.vmap(stackrt_n_k_base, (0, None, 0, None), (0, 0, 0, 0))
+    # r_TE, t_TE, r_TM, t_TM = fun_mapped(
+    #     refractive_indices, thicknesses, frequencies, theta_rad
+    # )
 
     R_TE = jnp.abs(r_TE) ** 2
     T_TE = jnp.abs(t_TE) ** 2
