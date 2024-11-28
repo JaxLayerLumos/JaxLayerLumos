@@ -192,6 +192,10 @@ def stackrt_n_k_theta(refractive_indices, thicknesses, frequencies, theta, is_ba
 
     R_TM = jnp.abs(r_TM) ** 2
     T_TM = jnp.abs(t_TM) ** 2
+    
+    if is_back_layer_PEC:
+        T_TE = jnp.zeros_like(R_TE)
+        T_TM = jnp.zeros_like(R_TM)
 
     return R_TE, T_TE, R_TM, T_TM
 
