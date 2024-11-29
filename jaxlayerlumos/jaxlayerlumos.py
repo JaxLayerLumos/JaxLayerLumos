@@ -1,7 +1,7 @@
 import jax
 import jax.numpy as jnp
 from functools import partial
-from jax import lax, vmap, jit
+from jax import lax, vmap
 
 from jaxlayerlumos import utils_spectra
 from jaxlayerlumos import utils_units
@@ -53,6 +53,7 @@ def stackrt_eps_mu_base(
 
     t_inv_TE = 1 / t_jk_TE
     r_over_t_TE = r_jk_TE / t_jk_TE
+
     D_TE = jnp.stack(
         [
             jnp.stack([t_inv_TE, r_over_t_TE], axis=-1),
@@ -63,6 +64,7 @@ def stackrt_eps_mu_base(
 
     t_inv_TM = 1 / t_jk_TM
     r_over_t_TM = r_jk_TM / t_jk_TM
+
     D_TM = jnp.stack(
         [
             jnp.stack([t_inv_TM, r_over_t_TM], axis=-1),
@@ -73,7 +75,9 @@ def stackrt_eps_mu_base(
 
     exp_neg_jdelta = jnp.exp(-1j * delta[1:])
     exp_pos_jdelta = jnp.exp(1j * delta[1:])
+
     zeros = jnp.zeros_like(exp_neg_jdelta)
+
     P = jnp.stack(
         [
             jnp.stack([exp_neg_jdelta, zeros], axis=-1),
