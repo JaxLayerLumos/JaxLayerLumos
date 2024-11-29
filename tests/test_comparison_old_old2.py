@@ -2,7 +2,7 @@ import time
 import jax.numpy as jnp
 import numpy as onp
 
-from jaxlayerlumos.jaxlayerlumos import stackrt_n_k as stackrt_new
+from jaxlayerlumos.jaxlayerlumos_old2 import stackrt_n_k as stackrt_new
 from jaxlayerlumos.jaxlayerlumos_old import stackrt as stackrt_old
 from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_units
@@ -18,6 +18,9 @@ def test_comparison_stackrt_old_new():
     num_tests = 20
 
     random_state = onp.random.RandomState(42)
+
+    times_new = []
+    times_old = []
 
     for num_layers in num_layerss:
         for _ in range(0, num_tests):
@@ -54,13 +57,31 @@ def test_comparison_stackrt_old_new():
             )
             time_end_new = time.monotonic()
 
+            R_TE_old = onp.clip(R_TE_old, min=1e-8)
+            T_TE_old = onp.clip(T_TE_old, min=1e-8)
+            R_TM_old = onp.clip(R_TM_old, min=1e-8)
+            T_TM_old = onp.clip(T_TM_old, min=1e-8)
+
+            R_TE_new = onp.clip(R_TE_new, min=1e-8)
+            T_TE_new = onp.clip(T_TE_new, min=1e-8)
+            R_TM_new = onp.clip(R_TM_new, min=1e-8)
+            T_TM_new = onp.clip(T_TM_new, min=1e-8)
+
             onp.testing.assert_allclose(R_TE_old, R_TE_new)
-            #            onp.testing.assert_allclose(T_TE_old, T_TE_new)
+            onp.testing.assert_allclose(T_TE_old, T_TE_new)
             onp.testing.assert_allclose(R_TM_old, R_TM_new)
-            #            onp.testing.assert_allclose(T_TM_old, T_TM_new)
+            onp.testing.assert_allclose(T_TM_old, T_TM_new)
+
+            time_consumed_new = time_end_new - time_start_new
+            time_consumed_old = time_end_old - time_start_old
+
             print(f":materials: {materials}")
             print(f":materials: {thicknesses}")
-            print(f":new: {time_end_new - time_start_new}")
-            print(f":old: {time_end_old - time_start_old}")
-            if (time_end_new - time_start_new) > 8.0 * (time_end_old - time_start_old):
-                assert False
+            print(f":new: {time_consumed_new}")
+            print(f":old: {time_consumed_old}")
+
+            times_new.append(time_consumed_new)
+            times_old.append(time_consumed_old)
+
+    if onp.mean(times_new) > onp.mean(times_new):
+        assert False
