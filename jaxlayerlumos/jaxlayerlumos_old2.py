@@ -168,7 +168,7 @@ def stackrt_n_k_theta(refractive_indices, thicknesses, frequencies, theta):
     assert refractive_indices.shape[0] == frequencies.shape[0]
     assert refractive_indices.shape[1] == thicknesses.shape[0]
 
-    eps_r = jnp.conj(refractive_indices ** 2)
+    eps_r = jnp.conj(refractive_indices**2)
     mu_r = jnp.ones_like(eps_r)
     theta_rad = jnp.radians(theta)
 
