@@ -57,15 +57,18 @@ def test_comparison_stackrt_old_new():
             )
             time_end_new = time.monotonic()
 
-            R_TE_old = onp.clip(R_TE_old, min=1e-8)
-            T_TE_old = onp.clip(T_TE_old, min=1e-8)
-            R_TM_old = onp.clip(R_TM_old, min=1e-8)
-            T_TM_old = onp.clip(T_TM_old, min=1e-8)
+            R_TE_old = onp.clip(R_TE_old, a_min=1e-8, a_max = None)
+            T_TE_old = onp.clip(T_TE_old, a_min=1e-8, a_max = None)
+            R_TM_old = onp.clip(R_TM_old, a_min=1e-8, a_max = None)
+            T_TM_old = onp.clip(T_TM_old, a_min=1e-8, a_max = None)
 
-            R_TE_new = onp.clip(R_TE_new, min=1e-8)
-            T_TE_new = onp.clip(T_TE_new, min=1e-8)
-            R_TM_new = onp.clip(R_TM_new, min=1e-8)
-            T_TM_new = onp.clip(T_TM_new, min=1e-8)
+            R_TE_new = onp.clip(R_TE_new, a_min=1e-8, a_max = None)
+            T_TE_new = onp.clip(T_TE_new, a_min=1e-8, a_max = None)
+            R_TM_new = onp.clip(R_TM_new, a_min=1e-8, a_max = None)
+            T_TM_new = onp.clip(T_TM_new, a_min=1e-8, a_max = None)
+
+            print(f":materials: {materials}")
+            print(f":materials: {thicknesses}")
 
             onp.testing.assert_allclose(R_TE_old, R_TE_new)
             onp.testing.assert_allclose(T_TE_old, T_TE_new)
@@ -75,8 +78,6 @@ def test_comparison_stackrt_old_new():
             time_consumed_new = time_end_new - time_start_new
             time_consumed_old = time_end_old - time_start_old
 
-            print(f":materials: {materials}")
-            print(f":materials: {thicknesses}")
             print(f":new: {time_consumed_new}")
             print(f":old: {time_consumed_old}")
 
