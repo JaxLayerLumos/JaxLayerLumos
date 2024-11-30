@@ -68,7 +68,7 @@ def test_comparison_stackrt_old_new():
             T_TM_new = onp.clip(T_TM_new, a_min=1e-8, a_max = None)
 
             print(f":materials: {materials}")
-            print(f":materials: {thicknesses}")
+            print(f":thicknesses: {thicknesses}")
 
             onp.testing.assert_allclose(R_TE_old, R_TE_new)
             onp.testing.assert_allclose(T_TE_old, T_TE_new)
