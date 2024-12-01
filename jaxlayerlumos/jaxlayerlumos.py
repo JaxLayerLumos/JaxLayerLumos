@@ -101,7 +101,7 @@ def stackrt_eps_mu_base(
     r_TM_i = M_TM[1, 0] / M_TM[0, 0]
     t_TM_i = 1 / M_TM[0, 0]
 
-    return r_TE_i, t_TE_i, r_TM_i, t_TM_i, cos_theta_t[-1]
+    return r_TE_i, t_TE_i, r_TM_i, t_TM_i
 
 
 def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, is_back_layer_PEC=False):
@@ -126,22 +126,20 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, is_back_layer_PEC=False):
         stackrt_eps_mu_base, is_back_layer_PEC=is_back_layer_PEC
     )
     fun_mapped = jax.vmap(
-        stackrt_eps_mu_base_partial, (0, 0, None, 0, None), (0, 0, 0, 0, 0)
+        stackrt_eps_mu_base_partial, (0, 0, None, 0, None), (0, 0, 0, 0)
     )
 
-    r_TE, t_TE, r_TM, t_TM, cos_theta_t = fun_mapped(eps_r, mu_r, d, f, theta_rad)
+    r_TE, t_TE, r_TM, t_TM = fun_mapped(eps_r, mu_r, d, f, theta_rad)
 
     n = jnp.conj(jnp.sqrt(eps_r * mu_r))
 
     R_TE = jnp.abs(r_TE) ** 2
     T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
-        n[:, -1] * jnp.cos(theta) / (n[:, 0] * cos_theta_t)
-    )
+        n[:, -1] /n[:, 0])
     R_TM = jnp.abs(r_TM) ** 2
     #T_TM = jnp.abs(t_TM) ** 2
     T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
-        n[:, -1] * jnp.cos(theta) / (n[:, 0] * cos_theta_t)
-    )
+        n[:, -1] / n[:, 0])
 
     if is_back_layer_PEC:
         T_TE = jnp.zeros_like(R_TE)
@@ -182,7 +180,7 @@ def stackrt_n_k_base(refractive_indices_i, thicknesses, frequencies_i, thetas_k)
     return r_TE_i, t_TE_i, r_TM_i, t_TM_i
 
 
-def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas=None):
+def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas=None, is_back_layer_PEC = False):
     """
     Calculate reflection and transmission coefficients for a multilayer stack at
     different frequencies and incidence angles.
@@ -227,10 +225,18 @@ def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas=None):
     elif isinstance(thetas, (float, int)):
         thetas = jnp.array([thetas])
 
-    fun_mapped = jax.vmap(stackrt_n_k_theta, (None, None, None, 0), (0, 0, 0, 0))
-    R_TE, T_TE, R_TM, T_TM = fun_mapped(
-        refractive_indices, thicknesses, frequencies, thetas
+    eps_r = jnp.conj(refractive_indices ** 2)
+    mu_r = jnp.ones_like(eps_r)
+
+    fun_mapped = jax.vmap(
+        stackrt_eps_mu_theta, (None, None, None, None, 0, None), (0, 0, 0, 0)
     )
+    R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, thicknesses, frequencies, thetas, is_back_layer_PEC)
+
+    # fun_mapped = jax.vmap(stackrt_n_k_theta, (None, None, None, 0), (0, 0, 0, 0))
+    # R_TE, T_TE, R_TM, T_TM = fun_mapped(
+    #     refractive_indices, thicknesses, frequencies, thetas
+    # )
 
     return R_TE, T_TE, R_TM, T_TM
 
@@ -252,36 +258,36 @@ def stackrt_n_k_theta(
     eps_r = jnp.conj(refractive_indices**2)
     mu_r = jnp.ones_like(eps_r)
     theta_rad = jnp.radians(theta)
-
-    stackrt_eps_mu_base_partial = partial(
-        stackrt_eps_mu_base, is_back_layer_PEC=is_back_layer_PEC
-    )
-    fun_mapped = jax.vmap(
-        stackrt_eps_mu_base_partial, (0, 0, None, 0, None), (0, 0, 0, 0, 0)
-    )
-    r_TE, t_TE, r_TM, t_TM, cos_theta_t = fun_mapped(
-        eps_r, mu_r, thicknesses, frequencies, theta_rad
-    )
-
     # fun_mapped = jax.vmap(stackrt_n_k_base, (0, None, 0, None), (0, 0, 0, 0))
     # r_TE, t_TE, r_TM, t_TM = fun_mapped(
     #     refractive_indices, thicknesses, frequencies, theta_rad
     # )
 
-    R_TE = jnp.abs(r_TE) ** 2
-    # T_TE = jnp.abs(t_TE) ** 2
-    T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
-        refractive_indices[:, -1] * jnp.cos(theta) / (refractive_indices[:, 0] * cos_theta_t)
-    )
+    # R_TE = jnp.abs(r_TE) ** 2
+    # # T_TE = jnp.abs(t_TE) ** 2
+    # T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
+    #     refractive_indices[:, -1] * jnp.cos(theta) / (refractive_indices[:, 0] * cos_theta_t)
+    # )
+    #
+    # R_TM = jnp.abs(r_TM) ** 2
+    # # T_TM = jnp.abs(t_TM) ** 2
+    # T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
+    #     refractive_indices[:, -1] * jnp.cos(theta) / (refractive_indices[:, 0] * cos_theta_t)
+    # )
+    #
+    # if is_back_layer_PEC:
+    #     T_TE = jnp.zeros_like(R_TE)
+    #     T_TM = jnp.zeros_like(R_TM)
 
-    R_TM = jnp.abs(r_TM) ** 2
-    # T_TM = jnp.abs(t_TM) ** 2
-    T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
-        refractive_indices[:, -1] * jnp.cos(theta) / (refractive_indices[:, 0] * cos_theta_t)
-    )
+    # fun_mapped = jax.vmap(stackrt_n_k_theta, (None, None, None, 0), (0, 0, 0, 0))
+    # R_TE, T_TE, R_TM, T_TM = fun_mapped(
+    #     refractive_indices, thicknesses, frequencies, theta
+    # )
 
-    if is_back_layer_PEC:
-        T_TE = jnp.zeros_like(R_TE)
-        T_TM = jnp.zeros_like(R_TM)
+    #
+    # fun_mapped = jax.vmap(
+    #     stackrt_eps_mu_theta, (None, None, None, None, 0, None), (0, 0, 0, 0)
+    # )
+    # R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, thicknesses, frequencies, theta_rad, is_back_layer_PEC)
 
     return R_TE, T_TE, R_TM, T_TM

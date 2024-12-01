@@ -18,6 +18,7 @@ def test_sizes():
     d_stack = utils_layers.get_thicknesses_surrounded_by_air(jnp.array([2e-8]))
     thetas = jnp.linspace(0, 89, num_angles)
 
+
     R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas)
 
     assert isinstance(R_TE, jnp.ndarray)
@@ -48,7 +49,7 @@ def test_angles():
     d_stack = jnp.array([0, 2e-8, 0])
     thetas = jnp.linspace(0, 89, 3)
 
-    # thetas = jnp.array([44.5])
+    #thetas = jnp.array([44.5])
 
     R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas)
 
