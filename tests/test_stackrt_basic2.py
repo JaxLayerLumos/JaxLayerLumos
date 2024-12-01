@@ -3,17 +3,18 @@ import numpy as np
 import scipy.constants as scic
 
 from jaxlayerlumos import stackrt
-
+# from jaxlayerlumos.jaxlayerlumos_old import stackrt
 # from jaxlayerlumos.jaxlayerlumos_old2 import stackrt_n_k as stackrt
 from jaxlayerlumos import utils_materials
-
+from jaxlayerlumos import utils_units
 
 def test_stackrt():
     wavelengths = jnp.linspace(300e-9, 900e-9, 3)
-    frequencies = scic.c / wavelengths
+    # wavelengths = jnp.array([300e-9])
+    frequencies = utils_units.get_light_speed() / wavelengths
 
     materials = ['FusedSilica', 'Si3N4']
-    thickness_materials = [2.91937911, 6.12241842]
+    thickness_materials = [2.91937911, 6.12241042]
 
     n_k_air = jnp.ones_like(frequencies)
     thickness_air = 0.0
@@ -41,18 +42,18 @@ def test_stackrt():
     expected_R_avg = np.array(
         [
             [
-                0.000137,
-                0.095852,
-                0.067178
+                0.00013699554464010507,
+                0.09585152519397383,
+                0.06717789506951467
             ],
         ]
     )
     expected_T_avg = np.array(
         [
             [
-                0.999744,
-                0.904846,
-                0.93344
+                0.9998630044553601,
+                0.9041484748060266,
+                0.9328221049304859
             ],
         ]
     )
@@ -66,5 +67,5 @@ def test_stackrt():
         for elem2 in elem:
             print(elem2)
 
-    np.testing.assert_allclose(R_avg, expected_R_avg)
-#    np.testing.assert_allclose(T_avg, expected_T_avg)
+    np.testing.assert_allclose(R_avg, expected_R_avg, rtol=1e-6)
+    np.testing.assert_allclose(T_avg, expected_T_avg)

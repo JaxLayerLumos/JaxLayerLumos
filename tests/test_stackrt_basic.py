@@ -3,6 +3,7 @@ import numpy as np
 import scipy.constants as scic
 
 from jaxlayerlumos import stackrt
+# from jaxlayerlumos.jaxlayerlumos_old import stackrt
 
 # from jaxlayerlumos.jaxlayerlumos_old2 import stackrt_n_k as stackrt
 from jaxlayerlumos import utils_materials

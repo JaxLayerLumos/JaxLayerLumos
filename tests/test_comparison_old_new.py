@@ -10,6 +10,7 @@ from jaxlayerlumos import utils_units
 
 def test_comparison_stackrt_old_new():
     wavelengths = jnp.linspace(300e-9, 900e-9, 3)
+    # wavelengths = jnp.array([300e-9])
     frequencies = utils_units.get_light_speed() / wavelengths
 
     all_materials = utils_materials.get_all_materials()
@@ -45,6 +46,10 @@ def test_comparison_stackrt_old_new():
             n_k = jnp.array(n_k).T
             thicknesses = jnp.array(thicknesses)
 
+            # if num_layers == 2 and _ == 6:  # Example condition
+            #     print(f"Debugging for num_layers={num_layers}, materials = {materials}, thicknesses={thicknesses}")
+            #     breakpoint()  # Enter debugger here
+
             time_start_old = time.monotonic()
             R_TE_old, T_TE_old, R_TM_old, T_TM_old = stackrt_old(
                 n_k, thicknesses, frequencies, 0.0
@@ -69,7 +74,8 @@ def test_comparison_stackrt_old_new():
 
             print(f":materials: {materials}")
             print(f":thicknesses: {thicknesses}")
-
+            # print(f":R: {R_TE_old} {R_TE_new}")
+            # print(f":T: {T_TE_old} {T_TE_new}")
             onp.testing.assert_allclose(R_TE_old, R_TE_new)
             onp.testing.assert_allclose(T_TE_old, T_TE_new)
             onp.testing.assert_allclose(R_TM_old, R_TM_new)
