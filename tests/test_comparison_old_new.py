@@ -8,7 +8,7 @@ from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_units
 
 
-def compare_stackrt_old_new(use_random_angle):
+def compare_stackrt_old_new(use_zero_angle, use_thick_layers):
     wavelengths = jnp.linspace(300e-9, 900e-9, 10)
     frequencies = utils_units.get_light_speed() / wavelengths
 
@@ -32,10 +32,10 @@ def compare_stackrt_old_new(use_random_angle):
         for _ in range(0, num_tests):
             materials = random_state.choice(all_materials, num_layers)
 
-            if use_random_angle:
-                angle = random_state.uniform(0.0, 89.9)
-            else:
+            if use_zero_angle:
                 angle = 0.0
+            else:
+                angle = random_state.uniform(0.0, 89.9)
 
             n_k_air = jnp.ones_like(frequencies, dtype=jnp.complex128)
             thickness_air = 0.0
@@ -48,7 +48,11 @@ def compare_stackrt_old_new(use_random_angle):
                     material, frequencies
                 )
                 n_k_material = n_material + 1j * k_material
-                thickness_material = random_state.uniform(0.01, 10.0)
+
+                if use_thick_layers:
+                    thickness_material = random_state.uniform(5.0, 100.0)
+                else:
+                    thickness_material = random_state.uniform(0.01, 10.0)
 
                 n_k.append(n_k_material)
                 thicknesses.append(thickness_material)
@@ -100,12 +104,20 @@ def compare_stackrt_old_new(use_random_angle):
             is_close_T_TM = onp.allclose(T_TM_old, T_TM_new, rtol=1e-5)
 
             if not is_close_R_TE:
+                print(R_TE_old)
+                print(R_TE_new)
                 counts_R_TE += 1
             if not is_close_T_TE:
+                print(T_TE_old)
+                print(T_TE_new)
                 counts_T_TE += 1
             if not is_close_R_TM:
+                print(R_TM_old)
+                print(R_TM_new)
                 counts_R_TM += 1
             if not is_close_T_TM:
+                print(T_TM_old)
+                print(T_TM_new)
                 counts_T_TM += 1
             counts_all += 1
 
@@ -133,13 +145,29 @@ def compare_stackrt_old_new(use_random_angle):
         assert False
 
 
-def test_comparison_stackrt_old_new_zero_angle():
-    use_random_angle = False
+def test_comparison_stackrt_old_new_zero_angle_thin():
+    use_zero_angle = True
+    use_thick_layers = False
 
-    compare_stackrt_old_new(use_random_angle)
+    compare_stackrt_old_new(use_zero_angle, use_thick_layers)
 
 
-def test_comparison_stackrt_old_new_nonzero_angle():
-    use_random_angle = True
+def test_comparison_stackrt_old_new_zero_angle_thick():
+    use_zero_angle = True
+    use_thick_layers = True
 
-    compare_stackrt_old_new(use_random_angle)
+    compare_stackrt_old_new(use_zero_angle, use_thick_layers)
+
+
+def test_comparison_stackrt_old_new_nonzero_angle_thin():
+    use_zero_angle = False
+    use_thick_layers = False
+
+    compare_stackrt_old_new(use_zero_angle, use_thick_layers)
+
+
+def test_comparison_stackrt_old_new_nonzero_angle_thick():
+    use_zero_angle = False
+    use_thick_layers = True
+
+    compare_stackrt_old_new(use_zero_angle, use_thick_layers)
