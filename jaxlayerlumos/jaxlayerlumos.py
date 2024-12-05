@@ -86,8 +86,8 @@ def stackrt_eps_mu_base(
         axis=-2,
     )
 
-    DP_TE = D_TE @ P
-    DP_TM = D_TM @ P
+    DP_TE = jnp.matmul(D_TE, P)
+    DP_TM = jnp.matmul(D_TM, P)
 
     def matmul_scan(a, b):
         return jnp.matmul(a, b)
@@ -135,7 +135,7 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, is_back_layer_PEC=False):
 
     R_TE = jnp.abs(r_TE) ** 2
     T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
-        n[:, -1] /n[:, 0])
+        n[:, -1] / n[:, 0])
     R_TM = jnp.abs(r_TM) ** 2
     #T_TM = jnp.abs(t_TM) ** 2
     T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
@@ -162,25 +162,7 @@ def stackrt_eps_mu(eps_r, mu_r, d, f, thetas, is_back_layer_PEC=False):
     return R_TE, T_TE, R_TM, T_TM
 
 
-def stackrt_n_k_base(refractive_indices_i, thicknesses, frequencies_i, thetas_k):
-    assert isinstance(refractive_indices_i, jnp.ndarray)
-    assert isinstance(thicknesses, jnp.ndarray)
-
-    assert refractive_indices_i.ndim == 1
-    assert thicknesses.ndim == 1
-    assert refractive_indices_i.shape[0] == thicknesses.shape[0]
-
-    eps_r = jnp.conj(refractive_indices_i**2)
-    mu_r = jnp.ones_like(eps_r)
-
-    r_TE_i, t_TE_i, r_TM_i, t_TM_i = stackrt_eps_mu_base(
-        eps_r, mu_r, thicknesses, frequencies_i, thetas_k
-    )
-
-    return r_TE_i, t_TE_i, r_TM_i, t_TM_i
-
-
-def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas=None, is_back_layer_PEC = False):
+def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas=None, is_back_layer_PEC=False):
     """
     Calculate reflection and transmission coefficients for a multilayer stack at
     different frequencies and incidence angles.
@@ -232,62 +214,5 @@ def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas=None, is_ba
         stackrt_eps_mu_theta, (None, None, None, None, 0, None), (0, 0, 0, 0)
     )
     R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, thicknesses, frequencies, thetas, is_back_layer_PEC)
-
-    # fun_mapped = jax.vmap(stackrt_n_k_theta, (None, None, None, 0), (0, 0, 0, 0))
-    # R_TE, T_TE, R_TM, T_TM = fun_mapped(
-    #     refractive_indices, thicknesses, frequencies, thetas
-    # )
-
-    return R_TE, T_TE, R_TM, T_TM
-
-
-def stackrt_n_k_theta(
-    refractive_indices, thicknesses, frequencies, theta, is_back_layer_PEC=False
-):
-    assert isinstance(refractive_indices, jnp.ndarray)
-    assert isinstance(thicknesses, jnp.ndarray)
-    assert isinstance(frequencies, jnp.ndarray)
-
-    assert refractive_indices.ndim == 2
-    assert thicknesses.ndim == 1
-    assert frequencies.ndim == 1
-
-    assert refractive_indices.shape[0] == frequencies.shape[0]
-    assert refractive_indices.shape[1] == thicknesses.shape[0]
-
-    eps_r = jnp.conj(refractive_indices**2)
-    mu_r = jnp.ones_like(eps_r)
-    theta_rad = jnp.radians(theta)
-    # fun_mapped = jax.vmap(stackrt_n_k_base, (0, None, 0, None), (0, 0, 0, 0))
-    # r_TE, t_TE, r_TM, t_TM = fun_mapped(
-    #     refractive_indices, thicknesses, frequencies, theta_rad
-    # )
-
-    # R_TE = jnp.abs(r_TE) ** 2
-    # # T_TE = jnp.abs(t_TE) ** 2
-    # T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
-    #     refractive_indices[:, -1] * jnp.cos(theta) / (refractive_indices[:, 0] * cos_theta_t)
-    # )
-    #
-    # R_TM = jnp.abs(r_TM) ** 2
-    # # T_TM = jnp.abs(t_TM) ** 2
-    # T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
-    #     refractive_indices[:, -1] * jnp.cos(theta) / (refractive_indices[:, 0] * cos_theta_t)
-    # )
-    #
-    # if is_back_layer_PEC:
-    #     T_TE = jnp.zeros_like(R_TE)
-    #     T_TM = jnp.zeros_like(R_TM)
-
-    # fun_mapped = jax.vmap(stackrt_n_k_theta, (None, None, None, 0), (0, 0, 0, 0))
-    # R_TE, T_TE, R_TM, T_TM = fun_mapped(
-    #     refractive_indices, thicknesses, frequencies, theta
-    # )
-
-    #
-    # fun_mapped = jax.vmap(
-    #     stackrt_eps_mu_theta, (None, None, None, None, 0, None), (0, 0, 0, 0)
-    # )
-    # R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, thicknesses, frequencies, theta_rad, is_back_layer_PEC)
 
     return R_TE, T_TE, R_TM, T_TM

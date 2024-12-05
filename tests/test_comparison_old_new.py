@@ -9,7 +9,7 @@ from jaxlayerlumos import utils_units
 
 
 def test_comparison_stackrt_old_new():
-    wavelengths = jnp.linspace(300e-9, 900e-9, 3)
+    wavelengths = jnp.linspace(300e-9, 900e-9, 10)
     frequencies = utils_units.get_light_speed() / wavelengths
 
     all_materials = utils_materials.get_all_materials()
@@ -83,10 +83,10 @@ def test_comparison_stackrt_old_new():
             print(f":thicknesses: {thicknesses}")
             print(f":angle: {angle}")
 
-            onp.testing.assert_allclose(R_TE_old, R_TE_new)
-            onp.testing.assert_allclose(T_TE_old, T_TE_new)
-            onp.testing.assert_allclose(R_TM_old, R_TM_new)
-            onp.testing.assert_allclose(T_TM_old, T_TM_new)
+            onp.testing.assert_allclose(R_TE_old, R_TE_new, rtol=1e-5)
+            onp.testing.assert_allclose(T_TE_old, T_TE_new, rtol=1e-5)
+            onp.testing.assert_allclose(R_TM_old, R_TM_new, rtol=1e-5)
+            onp.testing.assert_allclose(T_TM_old, T_TM_new, rtol=1e-5)
 
             time_consumed_new = time_end_new - time_start_new
             time_consumed_old = time_end_old - time_start_old

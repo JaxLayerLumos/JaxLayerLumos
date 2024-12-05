@@ -17,13 +17,11 @@ def test_import_jaxlayerlumos_stackrt():
     from jaxlayerlumos.jaxlayerlumos import stackrt_eps_mu_theta
 
     from jaxlayerlumos.jaxlayerlumos import stackrt_n_k
-    from jaxlayerlumos.jaxlayerlumos import stackrt_n_k_theta
 
     assert callable(stackrt_eps_mu)
     assert callable(stackrt_eps_mu_theta)
 
     assert callable(stackrt_n_k)
-    assert callable(stackrt_n_k_theta)
 
 
 def test_import_utils():

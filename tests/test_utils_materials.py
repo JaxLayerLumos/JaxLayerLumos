@@ -92,7 +92,7 @@ def test_load_material_failure():
 
 def test_interpolate():
     freqs_values = jnp.array([[100.0, 10.0], [200.0, 20.0], [350, 35.0]])
-    frequencies = jnp.array([100.0, 150.0, 175.0, 210.0, 300.0])
+    frequencies = jnp.array([100.0, 150.0, 175.0, 210.0, 300.0, 350.0])
     frequencies_extrapolation = jnp.array(
         [90.0, 100.0, 150.0, 175.0, 210.0, 300.0, 390.0]
     )
@@ -105,7 +105,7 @@ def test_interpolate():
         utils_materials.interpolate(freqs_values, frequencies_extrapolation)
 
     values_interpolated = utils_materials.interpolate(freqs_values, frequencies)
-    values_truth = jnp.array([10.0, 15.0, 17.5, 21.0, 30.0])
+    values_truth = jnp.array([10.0, 15.0, 17.5, 21.0, 30.0, 35.0])
 
     np.testing.assert_allclose(values_interpolated, values_truth)
 

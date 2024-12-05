@@ -157,8 +157,8 @@ def interpolate(freqs_values, frequencies):
 
     freqs, values = freqs_values.T
 
-#    assert jnp.min(freqs) <= jnp.min(frequencies)
-#    assert jnp.max(frequencies) <= jnp.max(freqs)
+    assert jnp.min(freqs) * 0.99 <= jnp.min(frequencies)
+    assert jnp.max(frequencies) <= jnp.max(freqs) * 1.01
 
     values_interpolated = jnp.interp(
         frequencies,
