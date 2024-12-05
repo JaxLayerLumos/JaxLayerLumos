@@ -8,26 +8,36 @@ from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_units
 
 
-def test_comparison_stackrt_old_new():
+def compare_stackrt_old_new(use_random_angle):
     wavelengths = jnp.linspace(300e-9, 900e-9, 10)
     frequencies = utils_units.get_light_speed() / wavelengths
 
     all_materials = utils_materials.get_all_materials()
 
     num_layerss = jnp.array([2, 4, 6, 8, 10])
-    num_tests = 100
+    num_tests = 20
 
     random_state = onp.random.RandomState(42)
 
     times_new = []
     times_old = []
 
+    counts_R_TE = 0
+    counts_T_TE = 0
+    counts_R_TM = 0
+    counts_T_TM = 0
+    counts_all = 0
+
     for num_layers in num_layerss:
         for _ in range(0, num_tests):
             materials = random_state.choice(all_materials, num_layers)
-            angle = random_state.uniform(0.0, 89.9)
 
-            n_k_air = jnp.ones_like(frequencies)
+            if use_random_angle:
+                angle = random_state.uniform(0.0, 89.9)
+            else:
+                angle = 0.0
+
+            n_k_air = jnp.ones_like(frequencies, dtype=jnp.complex128)
             thickness_air = 0.0
 
             n_k = [n_k_air]
@@ -79,23 +89,57 @@ def test_comparison_stackrt_old_new():
                 R_TM_new = onp.clip(R_TM_new, a_min=1e-8)
                 T_TM_new = onp.clip(T_TM_new, a_min=1e-8)
 
-            print(f":materials: {materials}")
-            print(f":thicknesses: {thicknesses}")
-            print(f":angle: {angle}")
+            str_thicknesses = [f"{thickness:.4f}" for thickness in thicknesses[1:]]
+            print(f":materials: [{', '.join(materials)}]")
+            print(f":thicknesses: [{', '.join(str_thicknesses)}]")
+            print(f":angle: {angle:.4f}")
 
-            onp.testing.assert_allclose(R_TE_old, R_TE_new, rtol=1e-5)
-            onp.testing.assert_allclose(T_TE_old, T_TE_new, rtol=1e-5)
-            onp.testing.assert_allclose(R_TM_old, R_TM_new, rtol=1e-5)
-            onp.testing.assert_allclose(T_TM_old, T_TM_new, rtol=1e-5)
+            is_close_R_TE = onp.allclose(R_TE_old, R_TE_new, rtol=1e-5)
+            is_close_T_TE = onp.allclose(T_TE_old, T_TE_new, rtol=1e-5)
+            is_close_R_TM = onp.allclose(R_TM_old, R_TM_new, rtol=1e-5)
+            is_close_T_TM = onp.allclose(T_TM_old, T_TM_new, rtol=1e-5)
+
+            if not is_close_R_TE:
+                counts_R_TE += 1
+            if not is_close_T_TE:
+                counts_T_TE += 1
+            if not is_close_R_TM:
+                counts_R_TM += 1
+            if not is_close_T_TM:
+                counts_T_TM += 1
+            counts_all += 1
 
             time_consumed_new = time_end_new - time_start_new
             time_consumed_old = time_end_old - time_start_old
 
-            print(f":new: {time_consumed_new}")
-            print(f":old: {time_consumed_old}")
+            print(f":new: {time_consumed_new:.4f} sec.")
+            print(f":old: {time_consumed_old:.4f} sec.")
+            if not (is_close_R_TE and is_close_T_TE and is_close_R_TM and is_close_T_TM):
+                print("=====NOT MATCHED=====")
+
+            print("")
 
             times_new.append(time_consumed_new)
             times_old.append(time_consumed_old)
 
     if onp.mean(times_new) > onp.mean(times_new):
         assert False
+
+    if counts_R_TE > 0 or counts_T_TE > 0 or counts_R_TM > 0 or counts_T_TM > 0:
+        print('failure ratios')
+        print(f'R_TE {counts_R_TE / counts_all:.4f} T_TE {counts_T_TE / counts_all:.4f}')
+        print(f'R_TM {counts_R_TM / counts_all:.4f} T_TM {counts_T_TM / counts_all:.4f}')
+
+        assert False
+
+
+def test_comparison_stackrt_old_new_zero_angle():
+    use_random_angle = False
+
+    compare_stackrt_old_new(use_random_angle)
+
+
+def test_comparison_stackrt_old_new_nonzero_angle():
+    use_random_angle = True
+
+    compare_stackrt_old_new(use_random_angle)

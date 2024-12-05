@@ -137,7 +137,6 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, is_back_layer_PEC=False):
     T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
         n[:, -1] / n[:, 0])
     R_TM = jnp.abs(r_TM) ** 2
-    #T_TM = jnp.abs(t_TM) ** 2
     T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
         n[:, -1] / n[:, 0])
 
