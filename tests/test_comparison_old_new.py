@@ -54,6 +54,8 @@ def compare_stackrt_old_new(use_zero_angle, use_thick_layers):
                 else:
                     thickness_material = random_state.uniform(0.01, 10.0)
 
+                thickness_material *= utils_units.get_nano()
+
                 n_k.append(n_k_material)
                 thicknesses.append(thickness_material)
 
@@ -93,7 +95,7 @@ def compare_stackrt_old_new(use_zero_angle, use_thick_layers):
                 R_TM_new = onp.clip(R_TM_new, a_min=1e-8)
                 T_TM_new = onp.clip(T_TM_new, a_min=1e-8)
 
-            str_thicknesses = [f"{thickness:.4f}" for thickness in thicknesses[1:]]
+            str_thicknesses = [f"{thickness / utils_units.get_nano():.4f}" for thickness in thicknesses[1:]]
             print(f":materials: [{', '.join(materials)}]")
             print(f":thicknesses: [{', '.join(str_thicknesses)}]")
             print(f":angle: {angle:.4f}")
