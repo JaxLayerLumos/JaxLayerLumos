@@ -17,7 +17,7 @@ def compare_simulations(use_zero_angle, use_thick_layers):
     all_materials = utils_materials.get_all_materials()
 
     num_layerss = jnp.array([2, 4, 6, 8, 10])
-    num_tests = 20
+    num_tests = 100
 
     random_state = np.random.RandomState(42)
 
@@ -68,7 +68,10 @@ def compare_simulations(use_zero_angle, use_thick_layers):
             is_close_T_TM = np.allclose(T_TM_old, T_TM_new, rtol=1e-5)
 
             if not (is_close_R_TE and is_close_T_TE and is_close_R_TM and is_close_T_TM):
-                print(f"Mismatch detected for materials: {materials} at angle: {angle:.2f} degrees")
+                print(f"Mismatch detected")
+                print(f'materials {materials}')
+                print(f'thicknesses {thicknesses}')
+                print(f'angle {angle}')
 
                 # Calculate Lumerical results
                 Rs, Rp, Ts, Tp = compute_properties_via_stackrt(
@@ -83,26 +86,29 @@ def compare_simulations(use_zero_angle, use_thick_layers):
                 T_TE_lum = np.squeeze(np.array(Ts), axis=1)
                 T_TM_lum = np.squeeze(np.array(Tp), axis=1)
 
-                # Print results
-                print("R_TE:")
-                print(f"Old: {R_TE_old}")
-                print(f"New: {R_TE_new}")
-                print(f"Lumerical: {R_TE_lum}\n")
+                if not is_close_R_TE:
+                    print("R_TE NOT MATHCED")
+                    print(f"Old: {R_TE_old}")
+                    print(f"New: {R_TE_new}")
+                    print(f"Lumerical: {R_TE_lum}\n")
 
-                print("T_TE:")
-                print(f"Old: {T_TE_old}")
-                print(f"New: {T_TE_new}")
-                print(f"Lumerical: {T_TE_lum}\n")
+                if not is_close_T_TE:
+                    print("T_TE NOT MATHCED")
+                    print(f"Old: {T_TE_old}")
+                    print(f"New: {T_TE_new}")
+                    print(f"Lumerical: {T_TE_lum}\n")
 
-                print("R_TM:")
-                print(f"Old: {R_TM_old}")
-                print(f"New: {R_TM_new}")
-                print(f"Lumerical: {R_TM_lum}\n")
+                if not is_close_R_TM:
+                    print("R_TM NOT MATHCED")
+                    print(f"Old: {R_TM_old}")
+                    print(f"New: {R_TM_new}")
+                    print(f"Lumerical: {R_TM_lum}\n")
 
-                print("T_TM:")
-                print(f"Old: {T_TM_old}")
-                print(f"New: {T_TM_new}")
-                print(f"Lumerical: {T_TM_lum}\n")
+                if not is_close_T_TM:
+                    print("T_TM NOT MATHCED")
+                    print(f"Old: {T_TM_old}")
+                    print(f"New: {T_TM_new}")
+                    print(f"Lumerical: {T_TM_lum}\n")
 
 
 if __name__ == "__main__":
