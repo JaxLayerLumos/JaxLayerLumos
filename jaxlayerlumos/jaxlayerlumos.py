@@ -17,18 +17,19 @@ def stackrt_eps_mu_base(
     assert eps_r.ndim == 1
     assert mu_r.ndim == 1
     assert thicknesses.ndim == 1
-
+    assert thicknesses[-1] == 0
     assert eps_r.shape[0] == thicknesses.shape[0]
     assert mu_r.shape[0] == thicknesses.shape[0]
 
     num_layers = thicknesses.shape[0]
 
     c = utils_units.get_light_speed()
-    k = 2 * jnp.pi / c * f_i * jnp.conj(jnp.sqrt(eps_r * mu_r))
+    n = jnp.conj(jnp.sqrt(eps_r * mu_r))
+    k = 2 * jnp.pi / c * f_i * n
     eta = jnp.conj(jnp.sqrt(mu_r / eps_r))
 
     sin_theta = jnp.expand_dims(jnp.sin(thetas_k), axis=0)
-    sin_theta = sin_theta * k[0] / k
+    sin_theta = sin_theta * n[0] / n
     cos_theta_t = jnp.sqrt(1 - sin_theta**2)
     kz = k * cos_theta_t
 
@@ -89,11 +90,20 @@ def stackrt_eps_mu_base(
     DP_TE = jnp.matmul(D_TE, P)
     DP_TM = jnp.matmul(D_TM, P)
 
+    # DP_TE = jnp.matmul(D_TE[:-1], P[:-1])
+    # DP_TM = jnp.matmul(D_TM[:-1], P[:-1])
+
     def matmul_scan(a, b):
         return jnp.matmul(a, b)
 
     M_TE = lax.associative_scan(matmul_scan, DP_TE)[-1]
     M_TM = lax.associative_scan(matmul_scan, DP_TM)[-1]
+
+    # M_TE = jnp.matmul(M_TE_intermediate, D_TE[-1])
+    # M_TM = jnp.matmul(M_TM_intermediate, D_TM[-1])
+
+    # M_TE_old = lax.associative_scan(matmul_scan, DP_TE_old)[-1]
+    # M_TM_old = lax.associative_scan(matmul_scan, DP_TM_old)[-1]
 
     r_TE_i = M_TE[1, 0] / M_TE[0, 0]
     t_TE_i = 1 / M_TE[0, 0]
@@ -101,7 +111,17 @@ def stackrt_eps_mu_base(
     r_TM_i = M_TM[1, 0] / M_TM[0, 0]
     t_TM_i = 1 / M_TM[0, 0]
 
-    return r_TE_i, t_TE_i, r_TM_i, t_TM_i
+    n_ratio_TE = jnp.real(n[-1]*cos_theta_t[-1] / (n[0]*cos_theta_t[0]))
+    n_ratio_TM = jnp.real(n[-1] / n[0]) * jnp.real(cos_theta_t[0] / cos_theta_t[-1])
+    # n_ratio = jnp.real(n[-1] / n[0]) * jnp.real(cos_theta_t[0] / cos_theta_t[-1])
+    R_TE = jnp.abs(r_TE_i) ** 2
+    R_TM = jnp.abs(r_TM_i) ** 2
+    T_TE = jnp.abs(t_TE_i) ** 2 * n_ratio_TE
+#     T_TM = jnp.abs(t_TM_i) ** 2 * n_ratio
+    T_TM = jnp.abs(t_TM_i) ** 2 * n_ratio_TM
+
+
+    return R_TE, T_TE, R_TM, T_TM
 
 
 def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, is_back_layer_PEC=False):
@@ -128,17 +148,18 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, is_back_layer_PEC=False):
     fun_mapped = jax.vmap(
         stackrt_eps_mu_base_partial, (0, 0, None, 0, None), (0, 0, 0, 0)
     )
+    R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, d, f, theta_rad)
 
-    r_TE, t_TE, r_TM, t_TM = fun_mapped(eps_r, mu_r, d, f, theta_rad)
-
-    n = jnp.conj(jnp.sqrt(eps_r * mu_r))
-
-    R_TE = jnp.abs(r_TE) ** 2
-    T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
-        n[:, -1] / n[:, 0])
-    R_TM = jnp.abs(r_TM) ** 2
-    T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
-        n[:, -1] / n[:, 0])
+    # r_TE, t_TE, r_TM, t_TM = fun_mapped(eps_r, mu_r, d, f, theta_rad)
+    #
+    # n = jnp.conj(jnp.sqrt(eps_r * mu_r))
+    #
+    # R_TE = jnp.abs(r_TE) ** 2
+    # T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
+    #     n[:, -1] / n[:, 0])
+    # R_TM = jnp.abs(r_TM) ** 2
+    # T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
+    #     n[:, -1] / n[:, 0])
 
     if is_back_layer_PEC:
         T_TE = jnp.zeros_like(R_TE)

@@ -2,6 +2,7 @@ import jax.numpy as jnp
 import numpy as np
 
 from jaxlayerlumos import stackrt
+# from jaxlayerlumos.jaxlayerlumos_old import stackrt
 from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_spectra
 from jaxlayerlumos import utils_layers
@@ -49,7 +50,7 @@ def test_angles():
     d_stack = jnp.array([0, 2e-8, 0])
     thetas = jnp.linspace(0, 89, 3)
 
-    #thetas = jnp.array([44.5])
+    # thetas = jnp.array([44.5])
 
     R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas)
 
