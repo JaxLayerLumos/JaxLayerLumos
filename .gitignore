@@ -155,3 +155,4 @@ cython_debug/
 .DS_Store
 __MACOSX/
 *.swp
+tests/test_stackrt_basic3.py
