@@ -1,6 +1,7 @@
 import time
 import numpy as np
 import jax.numpy as jnp
+from contextlib import redirect_stdout
 
 from jaxlayerlumos.jaxlayerlumos import stackrt_n_k as stackrt_new
 from jaxlayerlumos.jaxlayerlumos_old import stackrt as stackrt_old
@@ -105,8 +106,11 @@ def compare_simulations(use_zero_angle, use_thick_layers):
 
 
 if __name__ == "__main__":
-    # Example configurations to run the comparisons
-    compare_simulations(use_zero_angle=True, use_thick_layers=False)
-    compare_simulations(use_zero_angle=True, use_thick_layers=True)
-    compare_simulations(use_zero_angle=False, use_thick_layers=False)
-    compare_simulations(use_zero_angle=False, use_thick_layers=True)
+    log_file = "compare_results.txt"
+    with open(log_file, "w") as f:
+        with redirect_stdout(f):
+            # Example configurations to run the comparisons
+            compare_simulations(use_zero_angle=True, use_thick_layers=False)
+            compare_simulations(use_zero_angle=True, use_thick_layers=True)
+            compare_simulations(use_zero_angle=False, use_thick_layers=False)
+            compare_simulations(use_zero_angle=False, use_thick_layers=True)
