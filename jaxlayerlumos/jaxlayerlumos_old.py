@@ -40,13 +40,17 @@ def stackrt_base(n_i, d, wvl_i, theta_k):
             * cos_theta_k
             / (n_current * cos_theta_k + n_next * cos_theta_t)
         )
-        r_jk_TM = (n_next * cos_theta_k - n_current * cos_theta_t) / (
+        # r_jk_TM = (n_next * cos_theta_k - n_current * cos_theta_t) / (
+        #     n_next * cos_theta_k + n_current * cos_theta_t
+        # )
+        r_jk_TM = (-n_next * cos_theta_k + n_current * cos_theta_t) / (
             n_next * cos_theta_k + n_current * cos_theta_t
         )
+
         t_jk_TM = (
             2
             * n_current
-            * cos_theta_k
+            * cos_theta_t
             / (n_next * cos_theta_k + n_current * cos_theta_t)
         )
 
@@ -119,11 +123,11 @@ def stackrt_theta(n, d, f, theta):
 
     R_TE = jnp.abs(r_TE) ** 2
     T_TE = jnp.abs(t_TE) ** 2 * jnp.real(
-        n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
+        n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * jnp.cos(theta_rad))
     )
     R_TM = jnp.abs(r_TM) ** 2
     T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
-        n[:, -1] * jnp.cos(thetas_k) / (n[:, 0] * cos_thetas_t)
+        n[:, -1] * jnp.cos(theta_rad) / (n[:, 0] * jnp.cos(thetas_k))
     )
 
     return R_TE, T_TE, R_TM, T_TM

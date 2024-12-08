@@ -15,9 +15,9 @@ def test_angles():
     wavelengths = jnp.array([300e-9])
     frequencies = utils_units.get_light_speed() / wavelengths
 
-    materials = ['Al', 'Cr']
-    thickness_materials = [0.2156, 0]
-    theta = 63.6557
+    materials = ['Ag', 'Cr']
+    thickness_materials = [9.36793259, 0.00000000e+00]
+    theta = 34.767507632418315
 
     n_k_air = jnp.ones_like(frequencies)
     thickness_air = 0.0

@@ -112,7 +112,8 @@ def stackrt_eps_mu_base(
     t_TM_i = 1 / M_TM[0, 0]
 
     n_ratio_TE = jnp.real(n[-1]*cos_theta_t[-1] / (n[0]*cos_theta_t[0]))
-    n_ratio_TM = jnp.real(n[-1] / n[0]) * jnp.real(cos_theta_t[0] / cos_theta_t[-1])
+    n_ratio_TM2 = jnp.real(n[-1] / n[0]) * jnp.real(cos_theta_t[0] / cos_theta_t[-1])
+    n_ratio_TM = jnp.real(n[-1] * cos_theta_t[0]/ (n[0] * cos_theta_t[-1]))
     # n_ratio = jnp.real(n[-1] / n[0]) * jnp.real(cos_theta_t[0] / cos_theta_t[-1])
     R_TE = jnp.abs(r_TE_i) ** 2
     R_TM = jnp.abs(r_TM_i) ** 2
