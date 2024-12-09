@@ -1,7 +1,7 @@
 import jax.numpy as jnp
 import numpy as np
 
-# from jaxlayerlumos import stackrt
+from jaxlayerlumos import stackrt
 # from jaxlayerlumos.jaxlayerlumos_old import stackrt
 from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_spectra

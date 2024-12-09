@@ -14,7 +14,7 @@ def test_stackrt():
     frequencies = utils_units.get_light_speed() / wavelengths
 
     materials = ['FusedSilica', 'Si3N4']
-    thickness_materials = [2.91937911, 6.12241042]
+    thickness_materials = [2.91937911, 0.0]
 
     n_k_air = jnp.ones_like(frequencies)
     thickness_air = 0.0

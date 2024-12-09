@@ -88,15 +88,15 @@ def compare_stackrt_old_new(use_zero_angle, use_thick_layers):
                 R_TM_new = onp.clip(R_TM_new, min=1e-8)
                 T_TM_new = onp.clip(T_TM_new, min=1e-8)
             except:
-                R_TE_old = onp.clip(R_TE_old, a_min=1e-8)
-                T_TE_old = onp.clip(T_TE_old, a_min=1e-8)
-                R_TM_old = onp.clip(R_TM_old, a_min=1e-8)
-                T_TM_old = onp.clip(T_TM_old, a_min=1e-8)
+                R_TE_old = onp.clip(R_TE_old, a_min=1e-8, a_max=None)
+                T_TE_old = onp.clip(T_TE_old, a_min=1e-8, a_max=None)
+                R_TM_old = onp.clip(R_TM_old, a_min=1e-8, a_max=None)
+                T_TM_old = onp.clip(T_TM_old, a_min=1e-8, a_max=None)
 
-                R_TE_new = onp.clip(R_TE_new, a_min=1e-8)
-                T_TE_new = onp.clip(T_TE_new, a_min=1e-8)
-                R_TM_new = onp.clip(R_TM_new, a_min=1e-8)
-                T_TM_new = onp.clip(T_TM_new, a_min=1e-8)
+                R_TE_new = onp.clip(R_TE_new, a_min=1e-8, a_max=None)
+                T_TE_new = onp.clip(T_TE_new, a_min=1e-8, a_max=None)
+                R_TM_new = onp.clip(R_TM_new, a_min=1e-8, a_max=None)
+                T_TM_new = onp.clip(T_TM_new, a_min=1e-8, a_max=None)
 
             str_thicknesses = [f"{thickness / utils_units.get_nano():.4f}" for thickness in thicknesses[1:]]
             print(f":materials: [{', '.join(materials)}]")
@@ -154,18 +154,18 @@ def compare_stackrt_old_new(use_zero_angle, use_thick_layers):
         assert False
 
 
-# def test_comparison_stackrt_old_new_zero_angle_thin():
-#     use_zero_angle = True
-#     use_thick_layers = False
-#
-#     compare_stackrt_old_new(use_zero_angle, use_thick_layers)
-#
-#
-# def test_comparison_stackrt_old_new_zero_angle_thick():
-#     use_zero_angle = True
-#     use_thick_layers = True
-#
-#     compare_stackrt_old_new(use_zero_angle, use_thick_layers)
+def test_comparison_stackrt_old_new_zero_angle_thin():
+    use_zero_angle = True
+    use_thick_layers = False
+
+    compare_stackrt_old_new(use_zero_angle, use_thick_layers)
+
+
+def test_comparison_stackrt_old_new_zero_angle_thick():
+    use_zero_angle = True
+    use_thick_layers = True
+
+    compare_stackrt_old_new(use_zero_angle, use_thick_layers)
 
 
 def test_comparison_stackrt_old_new_nonzero_angle_thin():

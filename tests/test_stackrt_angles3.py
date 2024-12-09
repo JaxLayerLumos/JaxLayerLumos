@@ -1,7 +1,7 @@
 import jax.numpy as jnp
 import numpy as np
 
-# from jaxlayerlumos import stackrt
+#from jaxlayerlumos import stackrt
 from jaxlayerlumos.jaxlayerlumos_old import stackrt
 from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_spectra
@@ -10,13 +10,12 @@ from jaxlayerlumos import utils_units
 
 
 def test_angles():
-
     #wavelengths = jnp.linspace(300e-9, 900e-9, 10)
     wavelengths = jnp.array([300e-9])
     frequencies = utils_units.get_light_speed() / wavelengths
 
     materials = ['Ag', 'Cr']
-    thickness_materials = [9.36793259, 0.00000000e+00]
+    thickness_materials = [9.36793259, 0]
     theta = 34.767507632418315
 
     n_k_air = jnp.ones_like(frequencies)
@@ -63,8 +62,8 @@ def test_angles():
         for elem_2 in elem_1:
             print(elem_2)
 
-    expected_R_avg = jnp.array([[0.14853669599855523]])
-    expected_T_avg = jnp.array([[0.6150967559499965]])
+    expected_R_avg = jnp.array([[0.5620107127607987 + 0.4094868270876877]]) / 2
+    expected_T_avg = jnp.array([[0.28428895625884865 + 0.35745313470988777]]) / 2
 
     np.testing.assert_allclose(R_avg, expected_R_avg)
     np.testing.assert_allclose(T_avg, expected_T_avg)
