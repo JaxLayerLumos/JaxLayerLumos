@@ -3,6 +3,7 @@ import numpy as np
 
 from jaxlayerlumos import stackrt
 # from jaxlayerlumos.jaxlayerlumos_old import stackrt
+
 from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_spectra
 from jaxlayerlumos import utils_layers
@@ -10,7 +11,6 @@ from jaxlayerlumos import utils_units
 
 
 def test_angles():
-
     #wavelengths = jnp.linspace(300e-9, 900e-9, 10)
     wavelengths = jnp.array([300e-9])
     frequencies = utils_units.get_light_speed() / wavelengths
