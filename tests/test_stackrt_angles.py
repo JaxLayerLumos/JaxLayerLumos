@@ -15,12 +15,13 @@ def test_sizes():
     frequencies = utils_spectra.get_frequencies_wide_visible_light(
         num_wavelengths=num_wavelengths
     )
-    n_stack = utils_materials.get_n_k_surrounded_by_air(["TiO2"], frequencies)
+    materials = ["TiO2"]
+    n_stack = utils_materials.get_n_k_surrounded_by_air(materials, frequencies)
     d_stack = utils_layers.get_thicknesses_surrounded_by_air(jnp.array([2e-8]))
     thetas = jnp.linspace(0, 89, num_angles)
 
 
-    R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas)
+    R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas, materials)
 
     assert isinstance(R_TE, jnp.ndarray)
     assert isinstance(R_TM, jnp.ndarray)
@@ -42,17 +43,25 @@ def test_angles():
         num_wavelengths=num_wavelengths
     )
 
-    n_TiO2, k_TiO2 = utils_materials.interpolate_material_n_k("TiO2", frequencies)
-    n_k_TiO2 = n_TiO2 + 1j * k_TiO2
-
-    n_air = jnp.ones_like(frequencies)
-    n_stack = jnp.vstack([n_air, n_k_TiO2, n_air]).T
+    materials = ['Air', 'TiO2', 'Air']
     d_stack = jnp.array([0, 2e-8, 0])
     thetas = jnp.linspace(0, 89, 3)
+    n_k2 = utils_materials.interpolate_multiple_materials_n_k(materials, frequencies)
 
-    # thetas = jnp.array([44.5])
+    n_k = []
+    # thicknesses.extend(thickness_materials)
 
-    R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas)
+    for material in materials:
+        n_material, k_material = utils_materials.interpolate_material_n_k(
+            material, frequencies
+        )
+        n_k_material = n_material + 1j * k_material
+
+        n_k.append(n_k_material)
+
+    n_k = jnp.array(n_k).T
+
+    R_TE, T_TE, R_TM, T_TM = stackrt(materials, n_k, d_stack, frequencies, thetas)
 
     R_avg = (R_TE + R_TM) / 2
     T_avg = (T_TE + T_TM) / 2

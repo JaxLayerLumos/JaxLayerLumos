@@ -175,12 +175,40 @@ def interpolate_material_n_k(material, frequencies):
     assert isinstance(frequencies, jnp.ndarray)
     assert frequencies.ndim == 1
 
-    data_n, data_k = load_material(material)
-
-    n_material = interpolate(data_n, frequencies)
-    k_material = interpolate(data_k, frequencies)
+    if material == 'Air':
+        n_material = jnp.ones(len(frequencies))
+        k_material = jnp.zeros(len(frequencies))
+    else:
+        data_n, data_k = load_material(material)
+        n_material = interpolate(data_n, frequencies)
+        k_material = interpolate(data_k, frequencies)
 
     return n_material, k_material
+
+
+def interpolate_multiple_materials_n_k(materials, frequencies):
+    n_k = []
+    for material in materials:
+        n_material, k_material = interpolate_material_n_k(
+            material, frequencies
+        )
+        n_k_material = n_material + 1j * k_material
+        n_k.append(n_k_material)
+
+    n_k = jnp.array(n_k).T
+    return n_k
+
+
+def get_eps_mu(materials, frequencies):
+    assert isinstance(materials, list)
+    assert isinstance(frequencies, jnp.ndarray)
+    assert frequencies.ndim == 1
+    assert materials[0] == 'Air'
+
+    eps_stack, mu_stack = utils_materials.get_eps_mu_Michielssen(int(material_stack[1:-1]), frequencies)
+
+
+    return eps_r, mu_r
 
 
 def interpolate_material_eps_mu(material, frequencies):
@@ -257,27 +285,11 @@ def get_eps_mu_Michielssen(materialInd, f_Hz):
     return eps_r, mu_r
 
 
-def get_eps_mu(materials, frequencies):
-    assert isinstance(materials, list)
-    assert isinstance(frequencies, jnp.ndarray)
-    assert frequencies.ndim == 1
 
-    num_layers = len(materials)
-    num_frequencies = frequencies.shape[0]
 
-    eps_r = jnp.ones((num_layers, num_frequencies), dtype=jnp.complex128)
-    mu_r = jnp.ones((num_layers, num_frequencies), dtype=jnp.complex128)
 
-    for ind, material in enumerate(materials):
-        eps_r_real, eps_r_imag, mu_r_real, mu_r_imag = interpolate_material_eps_mu(
-            material, frequencies
-        )
-        eps_r = eps_r.at[ind + 1, :].set(eps_r_real + 1j * eps_r_imag)
-        mu_r = mu_r.at[ind + 1, :].set(mu_r_real + 1j * mu_r_imag)
 
-    eps_r = eps_r.T
-    mu_r = mu_r.T
-    return eps_r, mu_r
+
 
 
 def get_n_k_surrounded_by_air(materials, frequencies):

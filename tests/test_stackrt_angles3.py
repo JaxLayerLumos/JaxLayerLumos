@@ -1,8 +1,8 @@
 import jax.numpy as jnp
 import numpy as np
 
-# from jaxlayerlumos import stackrt
-from jaxlayerlumos.jaxlayerlumos_old import stackrt
+from jaxlayerlumos import stackrt
+# from jaxlayerlumos.jaxlayerlumos_old import stackrt
 from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_spectra
 from jaxlayerlumos import utils_layers
@@ -15,30 +15,16 @@ def test_angles():
     wavelengths = jnp.array([300e-9])
     frequencies = utils_units.get_light_speed() / wavelengths
 
-    materials = ['Ag', 'Cr']
-    thickness_materials = [9.36793259, 0.00000000e+00]
+    materials = ['Air', 'Ag', 'Cr']
+    thickness_materials = [0, 9.36793259, 0.00000000e+00]
     theta = 34.767507632418315
 
-    n_k_air = jnp.ones_like(frequencies)
-    thickness_air = 0.0
+    thicknesses = jnp.array(thickness_materials)
+    n_k = utils_materials.interpolate_multiple_materials_n_k(materials, frequencies)
 
-    n_k = [n_k_air]
-    thicknesses = [thickness_air]
-    thicknesses.extend(thickness_materials)
-
-    for material in materials:
-        n_material, k_material = utils_materials.interpolate_material_n_k(
-            material, frequencies
-        )
-        n_k_material = n_material + 1j * k_material
-
-        n_k.append(n_k_material)
-
-    n_k = jnp.array(n_k).T
-    thicknesses = jnp.array(thicknesses)
     thicknesses *= utils_units.get_nano()
 
-    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, thicknesses, frequencies, theta)
+    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, thicknesses, frequencies, theta, materials)
 
     R_avg = (R_TE + R_TM) / 2
     T_avg = (T_TE + T_TM) / 2
@@ -63,8 +49,8 @@ def test_angles():
         for elem_2 in elem_1:
             print(elem_2)
 
-    expected_R_avg = jnp.array([[0.14853669599855523]])
-    expected_T_avg = jnp.array([[0.6150967559499965]])
+    expected_R_avg = jnp.array([[0.48574877]])
+    expected_T_avg = jnp.array([[0.32087105]])
 
     np.testing.assert_allclose(R_avg, expected_R_avg)
     np.testing.assert_allclose(T_avg, expected_T_avg)

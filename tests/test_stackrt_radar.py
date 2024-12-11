@@ -14,24 +14,16 @@ def test_stackrt_radar():
     # eps_stack, mu_stack = utils_materials.get_eps_mu_Michielssen(material_stack, frequencies)
     # d_stack = jnp.array([2]) * 1e-3
 
-    material_stack = jnp.array([11, 16, 7, 4, 4])
-    eps_stack, mu_stack = utils_materials.get_eps_mu_Michielssen(
-        material_stack, frequencies
-    )
-    d_stack = jnp.array([0.7742, 0.8485, 1.4878, 1.9883, 1.9863]) * 1e-3
 
-    eps_air = jnp.ones_like(frequencies)
-    mu_air = jnp.ones_like(frequencies)
-    d_air = jnp.array([0])
+    materials = ['Air', '11', '16', '7', '4', '4', 'PEC']
+    eps_stack, mu_stack = utils_materials.get_eps_mu(materials, frequencies)
 
-    eps_stack = jnp.vstack([eps_air, eps_stack, eps_air]).T
-    mu_stack = jnp.vstack([mu_air, mu_stack, mu_air]).T
-    d_stack = jnp.hstack([d_air, d_stack, d_air]).squeeze()
-
-    is_back_layer_PEC = True
-
+    # eps_stack, mu_stack = utils_materials.get_eps_mu_Michielssen(
+    #     material_stack, frequencies
+    # )
+    d_stack = jnp.array([0, 0.7742, 0.8485, 1.4878, 1.9883, 1.9863, 0]) * 1e-3
     R_TE, T_TE, R_TM, T_TM = stackrt_eps_mu(
-        eps_stack, mu_stack, d_stack, frequencies, 0.0, is_back_layer_PEC
+        eps_stack, mu_stack, d_stack, frequencies, 0.0, materials
     )
 
     R_avg = (R_TE + R_TM) / 2

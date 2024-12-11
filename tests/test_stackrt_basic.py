@@ -3,27 +3,39 @@ import numpy as np
 import scipy.constants as scic
 
 from jaxlayerlumos import stackrt
+from jaxlayerlumos import utils_materials
+# from jaxlayerlumos.utils_materials import interpolate_multiple_materials_n_k
+
 # from jaxlayerlumos.jaxlayerlumos_old import stackrt
 
 # from jaxlayerlumos.jaxlayerlumos_old2 import stackrt_n_k as stackrt
-from jaxlayerlumos import utils_materials
+
 
 
 def test_stackrt():
     wavelengths = jnp.linspace(300e-9, 900e-9, 3)
     frequencies = scic.c / wavelengths
 
-    n_Ag, k_Ag = utils_materials.interpolate_material_n_k("Ag", frequencies)
-    n_k_Ag = n_Ag + 1j * k_Ag
+    # n_Ag, k_Ag = utils_materials.interpolate_material_n_k("Ag", frequencies)
+    # n_k_Ag = n_Ag + 1j * k_Ag
+    #
+    # n_air = jnp.ones_like(frequencies)
+    # d_air = jnp.array([0])
+    # d_Ag = jnp.array([2e-6])
+    #
+    # n_stack = jnp.vstack([n_air, n_k_Ag, n_air]).T
+    # d_stack = jnp.hstack([d_air, d_Ag, d_air]).squeeze()
+    #
+    # R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, 0.0)
 
-    n_air = jnp.ones_like(frequencies)
-    d_air = jnp.array([0])
-    d_Ag = jnp.array([2e-6])
 
-    n_stack = jnp.vstack([n_air, n_k_Ag, n_air]).T
-    d_stack = jnp.hstack([d_air, d_Ag, d_air]).squeeze()
+    materials = ['Air', 'Ag', 'Air']
+    thickness_materials = [0, 2e-6, 0] # in m
 
-    R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, 0.0)
+    thicknesses = jnp.array(thickness_materials)
+    n_k = utils_materials.interpolate_multiple_materials_n_k(materials, frequencies)
+
+    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, thicknesses, frequencies, 0.0, materials)
 
     R_avg = (R_TE + R_TM) / 2
     T_avg = (T_TE + T_TM) / 2

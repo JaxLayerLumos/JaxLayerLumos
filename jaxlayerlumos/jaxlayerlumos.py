@@ -8,7 +8,7 @@ from jaxlayerlumos import utils_units
 
 
 def stackrt_eps_mu_base(
-    eps_r, mu_r, thicknesses, f_i, thetas_k, is_back_layer_PEC=False
+    eps_r, mu_r, thicknesses, f_i, thetas_k, materials
 ):
     assert isinstance(eps_r, jnp.ndarray)
     assert isinstance(mu_r, jnp.ndarray)
@@ -18,6 +18,7 @@ def stackrt_eps_mu_base(
     assert mu_r.ndim == 1
     assert thicknesses.ndim == 1
     assert thicknesses[-1] == 0
+    assert thicknesses[0] == 0
     assert eps_r.shape[0] == thicknesses.shape[0]
     assert mu_r.shape[0] == thicknesses.shape[0]
 
@@ -46,7 +47,7 @@ def stackrt_eps_mu_base(
     r_jk_TM = (Z_TM[1:] - Z_TM[:-1]) / (Z_TM[1:] + Z_TM[:-1])
     t_jk_TM = (2 * Z_TM[1:]) / (Z_TM[1:] + Z_TM[:-1])
 
-    if is_back_layer_PEC:
+    if materials[-1] == 'PEC':
         r_jk_TE = r_jk_TE.at[-1].set(-1.0)
         t_jk_TE = t_jk_TE.at[-1].set(1.0)
         r_jk_TM = r_jk_TM.at[-1].set(-1.0)
@@ -111,21 +112,20 @@ def stackrt_eps_mu_base(
     r_TM_i = M_TM[1, 0] / M_TM[0, 0]
     t_TM_i = 1 / M_TM[0, 0]
 
-    n_ratio_TE = jnp.real(n[-1]*cos_theta_t[-1] / (n[0]*cos_theta_t[0]))
-    n_ratio_TM2 = jnp.real(n[-1] / n[0]) * jnp.real(cos_theta_t[0] / cos_theta_t[-1])
-    n_ratio_TM = jnp.real(n[-1] * cos_theta_t[0]/ (n[0] * cos_theta_t[-1]))
+    # n_ratio_TE =
+    # n_ratio_TM2 = jnp.real(n[-1] / n[0]) * jnp.real(cos_theta_t[0] / cos_theta_t[-1])
+    #n_ratio_TM =
     # n_ratio = jnp.real(n[-1] / n[0]) * jnp.real(cos_theta_t[0] / cos_theta_t[-1])
     R_TE = jnp.abs(r_TE_i) ** 2
     R_TM = jnp.abs(r_TM_i) ** 2
-    T_TE = jnp.abs(t_TE_i) ** 2 * n_ratio_TE
-#     T_TM = jnp.abs(t_TM_i) ** 2 * n_ratio
-    T_TM = jnp.abs(t_TM_i) ** 2 * n_ratio_TM
+    T_TE = jnp.abs(t_TE_i) ** 2 * jnp.real(n[-1]*cos_theta_t[-1] / (n[0]*cos_theta_t[0]))
+    T_TM = jnp.abs(t_TM_i) ** 2 * jnp.real(n[-1] * cos_theta_t[0]/ (n[0] * cos_theta_t[-1]))
 
 
     return R_TE, T_TE, R_TM, T_TM
 
 
-def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, is_back_layer_PEC=False):
+def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, materials):
     assert isinstance(eps_r, jnp.ndarray)
     assert isinstance(mu_r, jnp.ndarray)
     assert isinstance(d, jnp.ndarray)
@@ -144,7 +144,7 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, is_back_layer_PEC=False):
     theta_rad = jnp.radians(theta)
 
     stackrt_eps_mu_base_partial = partial(
-        stackrt_eps_mu_base, is_back_layer_PEC=is_back_layer_PEC
+        stackrt_eps_mu_base, materials=materials
     )
     fun_mapped = jax.vmap(
         stackrt_eps_mu_base_partial, (0, 0, None, 0, None), (0, 0, 0, 0)
@@ -162,14 +162,14 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, is_back_layer_PEC=False):
     # T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
     #     n[:, -1] / n[:, 0])
 
-    if is_back_layer_PEC:
+    if materials[-1] == 'PEC':
         T_TE = jnp.zeros_like(R_TE)
         T_TM = jnp.zeros_like(R_TM)
 
     return R_TE, T_TE, R_TM, T_TM
 
 
-def stackrt_eps_mu(eps_r, mu_r, d, f, thetas, is_back_layer_PEC=False):
+def stackrt_eps_mu(eps_r, mu_r, d, f, thetas, materials):
     if thetas is None:
         thetas = jnp.array([0])
     elif isinstance(thetas, (float, int)):
@@ -178,12 +178,12 @@ def stackrt_eps_mu(eps_r, mu_r, d, f, thetas, is_back_layer_PEC=False):
     fun_mapped = jax.vmap(
         stackrt_eps_mu_theta, (None, None, None, None, 0, None), (0, 0, 0, 0)
     )
-    R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, d, f, thetas, is_back_layer_PEC)
+    R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, d, f, thetas, materials)
 
     return R_TE, T_TE, R_TM, T_TM
 
 
-def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas=None, is_back_layer_PEC=False):
+def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas, materials):
     """
     Calculate reflection and transmission coefficients for a multilayer stack at
     different frequencies and incidence angles.
@@ -234,6 +234,6 @@ def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas=None, is_ba
     fun_mapped = jax.vmap(
         stackrt_eps_mu_theta, (None, None, None, None, 0, None), (0, 0, 0, 0)
     )
-    R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, thicknesses, frequencies, thetas, is_back_layer_PEC)
+    R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, thicknesses, frequencies, thetas, materials)
 
     return R_TE, T_TE, R_TM, T_TM

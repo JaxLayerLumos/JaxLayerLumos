@@ -36,33 +36,19 @@ def compare_stackrt_old_new(use_zero_angle, use_thick_layers):
                 angle = 0.0
             else:
                 angle = random_state.uniform(0.0, 89.9)
+            materials = onp.insert(materials,0, "Air")
 
-            n_k_air = jnp.ones_like(frequencies, dtype=jnp.complex128)
-            thickness_air = 0.0
+            n_k = utils_materials.interpolate_multiple_materials_n_k(materials, frequencies)
 
-            n_k = [n_k_air]
-            thicknesses = [thickness_air]
-
-            for material in materials:
-                n_material, k_material = utils_materials.interpolate_material_n_k(
-                    material, frequencies
-                )
-                n_k_material = n_material + 1j * k_material
-
-                if use_thick_layers:
-                    thickness_material = random_state.uniform(5.0, 100.0)
-                else:
-                    thickness_material = random_state.uniform(0.01, 10.0)
-
-                thickness_material *= utils_units.get_nano()
-
-                n_k.append(n_k_material)
-                thicknesses.append(thickness_material)
-
-            # Ensure the thickness of the last layer is always 0.0 since it is the substrate
+            if use_thick_layers:
+                thickness_material = random_state.uniform(5.0, 100.0, num_layers)
+            else:
+                thickness_material = random_state.uniform(0.01, 10.0, num_layers)
+            thicknesses = onp.insert(thickness_material, 0, 0)
             thicknesses[-1] = 0.0
 
-            n_k = jnp.array(n_k).T
+            thicknesses *= utils_units.get_nano()
+
             thicknesses = jnp.array(thicknesses)
 
             time_start_old = time.monotonic()
@@ -73,7 +59,7 @@ def compare_stackrt_old_new(use_zero_angle, use_thick_layers):
 
             time_start_new = time.monotonic()
             R_TE_new, T_TE_new, R_TM_new, T_TM_new = stackrt_new(
-                n_k, thicknesses, frequencies, angle
+                n_k, thicknesses, frequencies, angle, materials
             )
             time_end_new = time.monotonic()
 
