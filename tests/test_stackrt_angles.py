@@ -46,22 +46,11 @@ def test_angles():
     materials = ['Air', 'TiO2', 'Air']
     d_stack = jnp.array([0, 2e-8, 0])
     thetas = jnp.linspace(0, 89, 3)
-    n_k2 = utils_materials.interpolate_multiple_materials_n_k(materials, frequencies)
+    n_k = utils_materials.interpolate_multiple_materials_n_k(materials, frequencies)
 
-    n_k = []
     # thicknesses.extend(thickness_materials)
 
-    for material in materials:
-        n_material, k_material = utils_materials.interpolate_material_n_k(
-            material, frequencies
-        )
-        n_k_material = n_material + 1j * k_material
-
-        n_k.append(n_k_material)
-
-    n_k = jnp.array(n_k).T
-
-    R_TE, T_TE, R_TM, T_TM = stackrt(materials, n_k, d_stack, frequencies, thetas)
+    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, d_stack, frequencies, thetas, materials)
 
     R_avg = (R_TE + R_TM) / 2
     T_avg = (T_TE + T_TM) / 2

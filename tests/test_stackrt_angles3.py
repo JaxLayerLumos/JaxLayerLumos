@@ -23,7 +23,7 @@ def test_angles():
     n_k = utils_materials.interpolate_multiple_materials_n_k(materials, frequencies)
 
     thicknesses *= utils_units.get_nano()
-
+#    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, thicknesses, frequencies, theta)
     R_TE, T_TE, R_TM, T_TM = stackrt(n_k, thicknesses, frequencies, theta, materials)
 
     R_avg = (R_TE + R_TM) / 2
