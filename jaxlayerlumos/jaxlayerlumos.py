@@ -2,8 +2,8 @@ import jax
 import jax.numpy as jnp
 import numpy as onp
 from functools import partial
-from jax import lax, vmap
 
+from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_spectra
 from jaxlayerlumos import utils_units
 
@@ -53,11 +53,31 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, materials=None)
     r_jk_TM = (Z_TM[1:] - Z_TM[:-1]) / (Z_TM[1:] + Z_TM[:-1])
     t_jk_TM = (2 * Z_TM[1:]) / (Z_TM[1:] + Z_TM[:-1])
 
-    if materials is not None and materials[-1] == "PEC":
+    def true_fun(r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM):
         r_jk_TE = r_jk_TE.at[-1].set(-1.0)
         t_jk_TE = t_jk_TE.at[-1].set(1.0)
         r_jk_TM = r_jk_TM.at[-1].set(-1.0)
         t_jk_TM = t_jk_TM.at[-1].set(1.0)
+
+        return r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM
+
+    def false_fun(r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM):
+        return r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM
+
+    r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM = jax.lax.cond(
+        jnp.isinf(jnp.real(eps_r[-1])) & jnp.isclose(jnp.imag(eps_r[-1]), 0) & jnp.isclose(jnp.real(mu_r[-1]), 1) & jnp.isclose(jnp.imag(mu_r[-1]), 0),
+        true_fun,
+        false_fun,
+        r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM
+    )
+
+#    if materials is not None and materials[-1] == "PEC":
+#    if jnp.isinf(jnp.real(eps_r[-1])) & jnp.isclose(jnp.imag(eps_r[-1]), 0) & jnp.isclose(jnp.real(mu_r[-1]), 1) & jnp.isclose(jnp.imag(mu_r[-1]), 0):
+#        print('here')
+#        r_jk_TE = r_jk_TE.at[-1].set(-1.0)
+#        t_jk_TE = t_jk_TE.at[-1].set(1.0)
+#        r_jk_TM = r_jk_TM.at[-1].set(-1.0)
+#        t_jk_TM = t_jk_TM.at[-1].set(1.0)
 
     t_inv_TE = 1 / t_jk_TE
     r_over_t_TE = r_jk_TE / t_jk_TE
@@ -103,8 +123,8 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, materials=None)
     def matmul_scan(a, b):
         return jnp.matmul(a, b)
 
-    M_TE = lax.associative_scan(matmul_scan, DP_TE)[-1]
-    M_TM = lax.associative_scan(matmul_scan, DP_TM)[-1]
+    M_TE = jax.lax.associative_scan(matmul_scan, DP_TE)[-1]
+    M_TM = jax.lax.associative_scan(matmul_scan, DP_TM)[-1]
 
     # M_TE = jnp.matmul(M_TE_intermediate, D_TE[-1])
     # M_TM = jnp.matmul(M_TM_intermediate, D_TM[-1])
@@ -158,12 +178,12 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, materials=None):
 
     theta_rad = jnp.radians(theta)
 
-    #    stackrt_eps_mu_base_partial = partial(
-    #        stackrt_eps_mu_base, materials=materials
-    #    )
-    stackrt_eps_mu_base_partial = lambda a, b, c, d, e: stackrt_eps_mu_base(
-        a, b, c, d, e, materials=materials
+    stackrt_eps_mu_base_partial = partial(
+        stackrt_eps_mu_base, materials=materials
     )
+#    stackrt_eps_mu_base_partial = lambda a, b, c, d, e: stackrt_eps_mu_base(
+#        a, b, c, d, e, materials=materials
+#    )
 
     fun_mapped = jax.vmap(
         stackrt_eps_mu_base_partial, (0, 0, None, 0, None), (0, 0, 0, 0)
@@ -181,7 +201,11 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, materials=None):
     # T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
     #     n[:, -1] / n[:, 0])
 
-    if materials is not None and materials[-1] == "PEC":
+#    if materials is not None and materials[-1] == "PEC":
+    if jnp.all(jnp.isinf(jnp.real(eps_r[:, -1]))) \
+        and jnp.allclose(jnp.imag(eps_r[:, -1]), 0) \
+        and jnp.allclose(jnp.real(mu_r[:, -1]), 1) \
+        and jnp.allclose(jnp.imag(mu_r[:, -1]), 0): # TODO: it is needed? It is just enforcing outputs. Outputs should be zeros by calculation.
         T_TE = jnp.zeros_like(R_TE)
         T_TM = jnp.zeros_like(R_TM)
 
@@ -252,8 +276,7 @@ def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas, materials=
     elif isinstance(thetas, (float, int)):
         thetas = jnp.array([thetas])
 
-    eps_r = jnp.conj(refractive_indices**2)
-    mu_r = jnp.ones_like(eps_r)
+    eps_r, mu_r = utils_materials.convert_n_k_to_eps_mu_for_non_magnetic_materials(refractive_indices)
 
     fun_mapped = jax.vmap(
         stackrt_eps_mu_theta, (None, None, None, None, 0, None), (0, 0, 0, 0)

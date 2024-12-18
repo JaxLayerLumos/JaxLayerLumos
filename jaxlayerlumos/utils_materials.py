@@ -176,9 +176,13 @@ def interpolate_material_n_k(material, frequencies):
     assert isinstance(frequencies, jnp.ndarray)
     assert frequencies.ndim == 1
 
-    data_n, data_k = load_material(material)
-    n_material = interpolate(data_n, frequencies)
-    k_material = interpolate(data_k, frequencies)
+    if material == "Air":
+        n_material = jnp.ones_like(frequencies)
+        k_material = jnp.zeros_like(frequencies)
+    else:
+        data_n, data_k = load_material(material)
+        n_material = interpolate(data_n, frequencies)
+        k_material = interpolate(data_k, frequencies)
 
     return n_material, k_material
 
@@ -190,6 +194,25 @@ def get_eps_mu(materials, frequencies):
     assert materials[0] == "Air"
 
     eps_r, mu_r = get_eps_mu_Michielssen(materials[1:-1].astype(int), frequencies)
+
+    n_k_air = get_n_k(materials[:1], frequencies)
+    n_k_air = n_k_air.T
+    eps_air, mu_air = convert_n_k_to_eps_mu_for_non_magnetic_materials(n_k_air)
+
+    if materials[-1] == 'PEC':
+        eps_last = jnp.zeros_like(eps_air) + jnp.inf
+        mu_last = jnp.ones_like(eps_air)
+    else:
+        try:
+            eps_last, mu_last = get_eps_mu_Michielssen(materials[-1:].astype(int), frequencies)
+        except:
+            raise NotImplementedError('This condition is not implemented yet.')
+
+    eps_r = jnp.concatenate([eps_air, eps_r, eps_last], axis=0)
+    mu_r = jnp.concatenate([mu_air, mu_r, mu_last], axis=0)
+
+    eps_r = eps_r.T
+    mu_r = mu_r.T
 
     return eps_r, mu_r
 
@@ -294,3 +317,10 @@ def get_n_k_surrounded_by_air(materials, frequencies):
     n_k = get_n_k(onp.concatenate([["Air"], materials, ["Air"]], axis=0), frequencies)
 
     return n_k
+
+
+def convert_n_k_to_eps_mu_for_non_magnetic_materials(n_k):
+    eps = jnp.conj(n_k**2)
+    mu = jnp.ones_like(eps)
+
+    return eps, mu
