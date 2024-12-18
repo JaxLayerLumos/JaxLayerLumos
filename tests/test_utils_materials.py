@@ -186,10 +186,10 @@ def test_get_n_k_surrounded_by_air():
     assert n_k.shape[1] == len(materials) + 2
 
     print(n_k[0, 0])
-    assert jnp.allclose(n_k[0, 0], 1.0002839217955182 + 0j)
+    assert jnp.allclose(n_k[0, 0], 1.0 + 0j)
     assert jnp.allclose(n_k[10, 1], 0.13209204 + 2.77618307j)
     assert jnp.allclose(n_k[20, 2], 0.32581145 + 3.05379202j)
     assert jnp.allclose(n_k[30, 3], 3.74494455 + 2.78771241j)
     assert jnp.allclose(n_k[20, 4], 2.39396291 + 2.95673696e-09j)
     assert jnp.allclose(n_k[10, 5], 2.03410384 + 0.0j)
-    assert jnp.allclose(n_k[0, 6], 1.0002839217955182 + 0j)
+    assert jnp.allclose(n_k[0, 6], 1.0 + 0j)
