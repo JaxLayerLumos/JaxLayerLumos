@@ -20,7 +20,7 @@ def test_angles():
     theta = 47.1756
 
     thicknesses = jnp.array(thickness_materials)
-    n_k = utils_materials.interpolate_multiple_materials_n_k(materials, frequencies)
+    n_k = utils_materials.get_n_k(materials, frequencies)
 
     thicknesses *= utils_units.get_nano()
 

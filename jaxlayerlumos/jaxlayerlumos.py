@@ -2,7 +2,7 @@ import jax
 import jax.numpy as jnp
 import numpy as onp
 from functools import partial
-from jax import lax, vmap
+
 
 from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_spectra
@@ -129,10 +129,10 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, materials=None)
         return jnp.matmul(b, a)
 
     DP_TE_rev = jnp.flip(DP_TE, axis=0)
-    M_TE = lax.associative_scan(matmul_left, DP_TE_rev)[-1]
+    M_TE = jax.lax.associative_scan(matmul_left, DP_TE_rev)[-1]
 
     DP_TM_rev = jnp.flip(DP_TM, axis=0)
-    M_TM = lax.associative_scan(matmul_left, DP_TM_rev)[-1]
+    M_TM = jax.lax.associative_scan(matmul_left, DP_TM_rev)[-1]
 
     #M_TE = lax.associative_scan(matmul_scan, DP_TE)[-1]
     #M_TM = lax.associative_scan(matmul_scan, DP_TM)[-1]

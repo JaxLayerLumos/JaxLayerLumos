@@ -13,10 +13,11 @@ def test_stackrt():
     #wavelengths = jnp.array([300e-9])
     frequencies = utils_units.get_light_speed() / wavelengths
 
-    materials = ['Air', 'FusedSilica', 'Si3N4']
+    materials = np.array(['Air', 'FusedSilica', 'Si3N4'])
     thickness_materials = [0, 2.91937911, 0]
 
-    n_k = utils_materials.interpolate_multiple_materials_n_k(materials, frequencies)
+    n_k = utils_materials.get_n_k(materials, frequencies)
+#    n_k = utils_materials.interpolate_multiple_materials_n_k(materials, frequencies)
 
     thicknesses = jnp.array(thickness_materials)
 
