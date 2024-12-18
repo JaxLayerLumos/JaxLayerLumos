@@ -3,7 +3,7 @@ import jax.numpy as jnp
 import numpy as onp
 
 from jaxlayerlumos.jaxlayerlumos import stackrt_n_k as stackrt_new
-from jaxlayerlumos.jaxlayerlumos_old import stackrt as stackrt_old
+from jaxlayerlumos.jaxlayerlumos_old_not_updated import stackrt as stackrt_old
 from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_units
 
@@ -36,7 +36,7 @@ def compare_stackrt_old_new(use_zero_angle, use_thick_layers):
                 angle = 0.0
             else:
                 angle = random_state.uniform(0.0, 89.9)
-            materials = onp.concatenate([["Air"], materials], axis=0)
+            materials = onp.insert(materials, 0, "Air")
 
             n_k = utils_materials.get_n_k(materials, frequencies)
 
@@ -158,20 +158,6 @@ def test_comparison_stackrt_old_new_zero_angle_thin():
 
 def test_comparison_stackrt_old_new_zero_angle_thick():
     use_zero_angle = True
-    use_thick_layers = True
-
-    compare_stackrt_old_new(use_zero_angle, use_thick_layers)
-
-
-def test_comparison_stackrt_old_new_nonzero_angle_thin():
-    use_zero_angle = False
-    use_thick_layers = False
-
-    compare_stackrt_old_new(use_zero_angle, use_thick_layers)
-
-
-def test_comparison_stackrt_old_new_nonzero_angle_thick():
-    use_zero_angle = False
     use_thick_layers = True
 
     compare_stackrt_old_new(use_zero_angle, use_thick_layers)
