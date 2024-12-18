@@ -330,21 +330,6 @@ def get_n_k_surrounded_by_air(materials, frequencies):
     return n_k
 
 
-    n_k = []
-    thicknesses = thickness_materials
-
-    for material in materials:
-        n_material, k_material = utils_materials.interpolate_material_n_k(
-            material, frequencies
-        )
-        n_k_material = n_material + 1j * k_material
-
-        n_k.append(n_k_material)
-
-    n_k = jnp.array(n_k).T
-    thicknesses = jnp.array(thicknesses)
-
-
 def convert_n_k_to_eps_mu_for_non_magnetic_materials(n_k):
     eps = jnp.conj(n_k**2)
     mu = jnp.ones_like(eps)
