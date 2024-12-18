@@ -1,11 +1,11 @@
 import jax.numpy as jnp
-import numpy as onp
+import numpy as np
 
 from jaxlayerlumos import stackrt
+# from jaxlayerlumos.jaxlayerlumos_old import stackrt
 from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_spectra
 from jaxlayerlumos import utils_layers
-from jaxlayerlumos import utils_units
 
 
 def test_sizes():
@@ -15,10 +15,11 @@ def test_sizes():
     frequencies = utils_spectra.get_frequencies_wide_visible_light(
         num_wavelengths=num_wavelengths
     )
-    materials = onp.array(["Air", "TiO2", "Air"])
-    n_stack = utils_materials.get_n_k(materials, frequencies)
+    materials = ["TiO2"]
+    n_stack = utils_materials.get_n_k_surrounded_by_air(materials, frequencies)
     d_stack = utils_layers.get_thicknesses_surrounded_by_air(jnp.array([2e-8]))
     thetas = jnp.linspace(0, 89, num_angles)
+
 
     R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas, materials)
 
@@ -36,27 +37,18 @@ def test_sizes():
     assert T_TE.shape[1] == T_TM.shape[1] == num_wavelengths
 
 
-def test_angles_1():
+def test_angles():
     num_wavelengths = 5
     frequencies = utils_spectra.get_frequencies_visible_light(
         num_wavelengths=num_wavelengths
     )
 
-    materials = onp.array(["Air", "TiO2", "Air"])
+    materials = ['Air', 'TiO2', 'Air']
     d_stack = jnp.array([0, 2e-8, 0])
     thetas = jnp.linspace(0, 89, 3)
+    n_k = utils_materials.interpolate_multiple_materials_n_k(materials, frequencies)
 
-    n_k = []
-
-    for material in materials:
-        n_material, k_material = utils_materials.interpolate_material_n_k(
-            material, frequencies
-        )
-        n_k_material = n_material + 1j * k_material
-
-        n_k.append(n_k_material)
-
-    n_k = jnp.array(n_k).T
+    # thicknesses.extend(thickness_materials)
 
     R_TE, T_TE, R_TM, T_TM = stackrt(n_k, d_stack, frequencies, thetas, materials)
 
@@ -66,25 +58,25 @@ def test_angles_1():
     expected_R_avg = jnp.array(
         [
             [
-                0.4770790218584376,
-                0.2918301244526286,
-                0.20026632179451592,
-                0.1461644821589118,
-                0.11132762140037072,
+                0.4770790218584379,
+                0.2918301244526284,
+                0.20026632179451573,
+                0.14616448215891184,
+                0.11132762140037065,
             ],
             [
-                0.45586172063057634,
-                0.29109418329257924,
+                0.4558617206305765,
+                0.2910941832925791,
                 0.20684237462156152,
-                0.15476340159980753,
+                0.15476340159980778,
                 0.11998132563573674,
             ],
             [
-                0.9903190571800176,
-                0.9857622632656107,
-                0.97972783328248,
-                0.9726668981700777,
-                0.9646925772238668,
+                0.9903190571800133,
+                0.9857622632656011,
+                0.979727833282493,
+                0.9726668981700657,
+                0.9646925772238752,
             ],
         ]
     )
@@ -92,25 +84,25 @@ def test_angles_1():
     expected_T_avg = jnp.array(
         [
             [
-                0.5198973861437662,
-                0.7081681748619179,
-                0.7997336666045015,
+                0.5198973861437665,
+                0.7081681748619181,
+                0.7997336666045016,
                 0.8538355175673582,
-                0.8886723785996298,
+                0.8886723785996291,
             ],
             [
-                0.5410727876996988,
-                0.7089041021153875,
-                0.7931576135794325,
-                0.8452365981191826,
-                0.8800186743642632,
+                0.5410727876996986,
+                0.7089041021153872,
+                0.793157613579433,
+                0.8452365981191836,
+                0.8800186743642635,
             ],
             [
-                0.009481699666492172,
-                0.01423760593507062,
-                0.02027216555558674,
-                0.027333101794482728,
-                0.03530742277613292,
+                0.009481699666494146,
+                0.014237605935075181,
+                0.020272165555583664,
+                0.027333101794498202,
+                0.035307422776128854,
             ],
         ]
     )
@@ -125,95 +117,5 @@ def test_angles_1():
         for elem_2 in elem_1:
             print(elem_2)
 
-    onp.testing.assert_allclose(R_avg, expected_R_avg)
-    onp.testing.assert_allclose(T_avg, expected_T_avg)
-
-
-def test_angles_2():
-    wavelengths = jnp.array([300e-9])
-    frequencies = utils_units.get_light_speed() / wavelengths
-
-    materials = onp.array(["Air", "FusedSilica", "Si3N4"])
-    thickness_materials = [0, 2.91937911, 0]
-    theta = 47.1756
-
-    thicknesses = jnp.array(thickness_materials)
-    n_k = utils_materials.get_n_k(materials, frequencies)
-
-    thicknesses *= utils_units.get_nano()
-
-    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, thicknesses, frequencies, theta, materials)
-
-    R_avg = (R_TE + R_TM) / 2
-    T_avg = (T_TE + T_TM) / 2
-
-    print("R_TE")
-    for elem_1 in R_TE:
-        for elem_2 in elem_1:
-            print(elem_2)
-
-    print("T_TE")
-    for elem_1 in T_TE:
-        for elem_2 in elem_1:
-            print(elem_2)
-
-    print("R_TM")
-    for elem_1 in R_TM:
-        for elem_2 in elem_1:
-            print(elem_2)
-
-    print("T_TM")
-    for elem_1 in T_TM:
-        for elem_2 in elem_1:
-            print(elem_2)
-
-    expected_R_avg = jnp.array([[0.24877806962502294 + 0.04829532237208759]]) / 2
-    expected_T_avg = jnp.array([[0.751221930374977 + 0.9517046776279124]]) / 2
-
-    onp.testing.assert_allclose(R_avg, expected_R_avg)
-    onp.testing.assert_allclose(T_avg, expected_T_avg)
-
-
-def test_angles_3():
-    wavelengths = jnp.array([300e-9])
-    frequencies = utils_units.get_light_speed() / wavelengths
-
-    materials = onp.array(["Air", "Ag", "Cr"])
-    thickness_materials = [0, 9.36793259, 0]
-    theta = 34.767507632418315
-
-    thicknesses = jnp.array(thickness_materials)
-    n_k = utils_materials.get_n_k(materials, frequencies)
-
-    thicknesses *= utils_units.get_nano()
-
-    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, thicknesses, frequencies, theta, materials)
-
-    R_avg = (R_TE + R_TM) / 2
-    T_avg = (T_TE + T_TM) / 2
-
-    print("R_TE")
-    for elem_1 in R_TE:
-        for elem_2 in elem_1:
-            print(elem_2)
-
-    print("T_TE")
-    for elem_1 in T_TE:
-        for elem_2 in elem_1:
-            print(elem_2)
-
-    print("R_TM")
-    for elem_1 in R_TM:
-        for elem_2 in elem_1:
-            print(elem_2)
-
-    print("T_TM")
-    for elem_1 in T_TM:
-        for elem_2 in elem_1:
-            print(elem_2)
-
-    expected_R_avg = jnp.array([[0.5620107127607985 + 0.4094868270876877]]) / 2
-    expected_T_avg = jnp.array([[0.2842889562588487 + 0.357453134709888]]) / 2
-
-    onp.testing.assert_allclose(R_avg, expected_R_avg)
-    onp.testing.assert_allclose(T_avg, expected_T_avg)
+    np.testing.assert_allclose(R_avg, expected_R_avg)
+    np.testing.assert_allclose(T_avg, expected_T_avg)

@@ -51,7 +51,7 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, materials=None)
     t_jk_TE = (2 * Z_TE[1:]) / (Z_TE[1:] + Z_TE[:-1])
 
     r_jk_TM = (Z_TM[1:] - Z_TM[:-1]) / (Z_TM[1:] + Z_TM[:-1])
-    t_jk_TM = (2 * Z_TM[1:]) / (Z_TM[1:] + Z_TM[:-1])
+    t_jk_TM = (2 * Z_TM[1:]) / (Z_TM[1:] + Z_TM[:-1]) * cos_theta_t[:-1]/cos_theta_t[1:]
 
     def true_fun(r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM):
         r_jk_TE = r_jk_TE.at[-1].set(-1.0)
@@ -101,8 +101,8 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, materials=None)
         axis=-2,
     )
 
-    exp_neg_jdelta = jnp.exp(-1j * delta[1:])
-    exp_pos_jdelta = jnp.exp(1j * delta[1:])
+    exp_neg_jdelta = jnp.exp(-1j * delta[0:-1])
+    exp_pos_jdelta = jnp.exp(1j * delta[0:-1])
 
     zeros = jnp.zeros_like(exp_neg_jdelta)
 
@@ -114,17 +114,30 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, materials=None)
         axis=-2,
     )
 
-    DP_TE = jnp.matmul(D_TE, P)
-    DP_TM = jnp.matmul(D_TM, P)
+    DP_TE = jnp.matmul(P, D_TE)
+    DP_TM = jnp.matmul(P, D_TM)
 
     # DP_TE = jnp.matmul(D_TE[:-1], P[:-1])
     # DP_TM = jnp.matmul(D_TM[:-1], P[:-1])
 
-    def matmul_scan(a, b):
-        return jnp.matmul(a, b)
+    # def matmul_scan(a, b):
+    #     return jnp.matmul(a, b)
 
-    M_TE = jax.lax.associative_scan(matmul_scan, DP_TE)[-1]
-    M_TM = jax.lax.associative_scan(matmul_scan, DP_TM)[-1]
+    def matmul_left(a, b):
+        # aggregator that returns (b @ a)
+        return jnp.matmul(b, a)
+
+    DP_TE_rev = jnp.flip(DP_TE, axis=0)
+    M_TE = lax.associative_scan(matmul_left, DP_TE_rev)[-1]
+
+    DP_TM_rev = jnp.flip(DP_TM, axis=0)
+    M_TM = lax.associative_scan(matmul_left, DP_TM_rev)[-1]
+
+    #M_TE = lax.associative_scan(matmul_scan, DP_TE)[-1]
+    #M_TM = lax.associative_scan(matmul_scan, DP_TM)[-1]
+
+    # M_TE = jax.lax.associative_scan(matmul_scan, DP_TE)[-1]
+    # M_TM = jax.lax.associative_scan(matmul_scan, DP_TM)[-1]
 
     # M_TE = jnp.matmul(M_TE_intermediate, D_TE[-1])
     # M_TM = jnp.matmul(M_TM_intermediate, D_TM[-1])
@@ -144,12 +157,11 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, materials=None)
     # n_ratio = jnp.real(n[-1] / n[0]) * jnp.real(cos_theta_t[0] / cos_theta_t[-1])
     R_TE = jnp.abs(r_TE_i) ** 2
     R_TM = jnp.abs(r_TM_i) ** 2
-    T_TE = jnp.abs(t_TE_i) ** 2 * jnp.real(
-        n[-1] * cos_theta_t[-1] / (n[0] * cos_theta_t[0])
-    )
-    T_TM = jnp.abs(t_TM_i) ** 2 * jnp.real(
-        n[-1] * cos_theta_t[0] / (n[0] * cos_theta_t[-1])
-    )
+
+    T_TE = jnp.abs(t_TE_i) ** 2 * jnp.real(n[-1]*cos_theta_t[-1]) / jnp.real(n[0]*cos_theta_t[0])
+    # T_TM = jnp.abs(t_TM_i) ** 2 * jnp.real(n[-1] * cos_theta_t[0]/ (n[0] * cos_theta_t[-1]))
+    # T_TM = jnp.abs(t_TM_i) ** 2 * jnp.real(n[-1] * cos_theta_t[0] / (n[0] * cos_theta_t[-1]))
+    T_TM = jnp.abs(t_TM_i) ** 2 * jnp.real(n[-1] * jnp.conj(cos_theta_t[-1])) / jnp.real(n[0] * jnp.conj(cos_theta_t[0]))
 
     return R_TE, T_TE, R_TM, T_TM
 
