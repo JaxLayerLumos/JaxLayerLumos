@@ -129,11 +129,9 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, materials=None)
 
     DP_TE_rev = jnp.flip(DP_TE, axis=0)
     M_TE = lax.associative_scan(matmul_left, DP_TE_rev)[-1]
-    #M_TE = E_TE[0]
 
     DP_TM_rev = jnp.flip(DP_TM, axis=0)
     M_TM = lax.associative_scan(matmul_left, DP_TM_rev)[-1]
-    # M_TM = E_TM[0]
 
     #M_TE = lax.associative_scan(matmul_scan, DP_TE)[-1]
     #M_TM = lax.associative_scan(matmul_scan, DP_TM)[-1]

@@ -309,6 +309,17 @@ def get_n_k(materials, frequencies):
     return n_k
 
 
+def interpolate_multiple_materials_n_k(materials, frequencies):
+    for material in materials:
+        n_material, k_material = utils_materials.interpolate_material_n_k(
+            material, frequencies
+        )
+        n_k_material = n_material + 1j * k_material
+        n_k.append(n_k_material)
+    return jnp.array(n_k).T
+
+
+
 def get_n_k_surrounded_by_air(materials, frequencies):
     assert isinstance(materials, onp.ndarray)
     assert isinstance(frequencies, jnp.ndarray)
@@ -317,6 +328,21 @@ def get_n_k_surrounded_by_air(materials, frequencies):
     n_k = get_n_k(onp.concatenate([["Air"], materials, ["Air"]], axis=0), frequencies)
 
     return n_k
+
+
+    n_k = []
+    thicknesses = thickness_materials
+
+    for material in materials:
+        n_material, k_material = utils_materials.interpolate_material_n_k(
+            material, frequencies
+        )
+        n_k_material = n_material + 1j * k_material
+
+        n_k.append(n_k_material)
+
+    n_k = jnp.array(n_k).T
+    thicknesses = jnp.array(thicknesses)
 
 
 def convert_n_k_to_eps_mu_for_non_magnetic_materials(n_k):
