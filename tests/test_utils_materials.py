@@ -142,10 +142,15 @@ def test_material_super_wide_light():
     frequencies = utils_spectra.convert_wavelengths_to_frequencies(wavelengths)
 
     for material in LIST_MATERIALS:
-        with pytest.raises(AssertionError):
+        if material == "Air":
             n_material, k_material = utils_materials.interpolate_material_n_k(
                 material, frequencies
             )
+        else:
+            with pytest.raises(AssertionError):
+                n_material, k_material = utils_materials.interpolate_material_n_k(
+                    material, frequencies
+                )
 
 
 def test_material_data_conversion_and_interpolation():
