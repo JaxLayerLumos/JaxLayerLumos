@@ -1,4 +1,5 @@
 import jax.numpy as jnp
+import numpy as onp
 import csv
 import json
 from pathlib import Path
@@ -175,38 +176,20 @@ def interpolate_material_n_k(material, frequencies):
     assert isinstance(frequencies, jnp.ndarray)
     assert frequencies.ndim == 1
 
-    if material == 'Air':
-        n_material = jnp.ones(len(frequencies))
-        k_material = jnp.zeros(len(frequencies))
-    else:
-        data_n, data_k = load_material(material)
-        n_material = interpolate(data_n, frequencies)
-        k_material = interpolate(data_k, frequencies)
+    data_n, data_k = load_material(material)
+    n_material = interpolate(data_n, frequencies)
+    k_material = interpolate(data_k, frequencies)
 
     return n_material, k_material
 
 
-def interpolate_multiple_materials_n_k(materials, frequencies):
-    n_k = []
-    for material in materials:
-        n_material, k_material = interpolate_material_n_k(
-            material, frequencies
-        )
-        n_k_material = n_material + 1j * k_material
-        n_k.append(n_k_material)
-
-    n_k = jnp.array(n_k).T
-    return n_k
-
-
 def get_eps_mu(materials, frequencies):
-    assert isinstance(materials, list)
+    assert isinstance(materials, onp.ndarray)
     assert isinstance(frequencies, jnp.ndarray)
     assert frequencies.ndim == 1
     assert materials[0] == 'Air'
 
-    eps_stack, mu_stack = utils_materials.get_eps_mu_Michielssen(int(material_stack[1:-1]), frequencies)
-
+    eps_r, mu_r = get_eps_mu_Michielssen(materials[1:-1].astype(int), frequencies)
 
     return eps_r, mu_r
 
@@ -285,31 +268,32 @@ def get_eps_mu_Michielssen(materialInd, f_Hz):
     return eps_r, mu_r
 
 
-
-
-
-
-
-
-
-def get_n_k_surrounded_by_air(materials, frequencies):
-    assert isinstance(materials, list)
+def get_n_k(materials, frequencies):
+    assert isinstance(materials, onp.ndarray)
     assert isinstance(frequencies, jnp.ndarray)
     assert frequencies.ndim == 1
 
-    num_layers = len(materials) + 2
+    num_layers = len(materials)
     num_frequencies = frequencies.shape[0]
 
     n_k = jnp.ones((num_layers, num_frequencies), dtype=jnp.complex128)
 
     for ind, material in enumerate(materials):
         n_material, k_material = interpolate_material_n_k(material, frequencies)
-        n_k = n_k.at[ind + 1, :].set(n_material + 1j * k_material)
-
-    assert jnp.all(jnp.real(n_k[0]) == 1)
-    assert jnp.all(jnp.imag(n_k[0]) == 0)
-    assert jnp.all(jnp.real(n_k[-1]) == 1)
-    assert jnp.all(jnp.imag(n_k[-1]) == 0)
+        n_k = n_k.at[ind, :].set(n_material + 1j * k_material)
 
     n_k = n_k.T
+    return n_k
+
+
+def get_n_k_surrounded_by_air(materials, frequencies):
+    assert isinstance(materials, onp.ndarray)
+    assert isinstance(frequencies, jnp.ndarray)
+    assert frequencies.ndim == 1
+
+    n_k = get_n_k(
+        onp.concatenate([["Air"], materials, ["Air"]], axis=0),
+        frequencies
+    )
+
     return n_k

@@ -1,6 +1,6 @@
 import jax.numpy as jnp
 import jax
-import numpy as np
+import numpy as onp
 
 from jaxlayerlumos import stackrt
 from jaxlayerlumos import utils_materials
@@ -13,12 +13,13 @@ def test_gradient_stackrt_thickness_Ag():
     frequencies = utils_spectra.get_frequencies_visible_light(
         num_wavelengths=num_wavelengths
     )
+    materials = onp.array(["Air", "Ag", "Air"])
 
-    n_stack = utils_materials.get_n_k_surrounded_by_air(["Ag"], frequencies)
+    n_stack = utils_materials.get_n_k(materials, frequencies)
     d_stack = utils_layers.get_thicknesses_surrounded_by_air(jnp.array([100e-9]))
 
     def compute_R_TE_first_element(d):
-        R_TE, _, _, _ = stackrt(n_stack, d, frequencies, 0.0)
+        R_TE, _, _, _ = stackrt(n_stack, d, frequencies, 0.0, materials)
         return R_TE[0, 0]
 
     grad_R_TE = jax.grad(compute_R_TE_first_element)(d_stack)
@@ -30,15 +31,15 @@ def test_gradient_stackrt_thickness_Ag():
     expected_grad_R_TE = jnp.array(
         [
             0.0,
-            717163.9524140154,
-            -2.0651852948735317e-09,
+            717211.5474122636,
+            3.213422560429713e-09,
         ]
     )
 
     for elem in grad_R_TE:
         print(elem)
 
-    np.testing.assert_allclose(grad_R_TE, expected_grad_R_TE)
+    onp.testing.assert_allclose(grad_R_TE, expected_grad_R_TE)
 
 
 def test_gradient_stackrt_thickness_Au():
@@ -47,7 +48,7 @@ def test_gradient_stackrt_thickness_Au():
         num_wavelengths=num_wavelengths
     )
 
-    n_stack = utils_materials.get_n_k_surrounded_by_air(["Au"], frequencies)
+    n_stack = utils_materials.get_n_k_surrounded_by_air(onp.array(["Au"]), frequencies)
     d_stack = utils_layers.get_thicknesses_surrounded_by_air(jnp.array([2000e-9]))
 
     def compute_R_TE_first_element(d):
@@ -63,15 +64,15 @@ def test_gradient_stackrt_thickness_Au():
     expected_grad_R_TE = jnp.array(
         [
             0.0,
-            -5.573497636830303e-10,
-            -2.5306919090856926e-09,
+            3.76649565861478e-09,
+            1.5061851595182222e-09,
         ]
     )
 
     for elem in grad_R_TE:
         print(elem)
 
-    np.testing.assert_allclose(grad_R_TE, expected_grad_R_TE)
+    onp.testing.assert_allclose(grad_R_TE, expected_grad_R_TE)
 
 
 def test_gradient_stackrt_thickness_TiO2_W_SiO2():
@@ -79,10 +80,9 @@ def test_gradient_stackrt_thickness_TiO2_W_SiO2():
     frequencies = utils_spectra.get_frequencies_visible_light(
         num_wavelengths=num_wavelengths
     )
+    materials = onp.array(["Air", "TiO2", "W", "SiO2", "Air"])
 
-    n_stack = utils_materials.get_n_k_surrounded_by_air(
-        ["TiO2", "W", "SiO2"], frequencies
-    )
+    n_stack = utils_materials.get_n_k(materials, frequencies)
     d_stack = utils_layers.get_thicknesses_surrounded_by_air(
         jnp.array([20e-9, 5e-9, 10e-9])
     )
@@ -111,9 +111,9 @@ def test_gradient_stackrt_thickness_TiO2_W_SiO2():
         print(elem)
 
     try:
-        np.testing.assert_allclose(grad_R_TE, expected_grad_R_TE)
+        onp.testing.assert_allclose(grad_R_TE, expected_grad_R_TE)
     except:
-        np.testing.assert_allclose(grad_R_TE, expected_grad_R_TE, rtol=6.0)
+        onp.testing.assert_allclose(grad_R_TE, expected_grad_R_TE, rtol=6.0)
 
 
 def test_gradient_stackrt_n_k():
@@ -121,10 +121,9 @@ def test_gradient_stackrt_n_k():
     frequencies = utils_spectra.get_frequencies_visible_light(
         num_wavelengths=num_wavelengths
     )
+    materials = onp.array(["Air", "TiO2", "W", "SiO2", "Air"])
 
-    n_k_stack = utils_materials.get_n_k_surrounded_by_air(
-        ["TiO2", "W", "SiO2"], frequencies
-    )
+    n_k_stack = utils_materials.get_n_k(materials, frequencies)
     n_k_stack = n_k_stack[1:-1]
     d_stack = utils_layers.get_thicknesses_surrounded_by_air(
         jnp.array([20e-9, 5e-9, 10e-9])
@@ -135,7 +134,7 @@ def test_gradient_stackrt_n_k():
             [jnp.ones((1, num_wavelengths)), n_k, jnp.ones((1, num_wavelengths))],
             axis=0,
         )
-        R_TE, _, _, _ = stackrt(n_k_transformed, d_stack, frequencies, 20.0)
+        R_TE, _, _, _ = stackrt(n_k_transformed, d_stack, frequencies, 20.0, materials)
         return R_TE[0, 2]
 
     grad_R_TE = jax.grad(compute_R_TE_first_element)(n_k_stack)
@@ -148,11 +147,11 @@ def test_gradient_stackrt_n_k():
         [
             [0.0 + 0.0j, 0.0 + 0.0j, 0.0 + 0.0j, 0.0 + 0.0j, 0.0 + 0.0j],
             [
-                -0.36527706 - 0.10269702j,
-                0.13021597 - 0.09959709j,
-                0.07265407 + 0.04660518j,
-                0.05677543 + 0.00396251j,
-                -0.03252965 + 0.18921409j,
+                -0.36513863 - 0.10260296j,
+                0.1301631 - 0.0996078j,
+                0.07264408 + 0.04658007j,
+                0.05676103 + 0.00395349j,
+                -0.0324998 + 0.18916767j,
             ],
             [0.0 + 0.0j, 0.0 + 0.0j, 0.0 + 0.0j, 0.0 + 0.0j, 0.0 + 0.0j],
         ]
@@ -161,4 +160,4 @@ def test_gradient_stackrt_n_k():
     for elem in grad_R_TE:
         print(elem)
 
-    np.testing.assert_allclose(grad_R_TE, expected_grad_R_TE)
+    onp.testing.assert_allclose(grad_R_TE, expected_grad_R_TE)

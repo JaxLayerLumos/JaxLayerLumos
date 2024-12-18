@@ -1,6 +1,6 @@
 import pytest
 import jax.numpy as jnp
-import numpy as np
+import numpy as onp
 import scipy.constants as scic
 
 from jaxlayerlumos import utils_materials
@@ -79,13 +79,13 @@ def test_load_material_success():
 def test_load_material_failure():
     with pytest.raises(ValueError) as e:
         utils_materials.load_material("FakeMaterial")
-    np.testing.assert_string_equal(
+    onp.testing.assert_string_equal(
         str(e.value), "Material FakeMaterial not found in JaxLayerLumos."
     )
 
     with pytest.raises(ValueError) as e:
         utils_materials.load_material("Material")
-    np.testing.assert_string_equal(
+    onp.testing.assert_string_equal(
         str(e.value), "Material Material not found in JaxLayerLumos."
     )
 
@@ -107,7 +107,7 @@ def test_interpolate():
     values_interpolated = utils_materials.interpolate(freqs_values, frequencies)
     values_truth = jnp.array([10.0, 15.0, 17.5, 21.0, 30.0, 35.0])
 
-    np.testing.assert_allclose(values_interpolated, values_truth)
+    onp.testing.assert_allclose(values_interpolated, values_truth)
 
 
 def test_material_visible_light():
@@ -174,7 +174,7 @@ def test_material_data_conversion_and_interpolation():
 
 def test_get_n_k_surrounded_by_air():
     num_wavelengths = 34
-    materials = ["Ag", "Au", "W", "TiO2", "Si3N4"]
+    materials = onp.array(["Ag", "Au", "W", "TiO2", "Si3N4"])
     frequencies = utils_spectra.get_frequencies_visible_light(
         num_wavelengths=num_wavelengths
     )
@@ -184,12 +184,12 @@ def test_get_n_k_surrounded_by_air():
     assert n_k.ndim == 2
     assert n_k.shape[0] == num_wavelengths
     assert n_k.shape[1] == len(materials) + 2
-    assert jnp.all(jnp.real(n_k[:, 0]) == 1)
-    assert jnp.all(jnp.imag(n_k[:, 0]) == 0)
-    assert jnp.all(jnp.real(n_k[:, -1]) == 1)
-    assert jnp.all(jnp.imag(n_k[:, -1]) == 0)
+
+    print(n_k[0, 0])
+    assert jnp.allclose(n_k[0, 0], 1.0002839217955182 + 0j)
     assert jnp.allclose(n_k[10, 1], 0.13209204 + 2.77618307j)
     assert jnp.allclose(n_k[20, 2], 0.32581145 + 3.05379202j)
     assert jnp.allclose(n_k[30, 3], 3.74494455 + 2.78771241j)
     assert jnp.allclose(n_k[20, 4], 2.39396291 + 2.95673696e-09j)
     assert jnp.allclose(n_k[10, 5], 2.03410384 + 0.0j)
+    assert jnp.allclose(n_k[0, 6], 1.0002839217955182 + 0j)

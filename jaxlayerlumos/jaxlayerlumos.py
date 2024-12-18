@@ -1,5 +1,6 @@
 import jax
 import jax.numpy as jnp
+import numpy as onp
 from functools import partial
 from jax import lax, vmap
 
@@ -8,19 +9,26 @@ from jaxlayerlumos import utils_units
 
 
 def stackrt_eps_mu_base(
-    eps_r, mu_r, thicknesses, f_i, thetas_k, materials
+    eps_r, mu_r, thicknesses, f_i, thetas_k, materials=None
 ):
     assert isinstance(eps_r, jnp.ndarray)
     assert isinstance(mu_r, jnp.ndarray)
     assert isinstance(thicknesses, jnp.ndarray)
+    assert isinstance(materials, (type(None), onp.ndarray))
 
     assert eps_r.ndim == 1
     assert mu_r.ndim == 1
     assert thicknesses.ndim == 1
-    assert thicknesses[-1] == 0
+
     assert thicknesses[0] == 0
+    assert thicknesses[-1] == 0
+
     assert eps_r.shape[0] == thicknesses.shape[0]
     assert mu_r.shape[0] == thicknesses.shape[0]
+
+    if materials is not None:
+        assert materials.ndim == 1
+        assert thicknesses.shape[0] == materials.shape[0]
 
     num_layers = thicknesses.shape[0]
 
@@ -47,7 +55,7 @@ def stackrt_eps_mu_base(
     r_jk_TM = (Z_TM[1:] - Z_TM[:-1]) / (Z_TM[1:] + Z_TM[:-1])
     t_jk_TM = (2 * Z_TM[1:]) / (Z_TM[1:] + Z_TM[:-1])
 
-    if materials[-1] == 'PEC':
+    if materials is not None and materials[-1] == 'PEC':
         r_jk_TE = r_jk_TE.at[-1].set(-1.0)
         t_jk_TE = t_jk_TE.at[-1].set(1.0)
         r_jk_TM = r_jk_TM.at[-1].set(-1.0)
@@ -125,11 +133,13 @@ def stackrt_eps_mu_base(
     return R_TE, T_TE, R_TM, T_TM
 
 
-def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, materials):
+def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, materials=None):
     assert isinstance(eps_r, jnp.ndarray)
     assert isinstance(mu_r, jnp.ndarray)
     assert isinstance(d, jnp.ndarray)
     assert isinstance(f, jnp.ndarray)
+    assert isinstance(materials, (type(None), onp.ndarray))
+
     assert eps_r.ndim == 2
     assert mu_r.ndim == 2
     assert d.ndim == 1
@@ -141,11 +151,17 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, materials):
     assert mu_r.shape[0] == f.shape[0]
     assert mu_r.shape[1] == d.shape[0]
 
+    if materials is not None:
+        assert materials.ndim == 1
+        assert materials.shape[0] == d.shape[0]
+
     theta_rad = jnp.radians(theta)
 
-    stackrt_eps_mu_base_partial = partial(
-        stackrt_eps_mu_base, materials=materials
-    )
+#    stackrt_eps_mu_base_partial = partial(
+#        stackrt_eps_mu_base, materials=materials
+#    )
+    stackrt_eps_mu_base_partial = lambda a, b, c, d, e: stackrt_eps_mu_base(a, b, c, d, e, materials=materials)
+
     fun_mapped = jax.vmap(
         stackrt_eps_mu_base_partial, (0, 0, None, 0, None), (0, 0, 0, 0)
     )
@@ -162,14 +178,14 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, materials):
     # T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
     #     n[:, -1] / n[:, 0])
 
-    if materials[-1] == 'PEC':
+    if materials is not None and materials[-1] == 'PEC':
         T_TE = jnp.zeros_like(R_TE)
         T_TM = jnp.zeros_like(R_TM)
 
     return R_TE, T_TE, R_TM, T_TM
 
 
-def stackrt_eps_mu(eps_r, mu_r, d, f, thetas, materials):
+def stackrt_eps_mu(eps_r, mu_r, d, f, thetas, materials=None):
     if thetas is None:
         thetas = jnp.array([0])
     elif isinstance(thetas, (float, int)):
@@ -183,7 +199,7 @@ def stackrt_eps_mu(eps_r, mu_r, d, f, thetas, materials):
     return R_TE, T_TE, R_TM, T_TM
 
 
-def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas, materials):
+def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas, materials=None):
     """
     Calculate reflection and transmission coefficients for a multilayer stack at
     different frequencies and incidence angles.
@@ -215,6 +231,7 @@ def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas, materials)
     assert isinstance(thicknesses, jnp.ndarray)
     assert isinstance(frequencies, jnp.ndarray)
     assert isinstance(thetas, (type(None), jnp.ndarray, float, int))
+    assert isinstance(materials, (type(None), onp.ndarray))
 
     assert refractive_indices.ndim == 2
     assert thicknesses.ndim == 1
@@ -222,6 +239,10 @@ def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas, materials)
 
     assert refractive_indices.shape[0] == frequencies.shape[0]
     assert refractive_indices.shape[1] == thicknesses.shape[0]
+
+    if materials is not None:
+        assert materials.ndim == 1
+        assert refractive_indices.shape[1] == materials.shape[0]
 
     if thetas is None:
         thetas = jnp.array([0])

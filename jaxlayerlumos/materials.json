@@ -1,5 +1,6 @@
 {
     "Ag": "materials/Ag-Rakic-LD-1998.csv",
+    "Air": "materials/Air-Peck-1972.csv",
     "Al2O3": "materials/Al2O3-Querry-1985.csv",
     "Al": "materials/Al-Rakic-LD-1998.csv",
     "aSi": "materials/aSi-Pierce-1972.csv",
