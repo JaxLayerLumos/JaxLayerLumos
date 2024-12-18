@@ -17,7 +17,9 @@ def test_stackrt_n_k_0_sizes():
     n_stack = utils_materials.get_n_k(materials, frequencies)
     d_stack = utils_layers.get_thicknesses_surrounded_by_air(jnp.array([2e-8]))
 
-    R_TE, T_TE, R_TM, T_TM = wrappers.stackrt_n_k_0(n_stack, d_stack, frequencies, materials)
+    R_TE, T_TE, R_TM, T_TM = wrappers.stackrt_n_k_0(
+        n_stack, d_stack, frequencies, materials
+    )
 
     assert isinstance(R_TE, jnp.ndarray)
     assert isinstance(R_TM, jnp.ndarray)
@@ -43,7 +45,9 @@ def test_stackrt_n_k_45_sizes():
     n_stack = utils_materials.get_n_k(materials, frequencies)
     d_stack = utils_layers.get_thicknesses_surrounded_by_air(jnp.array([2e-8]))
 
-    R_TE, T_TE, R_TM, T_TM = wrappers.stackrt_n_k_45(n_stack, d_stack, frequencies, materials)
+    R_TE, T_TE, R_TM, T_TM = wrappers.stackrt_n_k_45(
+        n_stack, d_stack, frequencies, materials
+    )
 
     assert isinstance(R_TE, jnp.ndarray)
     assert isinstance(R_TM, jnp.ndarray)

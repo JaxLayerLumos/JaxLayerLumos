@@ -8,9 +8,7 @@ from jaxlayerlumos import utils_spectra
 from jaxlayerlumos import utils_units
 
 
-def stackrt_eps_mu_base(
-    eps_r, mu_r, thicknesses, f_i, thetas_k, materials=None
-):
+def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, materials=None):
     assert isinstance(eps_r, jnp.ndarray)
     assert isinstance(mu_r, jnp.ndarray)
     assert isinstance(thicknesses, jnp.ndarray)
@@ -55,7 +53,7 @@ def stackrt_eps_mu_base(
     r_jk_TM = (Z_TM[1:] - Z_TM[:-1]) / (Z_TM[1:] + Z_TM[:-1])
     t_jk_TM = (2 * Z_TM[1:]) / (Z_TM[1:] + Z_TM[:-1])
 
-    if materials is not None and materials[-1] == 'PEC':
+    if materials is not None and materials[-1] == "PEC":
         r_jk_TE = r_jk_TE.at[-1].set(-1.0)
         t_jk_TE = t_jk_TE.at[-1].set(1.0)
         r_jk_TM = r_jk_TM.at[-1].set(-1.0)
@@ -122,13 +120,16 @@ def stackrt_eps_mu_base(
 
     # n_ratio_TE =
     # n_ratio_TM2 = jnp.real(n[-1] / n[0]) * jnp.real(cos_theta_t[0] / cos_theta_t[-1])
-    #n_ratio_TM =
+    # n_ratio_TM =
     # n_ratio = jnp.real(n[-1] / n[0]) * jnp.real(cos_theta_t[0] / cos_theta_t[-1])
     R_TE = jnp.abs(r_TE_i) ** 2
     R_TM = jnp.abs(r_TM_i) ** 2
-    T_TE = jnp.abs(t_TE_i) ** 2 * jnp.real(n[-1]*cos_theta_t[-1] / (n[0]*cos_theta_t[0]))
-    T_TM = jnp.abs(t_TM_i) ** 2 * jnp.real(n[-1] * cos_theta_t[0]/ (n[0] * cos_theta_t[-1]))
-
+    T_TE = jnp.abs(t_TE_i) ** 2 * jnp.real(
+        n[-1] * cos_theta_t[-1] / (n[0] * cos_theta_t[0])
+    )
+    T_TM = jnp.abs(t_TM_i) ** 2 * jnp.real(
+        n[-1] * cos_theta_t[0] / (n[0] * cos_theta_t[-1])
+    )
 
     return R_TE, T_TE, R_TM, T_TM
 
@@ -157,10 +158,12 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, materials=None):
 
     theta_rad = jnp.radians(theta)
 
-#    stackrt_eps_mu_base_partial = partial(
-#        stackrt_eps_mu_base, materials=materials
-#    )
-    stackrt_eps_mu_base_partial = lambda a, b, c, d, e: stackrt_eps_mu_base(a, b, c, d, e, materials=materials)
+    #    stackrt_eps_mu_base_partial = partial(
+    #        stackrt_eps_mu_base, materials=materials
+    #    )
+    stackrt_eps_mu_base_partial = lambda a, b, c, d, e: stackrt_eps_mu_base(
+        a, b, c, d, e, materials=materials
+    )
 
     fun_mapped = jax.vmap(
         stackrt_eps_mu_base_partial, (0, 0, None, 0, None), (0, 0, 0, 0)
@@ -178,7 +181,7 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, materials=None):
     # T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
     #     n[:, -1] / n[:, 0])
 
-    if materials is not None and materials[-1] == 'PEC':
+    if materials is not None and materials[-1] == "PEC":
         T_TE = jnp.zeros_like(R_TE)
         T_TM = jnp.zeros_like(R_TM)
 
@@ -249,12 +252,14 @@ def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas, materials=
     elif isinstance(thetas, (float, int)):
         thetas = jnp.array([thetas])
 
-    eps_r = jnp.conj(refractive_indices ** 2)
+    eps_r = jnp.conj(refractive_indices**2)
     mu_r = jnp.ones_like(eps_r)
 
     fun_mapped = jax.vmap(
         stackrt_eps_mu_theta, (None, None, None, None, 0, None), (0, 0, 0, 0)
     )
-    R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, thicknesses, frequencies, thetas, materials)
+    R_TE, T_TE, R_TM, T_TM = fun_mapped(
+        eps_r, mu_r, thicknesses, frequencies, thetas, materials
+    )
 
     return R_TE, T_TE, R_TM, T_TM

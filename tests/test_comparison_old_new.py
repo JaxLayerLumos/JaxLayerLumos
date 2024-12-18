@@ -84,7 +84,10 @@ def compare_stackrt_old_new(use_zero_angle, use_thick_layers):
                 R_TM_new = onp.clip(R_TM_new, a_min=1e-8, a_max=None)
                 T_TM_new = onp.clip(T_TM_new, a_min=1e-8, a_max=None)
 
-            str_thicknesses = [f"{thickness / utils_units.get_nano():.4f}" for thickness in thicknesses[1:]]
+            str_thicknesses = [
+                f"{thickness / utils_units.get_nano():.4f}"
+                for thickness in thicknesses[1:]
+            ]
             print(f":materials: [{', '.join(materials)}]")
             print(f":thicknesses: [{', '.join(str_thicknesses)}]")
             print(f":angle: {angle:.4f}")
@@ -121,7 +124,9 @@ def compare_stackrt_old_new(use_zero_angle, use_thick_layers):
 
             print(f":new: {time_consumed_new:.4f} sec.")
             print(f":old: {time_consumed_old:.4f} sec.")
-            if not (is_close_R_TE and is_close_T_TE and is_close_R_TM and is_close_T_TM):
+            if not (
+                is_close_R_TE and is_close_T_TE and is_close_R_TM and is_close_T_TM
+            ):
                 print("=====NOT MATCHED=====")
 
             print("")
@@ -133,9 +138,13 @@ def compare_stackrt_old_new(use_zero_angle, use_thick_layers):
         assert False
 
     if counts_R_TE > 0 or counts_T_TE > 0 or counts_R_TM > 0 or counts_T_TM > 0:
-        print('failure ratios')
-        print(f'R_TE {counts_R_TE / counts_all:.4f} T_TE {counts_T_TE / counts_all:.4f}')
-        print(f'R_TM {counts_R_TM / counts_all:.4f} T_TM {counts_T_TM / counts_all:.4f}')
+        print("failure ratios")
+        print(
+            f"R_TE {counts_R_TE / counts_all:.4f} T_TE {counts_T_TE / counts_all:.4f}"
+        )
+        print(
+            f"R_TM {counts_R_TM / counts_all:.4f} T_TM {counts_T_TM / counts_all:.4f}"
+        )
 
         assert False
 

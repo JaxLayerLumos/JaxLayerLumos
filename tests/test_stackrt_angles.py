@@ -42,7 +42,7 @@ def test_angles_1():
         num_wavelengths=num_wavelengths
     )
 
-    materials = onp.array(['Air', 'TiO2', 'Air'])
+    materials = onp.array(["Air", "TiO2", "Air"])
     d_stack = jnp.array([0, 2e-8, 0])
     thetas = jnp.linspace(0, 89, 3)
 
@@ -133,7 +133,7 @@ def test_angles_2():
     wavelengths = jnp.array([300e-9])
     frequencies = utils_units.get_light_speed() / wavelengths
 
-    materials = onp.array(['Air', 'FusedSilica', 'Si3N4'])
+    materials = onp.array(["Air", "FusedSilica", "Si3N4"])
     thickness_materials = [0, 2.91937911, 0]
     theta = 47.1756
 
@@ -178,7 +178,7 @@ def test_angles_3():
     wavelengths = jnp.array([300e-9])
     frequencies = utils_units.get_light_speed() / wavelengths
 
-    materials = onp.array(['Air', 'Ag', 'Cr'])
+    materials = onp.array(["Air", "Ag", "Cr"])
     thickness_materials = [0, 9.36793259, 0]
     theta = 34.767507632418315
 

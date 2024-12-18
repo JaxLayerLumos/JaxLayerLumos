@@ -187,7 +187,7 @@ def get_eps_mu(materials, frequencies):
     assert isinstance(materials, onp.ndarray)
     assert isinstance(frequencies, jnp.ndarray)
     assert frequencies.ndim == 1
-    assert materials[0] == 'Air'
+    assert materials[0] == "Air"
 
     eps_r, mu_r = get_eps_mu_Michielssen(materials[1:-1].astype(int), frequencies)
 
@@ -291,9 +291,6 @@ def get_n_k_surrounded_by_air(materials, frequencies):
     assert isinstance(frequencies, jnp.ndarray)
     assert frequencies.ndim == 1
 
-    n_k = get_n_k(
-        onp.concatenate([["Air"], materials, ["Air"]], axis=0),
-        frequencies
-    )
+    n_k = get_n_k(onp.concatenate([["Air"], materials, ["Air"]], axis=0), frequencies)
 
     return n_k

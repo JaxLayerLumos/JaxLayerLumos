@@ -40,7 +40,9 @@ def compare_simulations(use_zero_angle, use_thick_layers):
                 n_k_material = n_material + 1j * k_material
 
                 thickness_material = (
-                    random_state.uniform(5.0, 100.0) if use_thick_layers else random_state.uniform(0.01, 10.0)
+                    random_state.uniform(5.0, 100.0)
+                    if use_thick_layers
+                    else random_state.uniform(0.01, 10.0)
                 )
                 thickness_material *= utils_units.get_nano()
 
@@ -67,11 +69,13 @@ def compare_simulations(use_zero_angle, use_thick_layers):
             is_close_R_TM = np.allclose(R_TM_old, R_TM_new, rtol=1e-5)
             is_close_T_TM = np.allclose(T_TM_old, T_TM_new, rtol=1e-5)
 
-            if not (is_close_R_TE and is_close_T_TE and is_close_R_TM and is_close_T_TM):
+            if not (
+                is_close_R_TE and is_close_T_TE and is_close_R_TM and is_close_T_TM
+            ):
                 print(f"Mismatch detected")
-                print(f'materials {materials}')
-                print(f'thicknesses {thicknesses}')
-                print(f'angle {angle}')
+                print(f"materials {materials}")
+                print(f"thicknesses {thicknesses}")
+                print(f"angle {angle}")
 
                 # Calculate Lumerical results
                 Rs, Rp, Ts, Tp = compute_properties_via_stackrt(
