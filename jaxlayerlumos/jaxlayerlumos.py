@@ -2,6 +2,7 @@ import jax
 import jax.numpy as jnp
 import numpy as onp
 from functools import partial
+from jax import lax, vmap
 
 from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_spectra

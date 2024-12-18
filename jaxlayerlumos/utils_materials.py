@@ -310,13 +310,18 @@ def get_n_k(materials, frequencies):
 
 
 def interpolate_multiple_materials_n_k(materials, frequencies):
+    n_k = []
+
     for material in materials:
-        n_material, k_material = utils_materials.interpolate_material_n_k(
+        n_material, k_material = interpolate_material_n_k(
             material, frequencies
         )
         n_k_material = n_material + 1j * k_material
+
         n_k.append(n_k_material)
-    return jnp.array(n_k).T
+
+    n_k = jnp.array(n_k).T
+    return n_k
 
 
 
