@@ -13,7 +13,7 @@ def test_stackrt_radar():
 
     d_stack = jnp.array([0, 0.7742, 0.8485, 1.4878, 1.9883, 1.9863, 0]) * 1e-3
     R_TE, T_TE, R_TM, T_TM = stackrt_eps_mu(
-        eps_stack, mu_stack, d_stack, frequencies, 0.0, materials
+        eps_stack, mu_stack, d_stack, frequencies, 0.0
     )
 
     R_avg = (R_TE + R_TM) / 2
