@@ -21,7 +21,7 @@ def test_stackrt_n_k_sizes():
     thetas = jnp.linspace(0, 89, num_angles)
 
     R_TE, T_TE, R_TM, T_TM = jll.stackrt_n_k(
-        n_stack, d_stack, frequencies, thetas, materials
+        n_stack, d_stack, frequencies, thetas
     )
 
     assert isinstance(R_TE, jnp.ndarray)

@@ -7,7 +7,7 @@ from jaxlayerlumos import utils_radio_frequency
 
 def test_stackrt_radio_frequency():
     frequencies = jnp.linspace(8e9, 18e9, 100)
-    materials = onp.array(["Air", "Ag", "Air"])
+    materials = ["Air", "Ag", "Air"]
 
     n_k_ag = utils_radio_frequency.load_material_RF("Ag", frequencies)
     n_ag = (
@@ -22,7 +22,7 @@ def test_stackrt_radio_frequency():
     d_stack = jnp.hstack([d_air, d_ag, d_air])  # Stack thickness
 
     R_TE, T_TE, R_TM, T_TM = stackrt(
-        n_stack, d_stack, frequencies, jnp.array([0]), materials
+        n_stack, d_stack, frequencies, jnp.array([0])
     )
 
     SE_TE = -10 * jnp.log10(T_TE)

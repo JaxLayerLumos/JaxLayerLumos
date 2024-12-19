@@ -13,13 +13,13 @@ def test_gradient_stackrt_thickness_Ag():
     frequencies = utils_spectra.get_frequencies_visible_light(
         num_wavelengths=num_wavelengths
     )
-    materials = onp.array(["Air", "Ag", "Air"])
+    materials = ["Air", "Ag", "Air"]
 
     n_stack = utils_materials.get_n_k(materials, frequencies)
     d_stack = utils_layers.get_thicknesses_surrounded_by_air(jnp.array([100e-9]))
 
     def compute_R_TE_first_element(d):
-        R_TE, _, _, _ = stackrt(n_stack, d, frequencies, 0.0, materials)
+        R_TE, _, _, _ = stackrt(n_stack, d, frequencies, 0.0)
         return R_TE[0, 0]
 
     grad_R_TE = jax.grad(compute_R_TE_first_element)(d_stack)
@@ -30,9 +30,9 @@ def test_gradient_stackrt_thickness_Ag():
 
     expected_grad_R_TE = jnp.array(
         [
+            9.17860131054903e-09,
+            717163.9524140153,
             0.0,
-            717163.9524140044,
-            -2.0651852948735317e-09,
         ]
     )
 
@@ -48,7 +48,7 @@ def test_gradient_stackrt_thickness_Au():
         num_wavelengths=num_wavelengths
     )
 
-    n_stack = utils_materials.get_n_k_surrounded_by_air(onp.array(["Au"]), frequencies)
+    n_stack = utils_materials.get_n_k_surrounded_by_air(["Au"], frequencies)
     d_stack = utils_layers.get_thicknesses_surrounded_by_air(jnp.array([2000e-9]))
 
     def compute_R_TE_first_element(d):
@@ -99,11 +99,11 @@ def test_gradient_stackrt_thickness_TiO2_W_SiO2():
 
     expected_grad_R_TE = jnp.array(
         [
-            0.0,
-            3444796.913262839,
-            -25782146.849778175,
+            4.465338601360629e-10,
+            3444796.913262841,
+            -25782146.849778168,
             1823098.4754607277,
-            -4.202229424512782e-10,
+            0.0,
         ]
     )
 
@@ -134,7 +134,7 @@ def test_gradient_stackrt_n_k():
             [jnp.ones((1, num_wavelengths)), n_k, jnp.ones((1, num_wavelengths))],
             axis=0,
         )
-        R_TE, _, _, _ = stackrt(n_k_transformed, d_stack, frequencies, 20.0, materials)
+        R_TE, _, _, _ = stackrt(n_k_transformed, d_stack, frequencies, 20.0)
         return R_TE[0, 2]
 
     grad_R_TE = jax.grad(compute_R_TE_first_element)(n_k_stack)
