@@ -1,11 +1,11 @@
 import jax.numpy as jnp
-import numpy as np
+import numpy as onp
 
 from jaxlayerlumos import stackrt
-# from jaxlayerlumos.jaxlayerlumos_old import stackrt
 from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_spectra
 from jaxlayerlumos import utils_layers
+from jaxlayerlumos import utils_units
 
 
 def test_sizes():
@@ -21,7 +21,7 @@ def test_sizes():
     thetas = jnp.linspace(0, 89, num_angles)
 
 
-    R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas, materials)
+    R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas)
 
     assert isinstance(R_TE, jnp.ndarray)
     assert isinstance(R_TM, jnp.ndarray)
@@ -37,7 +37,7 @@ def test_sizes():
     assert T_TE.shape[1] == T_TM.shape[1] == num_wavelengths
 
 
-def test_angles():
+def test_angles_1():
     num_wavelengths = 5
     frequencies = utils_spectra.get_frequencies_visible_light(
         num_wavelengths=num_wavelengths
@@ -46,11 +46,11 @@ def test_angles():
     materials = ['Air', 'TiO2', 'Air']
     d_stack = jnp.array([0, 2e-8, 0])
     thetas = jnp.linspace(0, 89, 3)
-    n_k = utils_materials.interpolate_multiple_materials_n_k(materials, frequencies)
+    n_k = utils_materials.get_n_k(materials, frequencies)
 
     # thicknesses.extend(thickness_materials)
 
-    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, d_stack, frequencies, thetas, materials)
+    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, d_stack, frequencies, thetas)
 
     R_avg = (R_TE + R_TM) / 2
     T_avg = (T_TE + T_TM) / 2
@@ -117,5 +117,50 @@ def test_angles():
         for elem_2 in elem_1:
             print(elem_2)
 
-    np.testing.assert_allclose(R_avg, expected_R_avg)
-    np.testing.assert_allclose(T_avg, expected_T_avg)
+    onp.testing.assert_allclose(R_avg, expected_R_avg)
+    onp.testing.assert_allclose(T_avg, expected_T_avg)
+
+
+def test_angles_2():
+    wavelengths = jnp.array([300e-9])
+    frequencies = utils_units.get_light_speed() / wavelengths
+
+    materials = onp.array(['Air', 'FusedSilica', 'Si3N4'])
+    thickness_materials = [0, 2.91937911, 0]
+    theta = 47.1756
+
+    thicknesses = jnp.array(thickness_materials)
+    n_k = utils_materials.get_n_k(materials, frequencies)
+
+    thicknesses *= utils_units.get_nano()
+
+    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, thicknesses, frequencies, theta)
+
+    R_avg = (R_TE + R_TM) / 2
+    T_avg = (T_TE + T_TM) / 2
+
+    print("R_TE")
+    for elem_1 in R_TE:
+        for elem_2 in elem_1:
+            print(elem_2)
+
+    print("T_TE")
+    for elem_1 in T_TE:
+        for elem_2 in elem_1:
+            print(elem_2)
+
+    print("R_TM")
+    for elem_1 in R_TM:
+        for elem_2 in elem_1:
+            print(elem_2)
+
+    print("T_TM")
+    for elem_1 in T_TM:
+        for elem_2 in elem_1:
+            print(elem_2)
+
+    expected_R_avg = jnp.array([[0.24877806962502294 + 0.048295322372087564]]) / 2
+    expected_T_avg = jnp.array([[0.7512219303749771 + 0.9517046776279122]]) / 2
+
+    onp.testing.assert_allclose(R_avg, expected_R_avg)
+    onp.testing.assert_allclose(T_avg, expected_T_avg)

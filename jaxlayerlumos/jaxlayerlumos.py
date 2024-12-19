@@ -219,7 +219,7 @@ def stackrt_eps_mu(eps_r, mu_r, d, f, thetas):
         thetas = jnp.array([thetas])
 
     fun_mapped = jax.vmap(
-        stackrt_eps_mu_theta, (None, None, None, None, 0, None), (0, 0, 0, 0)
+        stackrt_eps_mu_theta, (None, None, None, None, 0), (0, 0, 0, 0)
     )
     R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, d, f, thetas)
 
@@ -274,7 +274,7 @@ def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas):
     eps_r, mu_r = utils_materials.convert_n_k_to_eps_mu_for_non_magnetic_materials(refractive_indices)
 
     fun_mapped = jax.vmap(
-        stackrt_eps_mu_theta, (None, None, None, None, 0, None), (0, 0, 0, 0)
+        stackrt_eps_mu_theta, (None, None, None, None, 0), (0, 0, 0, 0)
     )
     R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, thicknesses, frequencies, thetas)
 

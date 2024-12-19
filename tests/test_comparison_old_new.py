@@ -59,7 +59,7 @@ def compare_stackrt_old_new(use_zero_angle, use_thick_layers):
 
             time_start_new = time.monotonic()
             R_TE_new, T_TE_new, R_TM_new, T_TM_new = stackrt_new(
-                n_k, thicknesses, frequencies, angle, materials
+                n_k, thicknesses, frequencies, angle
             )
             time_end_new = time.monotonic()
 
