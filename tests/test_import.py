@@ -27,6 +27,7 @@ def test_import_jaxlayerlumos_stackrt():
 def test_import_utils():
     import jaxlayerlumos.utils_spectra
     import jaxlayerlumos.utils_materials
+    import jaxlayerlumos.utils_radar_materials
     import jaxlayerlumos.utils_layers
     import jaxlayerlumos.utils_units
 
