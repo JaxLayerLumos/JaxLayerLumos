@@ -17,7 +17,7 @@ def test_stackrt_1():
     thicknesses = jnp.array(thickness_materials)
     n_k = utils_materials.get_n_k(materials, frequencies)
 
-    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, thicknesses, frequencies, 0.0, materials)
+    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, thicknesses, frequencies, 0.0)
 
     R_avg = (R_TE + R_TM) / 2
     T_avg = (T_TE + T_TM) / 2
@@ -65,7 +65,7 @@ def test_stackrt_2():
 
     thicknesses = jnp.array(thickness_materials)
 
-    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, thicknesses, frequencies, 0.0, materials)
+    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, thicknesses, frequencies, 0.0)
 
     R_avg = (R_TE + R_TM) / 2
     T_avg = (T_TE + T_TM) / 2
