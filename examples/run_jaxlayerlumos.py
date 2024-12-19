@@ -1,17 +1,18 @@
-import numpy as np
+import numpy as onp
 import jax.numpy as jnp
 from jaxlayerlumos import stackrt
 
 from jaxlayerlumos.utils_materials import get_n_k_surrounded_by_air
 from jaxlayerlumos.utils_spectra import get_frequencies_visible_light
-from jaxlayerlumos.utils_layers import (
-    get_thicknesses_surrounded_by_air,
-    convert_nm_to_m,
-)
+from jaxlayerlumos.utils_spectra import convert_frequencies_to_wavelengths
+from jaxlayerlumos.utils_layers import get_thicknesses_surrounded_by_air
+from jaxlayerlumos.utils_units import convert_nm_to_m
 
 
 if __name__ == "__main__":
     frequencies = get_frequencies_visible_light()
+    wavelengths = convert_frequencies_to_wavelengths(frequencies)
+
     list_materials = [
         ["Ag"],
         ["Ag"],
@@ -34,15 +35,21 @@ if __name__ == "__main__":
             layers = convert_nm_to_m(get_thicknesses_surrounded_by_air(thicknesses))
 
             R_TE, T_TE, R_TM, T_TM = stackrt(
-                n_k, layers, frequencies, thetas=jnp.array([angle])
+                n_k, layers, frequencies, jnp.array([angle])
             )
 
-            R_TE_jll = np.squeeze(np.array(R_TE), axis=0)
-            R_TM_jll = np.squeeze(np.array(R_TM), axis=0)
-            T_TE_jll = np.squeeze(np.array(T_TE), axis=0)
-            T_TM_jll = np.squeeze(np.array(T_TM), axis=0)
+            R_TE_jll = onp.squeeze(onp.array(R_TE), axis=0)
+            R_TM_jll = onp.squeeze(onp.array(R_TM), axis=0)
+            T_TE_jll = onp.squeeze(onp.array(T_TE), axis=0)
+            T_TM_jll = onp.squeeze(onp.array(T_TM), axis=0)
 
             print(R_TE_jll.shape)
             print(R_TM_jll.shape)
             print(T_TE_jll.shape)
             print(T_TM_jll.shape)
+
+            spectrum_reflection = (R_TE_jll + R_TM_jll) / 2
+            spectrum_tranmission = (T_TE_jll + T_TM_jll) / 2
+
+            print(spectrum_reflection.shape)
+            print(spectrum_tranmission.shape)
