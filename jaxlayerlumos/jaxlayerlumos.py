@@ -8,6 +8,19 @@ from jaxlayerlumos import utils_spectra
 from jaxlayerlumos import utils_units
 
 
+def true_fun(r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM):
+    r_jk_TE = r_jk_TE.at[-1].set(-1.0)
+    t_jk_TE = t_jk_TE.at[-1].set(1.0)
+    r_jk_TM = r_jk_TM.at[-1].set(-1.0)
+    t_jk_TM = t_jk_TM.at[-1].set(1.0)
+
+    return r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM
+
+
+def false_fun(r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM):
+    return r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM
+
+
 def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k):
     assert isinstance(eps_r, jnp.ndarray)
     assert isinstance(mu_r, jnp.ndarray)
@@ -47,17 +60,6 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k):
 
     r_jk_TM = (Z_TM[1:] - Z_TM[:-1]) / (Z_TM[1:] + Z_TM[:-1])
     t_jk_TM = (2 * Z_TM[1:]) / (Z_TM[1:] + Z_TM[:-1]) * cos_theta_t[:-1]/cos_theta_t[1:]
-
-    def true_fun(r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM):
-        r_jk_TE = r_jk_TE.at[-1].set(-1.0)
-        t_jk_TE = t_jk_TE.at[-1].set(1.0)
-        r_jk_TM = r_jk_TM.at[-1].set(-1.0)
-        t_jk_TM = t_jk_TM.at[-1].set(1.0)
-
-        return r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM
-
-    def false_fun(r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM):
-        return r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM
 
     r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM = jax.lax.cond(
         jnp.isinf(jnp.real(eps_r[-1])) & jnp.isclose(jnp.imag(eps_r[-1]), 0) & jnp.isclose(jnp.real(mu_r[-1]), 1) & jnp.isclose(jnp.imag(mu_r[-1]), 0),
