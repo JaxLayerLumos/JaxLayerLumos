@@ -26,6 +26,11 @@ def test_get_centi():
     onp.testing.assert_allclose(utils_units.get_centi(), 1e-2)
 
 
+def test_get_giga():
+    onp.testing.assert_allclose(utils_units.get_giga(), scic.giga)
+    onp.testing.assert_allclose(utils_units.get_giga(), 1e9)
+
+
 def test_convert_nm_to_m():
     thicknesses = jnp.array([10.0, 20.0, 4.0, 1.0, 2.0])
     thicknesses_in_m = utils_units.convert_nm_to_m(thicknesses)

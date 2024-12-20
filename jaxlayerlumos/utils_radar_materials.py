@@ -1,9 +1,19 @@
 import jax.numpy as jnp
+import numpy as onp
+
+from jaxlayerlumos import utils_units
 
 
-def get_eps_mu_Michielssen(materialInd, f_Hz):
+def get_eps_mu_Michielssen(material_indices, frequencies):
+    assert isinstance(material_indices, onp.ndarray)
+    assert isinstance(frequencies, jnp.ndarray)
+    assert material_indices.ndim == 1
+    assert frequencies.ndim == 1
+    for material_index in material_indices:
+        assert material_index in onp.arange(1, 17)
+
     # Gets parameters from Michiellsen
-    f = f_Hz / 1e9  # in GHz
+    f = frequencies / utils_units.get_giga()  # in GHz
     M_epsr = jnp.vstack(
         [
             jnp.tile(
@@ -53,8 +63,8 @@ def get_eps_mu_Michielssen(materialInd, f_Hz):
         ]
     )
 
-    # Initialize epsr and mur for the given materialInd
-    eps_r = M_epsr[materialInd - 1, :]  # Python uses 0-based indexing
-    mu_r = M_mur[materialInd - 1, :]
+    # Initialize epsr and mur for the given material_indices
+    eps_r = M_epsr[material_indices - 1, :]  # Python uses 0-based indexing
+    mu_r = M_mur[material_indices - 1, :]
 
     return eps_r, mu_r

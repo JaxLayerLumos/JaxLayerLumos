@@ -17,6 +17,10 @@ def get_centi():
     return scic.centi
 
 
+def get_giga():
+    return scic.giga
+
+
 def convert_nm_to_m(thicknesses):
     return thicknesses * get_nano()
 

@@ -189,11 +189,12 @@ def interpolate_material_n_k(material, frequencies):
 
 
 def get_eps_mu(materials, frequencies):
-    assert isinstance(materials, onp.ndarray)
+    assert isinstance(materials, (list, onp.ndarray))
     assert isinstance(frequencies, jnp.ndarray)
     assert frequencies.ndim == 1
     assert materials[0] == "Air"
 
+    materials = onp.array(materials)
     eps_r, mu_r = utils_radar_materials.get_eps_mu_Michielssen(materials[1:-1].astype(int), frequencies)
 
     n_k_air = get_n_k(materials[:1], frequencies)

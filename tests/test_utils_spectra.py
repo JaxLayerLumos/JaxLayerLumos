@@ -1,5 +1,5 @@
 import jax.numpy as jnp
-import numpy as np
+import numpy as onp
 
 from jaxlayerlumos import utils_spectra
 
@@ -16,7 +16,7 @@ def test_convert_frequencies_to_wavelengths():
     assert frequencies_.ndim == 1
     assert frequencies_.shape[0] == num_frequencies
 
-    np.testing.assert_allclose(frequencies_, frequencies)
+    onp.testing.assert_allclose(frequencies_, frequencies)
 
 
 def test_convert_wavelengths_to_frequencies():
@@ -31,7 +31,7 @@ def test_convert_wavelengths_to_frequencies():
     assert wavelengths_.ndim == 1
     assert wavelengths_.shape[0] == num_wavelengths
 
-    np.testing.assert_allclose(wavelengths_, wavelengths)
+    onp.testing.assert_allclose(wavelengths_, wavelengths)
 
 
 def test_get_frequencies_visible_light():
@@ -43,8 +43,8 @@ def test_get_frequencies_visible_light():
 
     assert frequencies.ndim == 1
     assert frequencies.shape[0] == num_wavelengths
-    np.testing.assert_allclose(np.min(frequencies), 3.84349305e14)
-    np.testing.assert_allclose(np.max(frequencies), 7.88927521e14)
+    onp.testing.assert_allclose(onp.min(frequencies), 3.84349305e14)
+    onp.testing.assert_allclose(onp.max(frequencies), 7.88927521e14)
 
 
 def test_get_frequencies_wide_visible_light():
@@ -56,5 +56,5 @@ def test_get_frequencies_wide_visible_light():
 
     assert frequencies.ndim == 1
     assert frequencies.shape[0] == num_wavelengths
-    np.testing.assert_allclose(np.min(frequencies), 3.331027e14)
-    np.testing.assert_allclose(np.max(frequencies), 9.993082e14)
+    onp.testing.assert_allclose(onp.min(frequencies), 3.331027e14)
+    onp.testing.assert_allclose(onp.max(frequencies), 9.993082e14)

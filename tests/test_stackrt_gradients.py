@@ -175,4 +175,3 @@ def test_gradient_stackrt_n_k():
         print(elem)
 
     onp.testing.assert_allclose(grad_R_TE, expected_grad_R_TE)
-
