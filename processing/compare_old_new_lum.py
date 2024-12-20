@@ -1,12 +1,12 @@
 import time
-import numpy as np
+import numpy as onp
 import jax.numpy as jnp
-from contextlib import redirect_stdout
 
 from jaxlayerlumos.jaxlayerlumos import stackrt_n_k as stackrt_new
 from jaxlayerlumos.jaxlayerlumos_old import stackrt as stackrt_old
 from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_units
+
 from lumerical_stackrt_multi_layers import compute_properties_via_stackrt
 
 
@@ -19,7 +19,7 @@ def compare_simulations(use_zero_angle, use_thick_layers):
     num_layerss = jnp.array([2, 4, 6, 8, 10])
     num_tests = 100
 
-    random_state = np.random.RandomState(42)
+    random_state = onp.random.RandomState(42)
 
     for num_layers in num_layerss:
         for _ in range(num_tests):
@@ -64,10 +64,10 @@ def compare_simulations(use_zero_angle, use_thick_layers):
             )
 
             # Compare old and new
-            is_close_R_TE = np.allclose(R_TE_old, R_TE_new, rtol=1e-5)
-            is_close_T_TE = np.allclose(T_TE_old, T_TE_new, rtol=1e-5)
-            is_close_R_TM = np.allclose(R_TM_old, R_TM_new, rtol=1e-5)
-            is_close_T_TM = np.allclose(T_TM_old, T_TM_new, rtol=1e-5)
+            is_close_R_TE = onp.allclose(R_TE_old, R_TE_new, rtol=1e-5)
+            is_close_T_TE = onp.allclose(T_TE_old, T_TE_new, rtol=1e-5)
+            is_close_R_TM = onp.allclose(R_TM_old, R_TM_new, rtol=1e-5)
+            is_close_T_TM = onp.allclose(T_TM_old, T_TM_new, rtol=1e-5)
 
             if not (
                 is_close_R_TE and is_close_T_TE and is_close_R_TM and is_close_T_TM
@@ -79,16 +79,16 @@ def compare_simulations(use_zero_angle, use_thick_layers):
 
                 # Calculate Lumerical results
                 Rs, Rp, Ts, Tp = compute_properties_via_stackrt(
-                    np.array(thicknesses),
-                    np.array(n_k).T,
-                    np.array(frequencies),
-                    angle_of_incidence=np.array([angle]),
+                    onp.array(thicknesses),
+                    onp.array(n_k).T,
+                    onp.array(frequencies),
+                    angle_of_incidence=onp.array([angle]),
                 )
 
-                R_TE_lum = np.squeeze(np.array(Rs), axis=1)
-                R_TM_lum = np.squeeze(np.array(Rp), axis=1)
-                T_TE_lum = np.squeeze(np.array(Ts), axis=1)
-                T_TM_lum = np.squeeze(np.array(Tp), axis=1)
+                R_TE_lum = onp.squeeze(onp.array(Rs), axis=1)
+                R_TM_lum = onp.squeeze(onp.array(Rp), axis=1)
+                T_TE_lum = onp.squeeze(onp.array(Ts), axis=1)
+                T_TM_lum = onp.squeeze(onp.array(Tp), axis=1)
 
                 if not is_close_R_TE:
                     print("R_TE NOT MATHCED")
@@ -116,11 +116,7 @@ def compare_simulations(use_zero_angle, use_thick_layers):
 
 
 if __name__ == "__main__":
-    log_file = "compare_results.txt"
-    with open(log_file, "w") as f:
-        with redirect_stdout(f):
-            # Example configurations to run the comparisons
-            compare_simulations(use_zero_angle=True, use_thick_layers=False)
-            compare_simulations(use_zero_angle=True, use_thick_layers=True)
-            compare_simulations(use_zero_angle=False, use_thick_layers=False)
-            compare_simulations(use_zero_angle=False, use_thick_layers=True)
+    compare_simulations(use_zero_angle=True, use_thick_layers=False)
+    compare_simulations(use_zero_angle=True, use_thick_layers=True)
+    compare_simulations(use_zero_angle=False, use_thick_layers=False)
+    compare_simulations(use_zero_angle=False, use_thick_layers=True)

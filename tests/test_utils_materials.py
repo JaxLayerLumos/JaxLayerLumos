@@ -177,6 +177,31 @@ def test_material_data_conversion_and_interpolation():
     assert jnp.isclose(actual_k, expected_k)
 
 
+def test_get_n_k():
+    num_wavelengths = 34
+    materials = ["Sapphire", "Al", "Cu", "SiO2", "Si3N4"]
+    frequencies = utils_spectra.get_frequencies_visible_light(
+        num_wavelengths=num_wavelengths
+    )
+
+    with pytest.raises(AssertionError):
+        utils_materials.get_n_k("abc", frequencies)
+    with pytest.raises(AssertionError):
+        utils_materials.get_n_k(materials, "abc")
+
+    n_k = utils_materials.get_n_k(materials, frequencies)
+
+    assert n_k.ndim == 2
+    assert n_k.shape[0] == num_wavelengths
+    assert n_k.shape[1] == len(materials)
+
+    assert jnp.allclose(n_k[10, 0], 1.7741475745023563 + 0j)
+    assert jnp.allclose(n_k[20, 1], 1.291823225506282 + 7.198159119093977j)
+    assert jnp.allclose(n_k[30, 2], 0.25578634278370915 + 4.487833873569254j)
+    assert jnp.allclose(n_k[20, 3], 1.4638938204021967 + 0.0016911306115694245j)
+    assert jnp.allclose(n_k[10, 4], 2.0341038418364823 + 0j)
+
+
 def test_get_n_k_surrounded_by_air():
     num_wavelengths = 34
     materials = onp.array(["Ag", "Au", "W", "TiO2", "Si3N4"])

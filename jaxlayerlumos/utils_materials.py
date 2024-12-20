@@ -23,6 +23,7 @@ def get_all_materials():
     return list(material_indices.keys())
 
 
+'''
 def load_material_f_ghz(material):
     material_indices, str_directory = load_json()
     str_file = material_indices.get(material)
@@ -76,6 +77,7 @@ def load_material_f_ghz(material):
         )
 
     return data_eps, data_mu
+'''
 
 
 def load_material_wavelength_um(material):
