@@ -1,6 +1,6 @@
 # Supported Materials
 
-32 materials: Ag, Air, Al2O3, Al, aSi, Au, BK7, Cr, cSi, Cu, Fe, FusedSilica, GaAs, GaP, Ge, InP, ITO, Mg, Mn, Ni, Pb, Pd, Pt, Sapphire, Si3N4, SiO2, TiN, TiO2, Ti, W, ZnO, Zn
+38 materials: Ag, Air, Al2O3, Al, aSi, aSi-Zarei, Au, AZO-Zarei, BK7, Cr, cSi, Cu, Fe, FusedSilica, GaAs, GaP, Ge, InP, ITO, ITO-Zarei, Mg, Mn, Ni, Pb, Pd, Pt, Sapphire, Si3N4, Si3N4-Zarei, SiO2, SiO2-Zarei, TiN, TiO2, TiO2-Zarei, Ti, W, ZnO, Zn
 
 - Ag
 
@@ -22,9 +22,17 @@
 
 <p align='center'><img src='assets/refractive_indices/aSi.png' width='400' /></p>
 
+- aSi-Zarei
+
+<p align='center'><img src='assets/refractive_indices/aSi-Zarei.png' width='400' /></p>
+
 - Au
 
 <p align='center'><img src='assets/refractive_indices/Au.png' width='400' /></p>
+
+- AZO-Zarei
+
+<p align='center'><img src='assets/refractive_indices/AZO-Zarei.png' width='400' /></p>
 
 - BK7
 
@@ -70,6 +78,10 @@
 
 <p align='center'><img src='assets/refractive_indices/ITO.png' width='400' /></p>
 
+- ITO-Zarei
+
+<p align='center'><img src='assets/refractive_indices/ITO-Zarei.png' width='400' /></p>
+
 - Mg
 
 <p align='center'><img src='assets/refractive_indices/Mg.png' width='400' /></p>
@@ -102,9 +114,17 @@
 
 <p align='center'><img src='assets/refractive_indices/Si3N4.png' width='400' /></p>
 
+- Si3N4-Zarei
+
+<p align='center'><img src='assets/refractive_indices/Si3N4-Zarei.png' width='400' /></p>
+
 - SiO2
 
 <p align='center'><img src='assets/refractive_indices/SiO2.png' width='400' /></p>
+
+- SiO2-Zarei
+
+<p align='center'><img src='assets/refractive_indices/SiO2-Zarei.png' width='400' /></p>
 
 - TiN
 
@@ -113,6 +133,10 @@
 - TiO2
 
 <p align='center'><img src='assets/refractive_indices/TiO2.png' width='400' /></p>
+
+- TiO2-Zarei
+
+<p align='center'><img src='assets/refractive_indices/TiO2-Zarei.png' width='400' /></p>
 
 - Ti
 

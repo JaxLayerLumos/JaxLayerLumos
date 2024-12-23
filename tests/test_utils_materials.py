@@ -13,7 +13,9 @@ LIST_MATERIALS = [
     "Al2O3",
     "Al",
     "aSi",
+    "aSi-Zarei",
     "Au",
+    "AZO-Zarei",
     "BK7",
     "Cr",
     "cSi",
@@ -25,6 +27,7 @@ LIST_MATERIALS = [
     "Ge",
     "InP",
     "ITO",
+    "ITO-Zarei",
     "Mg",
     "Mn",
     "Ni",
@@ -33,9 +36,12 @@ LIST_MATERIALS = [
     "Pt",
     "Sapphire",
     "Si3N4",
+    "Si3N4-Zarei",
     "SiO2",
+    "SiO2-Zarei",
     "TiN",
     "TiO2",
+    "TiO2-Zarei",
     "Ti",
     "W",
     "ZnO",
@@ -94,7 +100,7 @@ def test_interpolate():
     freqs_values = jnp.array([[100.0, 10.0], [200.0, 20.0], [350, 35.0]])
     frequencies = jnp.array([100.0, 150.0, 175.0, 210.0, 300.0, 350.0])
     frequencies_extrapolation = jnp.array(
-        [90.0, 100.0, 150.0, 175.0, 210.0, 300.0, 390.0]
+        [50.0, 100.0, 150.0, 175.0, 210.0, 300.0, 500.0]
     )
 
     with pytest.raises(AssertionError):
