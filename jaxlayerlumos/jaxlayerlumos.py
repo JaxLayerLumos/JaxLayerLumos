@@ -21,7 +21,7 @@ def false_fun(r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM):
     return r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM
 
 
-def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k):
+def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, return_coeffs = False):
     assert isinstance(eps_r, jnp.ndarray)
     assert isinstance(mu_r, jnp.ndarray)
     assert isinstance(thicknesses, jnp.ndarray)
@@ -36,7 +36,7 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k):
     assert eps_r.shape[0] == thicknesses.shape[0]
     assert mu_r.shape[0] == thicknesses.shape[0]
 
-    num_layers = thicknesses.shape[0]
+    # num_layers = thicknesses.shape[0]
 
     c = utils_units.get_light_speed()
     n = jnp.conj(jnp.sqrt(eps_r * mu_r))
@@ -58,15 +58,25 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k):
     r_jk_TE = (Z_TE[1:] - Z_TE[:-1]) / (Z_TE[1:] + Z_TE[:-1])
     t_jk_TE = (2 * Z_TE[1:]) / (Z_TE[1:] + Z_TE[:-1])
 
-    r_jk_TM = (Z_TM[1:] - Z_TM[:-1]) / (Z_TM[1:] + Z_TM[:-1])
+    r_jk_TM = (Z_TM[:-1] - Z_TM[1:]) / (Z_TM[1:] + Z_TM[:-1])
     t_jk_TM = (2 * Z_TM[1:]) / (Z_TM[1:] + Z_TM[:-1]) * cos_theta_t[:-1]/cos_theta_t[1:]
 
     r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM = jax.lax.cond(
-        jnp.isinf(jnp.real(eps_r[-1])) & jnp.isclose(jnp.imag(eps_r[-1]), 0) & jnp.isclose(jnp.real(mu_r[-1]), 1) & jnp.isclose(jnp.imag(mu_r[-1]), 0),
+        jnp.isinf(jnp.real(eps_r[-1])) & jnp.isclose(jnp.imag(eps_r[-1]), 0) & jnp.isclose(jnp.real(mu_r[-1]),
+                                                                                           1) & jnp.isclose(
+            jnp.imag(mu_r[-1]), 0),
         true_fun,
         false_fun,
         r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM
     )
+
+    # r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM = jax.lax.cond(
+    #     jnp.isinf(jnp.real(eps_r[-1])) & jnp.isclose(jnp.imag(eps_r[-1]), 0) & jnp.isclose(jnp.real(mu_r[-1]), 1) & jnp.isclose(jnp.imag(mu_r[-1]), 0),
+    #     true_fun,
+    #     false_fun,
+    #     r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM
+    # )
+
 
 #    if materials is not None and materials[-1] == "PEC":
 #    if jnp.isinf(jnp.real(eps_r[-1])) & jnp.isclose(jnp.imag(eps_r[-1]), 0) & jnp.isclose(jnp.real(mu_r[-1]), 1) & jnp.isclose(jnp.imag(mu_r[-1]), 0):
@@ -117,24 +127,46 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k):
     # DP_TE = jnp.matmul(D_TE[:-1], P[:-1])
     # DP_TM = jnp.matmul(D_TM[:-1], P[:-1])
 
-    # def matmul_scan(a, b):
-    #     return jnp.matmul(a, b)
 
-    def matmul_left(a, b):
-        # aggregator that returns (b @ a)
-        return jnp.matmul(b, a)
 
-    DP_TE_rev = jnp.flip(DP_TE, axis=0)
-    M_TE = jax.lax.associative_scan(matmul_left, DP_TE_rev)[-1]
+    if not return_coeffs:
+        def matmul_scan(a, b):
+            return jnp.matmul(a, b)
 
-    DP_TM_rev = jnp.flip(DP_TM, axis=0)
-    M_TM = jax.lax.associative_scan(matmul_left, DP_TM_rev)[-1]
+        M_TE = jax.lax.associative_scan(matmul_scan, DP_TE)[-1]
+        M_TM = jax.lax.associative_scan(matmul_scan, DP_TM)[-1]
+    else:
+        def matmul_left(a, b):
+            # aggregator that returns (b @ a)
+            return jnp.matmul(b, a)
 
+        DP_TE_rev = jnp.flip(DP_TE, axis=0)
+        M_TE_all = jax.lax.associative_scan(matmul_left, DP_TE_rev)
+        M_TE_flipped = jnp.flip(M_TE_all, axis=0)
+        M_TE = M_TE_all[-1]
+        coeff_TE = M_TE_flipped[:, :, 0]
+        coeff_TE = jnp.concatenate((coeff_TE, jnp.array([[1, 0]])), axis=0)
+        coeff_TE = coeff_TE / M_TE[0, 0]
+        #M_TE_top_rows = M_TE_flipped[:, 0, :]
+        #M_TE_column = jnp.transpose(M_TE_top_rows)
+
+        DP_TM_rev = jnp.flip(DP_TM, axis=0)
+        M_TM_all = jax.lax.associative_scan(matmul_left, DP_TM_rev)
+        M_TM_flipped = jnp.flip(M_TM_all, axis=0)
+        M_TM = M_TM_all[-1]
+        coeff_TM = M_TM_flipped[:, :, 0]
+        coeff_TM = jnp.concatenate((coeff_TM, jnp.array([[1, 0]])), axis=0)
+        coeff_TM = coeff_TM/M_TM[0, 0]
+        results_coeffs = {
+            'coeff_TE': coeff_TE,
+            'coeff_TM': coeff_TM,
+            'n': n,
+            'k_z': kz,
+            'cos_theta': cos_theta_t
+        }
     #M_TE = lax.associative_scan(matmul_scan, DP_TE)[-1]
     #M_TM = lax.associative_scan(matmul_scan, DP_TM)[-1]
 
-    # M_TE = jax.lax.associative_scan(matmul_scan, DP_TE)[-1]
-    # M_TM = jax.lax.associative_scan(matmul_scan, DP_TM)[-1]
 
     # M_TE = jnp.matmul(M_TE_intermediate, D_TE[-1])
     # M_TM = jnp.matmul(M_TM_intermediate, D_TM[-1])
@@ -148,22 +180,39 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k):
     r_TM_i = M_TM[1, 0] / M_TM[0, 0]
     t_TM_i = 1 / M_TM[0, 0]
 
-    # n_ratio_TE =
-    # n_ratio_TM2 = jnp.real(n[-1] / n[0]) * jnp.real(cos_theta_t[0] / cos_theta_t[-1])
-    # n_ratio_TM =
-    # n_ratio = jnp.real(n[-1] / n[0]) * jnp.real(cos_theta_t[0] / cos_theta_t[-1])
+
     R_TE = jnp.abs(r_TE_i) ** 2
     R_TM = jnp.abs(r_TM_i) ** 2
 
     T_TE = jnp.abs(t_TE_i) ** 2 * jnp.real(n[-1]*cos_theta_t[-1]) / jnp.real(n[0]*cos_theta_t[0])
-    # T_TM = jnp.abs(t_TM_i) ** 2 * jnp.real(n[-1] * cos_theta_t[0]/ (n[0] * cos_theta_t[-1]))
-    # T_TM = jnp.abs(t_TM_i) ** 2 * jnp.real(n[-1] * cos_theta_t[0] / (n[0] * cos_theta_t[-1]))
     T_TM = jnp.abs(t_TM_i) ** 2 * jnp.real(n[-1] * jnp.conj(cos_theta_t[-1])) / jnp.real(n[0] * jnp.conj(cos_theta_t[0]))
 
-    return R_TE, T_TE, R_TM, T_TM
+
+    if return_coeffs:
+        power_entering_TE = (
+                jnp.real(n[0] * cos_theta_t[0] * (1 + jnp.conj(r_TE_i )) * (1 - r_TE_i )) /
+                jnp.real(n[0] * cos_theta_t[0])
+        )
+
+        power_entering_TM = (
+                jnp.real(n[0] * jnp.conj(cos_theta_t[0]) * (1 + r_TM_i ) * (1 - jnp.conj(r_TM_i))) /
+                jnp.real(n[0] * jnp.conj(cos_theta_t[0]))
+        )
+        results_coeffs.update({
+            'power_entering_TE': power_entering_TE,
+            'power_entering_TM': power_entering_TM,
+            'R_TE': R_TE,
+            'T_TE': T_TE,
+            'R_TM': R_TM,
+            'T_TM': T_TM
+        })
+        return R_TE, T_TE, R_TM, T_TM, results_coeffs
+    else:
+        return R_TE, T_TE, R_TM, T_TM
 
 
-def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta):
+
+def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, return_coeffs = False):
     assert isinstance(eps_r, jnp.ndarray)
     assert isinstance(mu_r, jnp.ndarray)
     assert isinstance(d, jnp.ndarray)
@@ -187,10 +236,16 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta):
 #        a, b, c, d, e, materials=materials
 #    )
 
-    fun_mapped = jax.vmap(
-        stackrt_eps_mu_base, (0, 0, None, 0, None), (0, 0, 0, 0)
-    )
-    R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, d, f, theta_rad)
+    if not return_coeffs:
+        fun_mapped = jax.vmap(
+            stackrt_eps_mu_base, (0, 0, None, 0, None), (0, 0, 0, 0)
+        )
+        R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, d, f, theta_rad)
+    else:
+        fun_mapped = jax.vmap(
+            stackrt_eps_mu_base, (0, 0, None, 0, None, None), (0, 0, 0, 0, 0)
+        )
+        R_TE, T_TE, R_TM, T_TM, results_coeffs = fun_mapped(eps_r, mu_r, d, f, theta_rad, return_coeffs)
 
     # r_TE, t_TE, r_TM, t_TM = fun_mapped(eps_r, mu_r, d, f, theta_rad)
     #
@@ -211,7 +266,10 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta):
         T_TE = jnp.zeros_like(R_TE)
         T_TM = jnp.zeros_like(R_TM)
 
-    return R_TE, T_TE, R_TM, T_TM
+    if not return_coeffs:
+        return R_TE, T_TE, R_TM, T_TM
+    else:
+        return R_TE, T_TE, R_TM, T_TM, results_coeffs
 
 
 def stackrt_eps_mu(eps_r, mu_r, d, f, thetas):
@@ -228,7 +286,7 @@ def stackrt_eps_mu(eps_r, mu_r, d, f, thetas):
     return R_TE, T_TE, R_TM, T_TM
 
 
-def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas):
+def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas, return_coeffs = False):
     """
     Calculate reflection and transmission coefficients for a multilayer stack at
     different frequencies and incidence angles.
@@ -275,9 +333,15 @@ def stackrt_n_k(refractive_indices, thicknesses, frequencies, thetas):
 
     eps_r, mu_r = utils_materials.convert_n_k_to_eps_mu_for_non_magnetic_materials(refractive_indices)
 
-    fun_mapped = jax.vmap(
-        stackrt_eps_mu_theta, (None, None, None, None, 0), (0, 0, 0, 0)
-    )
-    R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, thicknesses, frequencies, thetas)
-
-    return R_TE, T_TE, R_TM, T_TM
+    if not return_coeffs:
+        fun_mapped = jax.vmap(
+            stackrt_eps_mu_theta, (None, None, None, None, 0), (0, 0, 0, 0)
+        )
+        R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, thicknesses, frequencies, thetas)
+        return R_TE, T_TE, R_TM, T_TM
+    else:
+        fun_mapped = jax.vmap(
+            stackrt_eps_mu_theta, (None, None, None, None, 0, None), (0, 0, 0, 0, 0)
+        )
+        R_TE, T_TE, R_TM, T_TM, results_coeffs= fun_mapped(eps_r, mu_r, thicknesses, frequencies, thetas, return_coeffs)
+        return R_TE, T_TE, R_TM, T_TM, results_coeffs
