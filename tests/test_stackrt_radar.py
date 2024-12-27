@@ -7,7 +7,7 @@ from jaxlayerlumos import utils_materials
 
 def test_stackrt_radar_1():
     frequencies = jnp.linspace(0.1e9, 1e9, 3)
-
+    # frequencies = jnp.array([1e9])
     materials = onp.array(["Air", "11", "16", "7", "4", "4", "PEC"])
     eps_stack, mu_stack = utils_materials.get_eps_mu(materials, frequencies)
 

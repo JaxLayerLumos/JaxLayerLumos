@@ -58,7 +58,8 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, return_coeffs =
     r_jk_TE = (Z_TE[1:] - Z_TE[:-1]) / (Z_TE[1:] + Z_TE[:-1])
     t_jk_TE = (2 * Z_TE[1:]) / (Z_TE[1:] + Z_TE[:-1])
 
-    r_jk_TM = (Z_TM[:-1] - Z_TM[1:]) / (Z_TM[1:] + Z_TM[:-1])
+    # r_jk_TM = (Z_TM[:-1] - Z_TM[1:]) / (Z_TM[1:] + Z_TM[:-1])
+    r_jk_TM = (Z_TM[1:] - Z_TM[:-1]) / (Z_TM[1:] + Z_TM[:-1])
     t_jk_TM = (2 * Z_TM[1:]) / (Z_TM[1:] + Z_TM[:-1]) * cos_theta_t[:-1]/cos_theta_t[1:]
 
     r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM = jax.lax.cond(
@@ -135,6 +136,7 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, return_coeffs =
 
         M_TE = jax.lax.associative_scan(matmul_scan, DP_TE)[-1]
         M_TM = jax.lax.associative_scan(matmul_scan, DP_TM)[-1]
+        print(M_TM)
     else:
         def matmul_left(a, b):
             # aggregator that returns (b @ a)

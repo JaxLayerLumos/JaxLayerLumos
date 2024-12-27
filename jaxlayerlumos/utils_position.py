@@ -41,7 +41,7 @@ def calc_position_data(layer, position_in_layer, results, update_results = True)
            np.real(n0 * np.conj(cos_theta0))
 
     E_TE = [0, Ef_TE + Eb_TE, 0]
-    E_TM = [(Ef_TM - Eb_TM)*cos_theta, 0, (-Ef_TM - Eb_TM)*cos_theta]
+    E_TM = [(Ef_TM - Eb_TM)*cos_theta, 0, (-Ef_TM - Eb_TM)*np.sqrt(1-cos_theta**2)]
 
     results_position = {
         'poyn_TE': poyn_TE,
