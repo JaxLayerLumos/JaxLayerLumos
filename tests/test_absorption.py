@@ -83,25 +83,16 @@ def test_absorption_1():
     onp.testing.assert_allclose(results_coeffs['E_TM'][0], expected_E_x_TM)
     onp.testing.assert_allclose(results_coeffs['E_TM'][2], expected_E_z_TM)
 
-    expected_absorb_TE = [[0.20635887],
-        [0.47550773],
-        [0.31416398],
-        [0.00396942]]
+    expected_absorb_TE = [[0.20635886753735466],
+        [0.47550772909600736],
+        [0.31416398175464727],
+        [0.003969421611990711]]
 
-    expected_absorb_TM = [[0.04282982],
-        [0.57108059],
-        [0.3792892 ],
-        [0.0068004 ]]
-    try:
-        onp.testing.assert_allclose(results_coeffs['absorption_layer_TE'], expected_absorb_TE)
-    except:
-        onp.testing.assert_allclose(results_coeffs['absorption_layer_TE'], expected_absorb_TE, atol=2e-9, rtol = 5e-7)
+    expected_absorb_TM = [[0.04282982017862724],
+        [0.5713572767577082],
+        [0.3790125050837565 ],
+        [0.006800397979908026 ]]
 
-    try:
-        onp.testing.assert_allclose(results_coeffs['absorption_layer_TM'], expected_absorb_TM)
-    except:
-        onp.testing.assert_allclose(results_coeffs['absorption_layer_TE'], expected_absorb_TE, atol=3e-9, rtol=3e-7)
-
-    # print(coeff_TE)
-    # print(coeff_TM)
+    onp.testing.assert_allclose(results_coeffs['absorption_layer_TE'], expected_absorb_TE)
+    onp.testing.assert_allclose(results_coeffs['absorption_layer_TM'], expected_absorb_TM)
 
