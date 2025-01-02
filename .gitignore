@@ -155,6 +155,7 @@ cython_debug/
 .DS_Store
 __MACOSX/
 *.swp
+.idea/
 tests/anya_script.py
 tests/anya_script2.py
 tests/anya_script3.py
