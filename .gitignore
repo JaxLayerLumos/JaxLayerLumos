@@ -154,8 +154,14 @@ cython_debug/
 # custom
 .DS_Store
 __MACOSX/
-*.swp
 .idea/
+*.swp
+*.out
+*.synctex.gz
+*.aux
+*.toc
+*.upa
+*.upb
 tests/anya_script.py
 tests/anya_script2.py
 tests/anya_script3.py
