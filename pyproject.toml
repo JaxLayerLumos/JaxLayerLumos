@@ -49,6 +49,6 @@ dev = [
     "black",
 ]
 
-benchmark = [
+benchmarking = [
     "tmm-fast",
 ]
