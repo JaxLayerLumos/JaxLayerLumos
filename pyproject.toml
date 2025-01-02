@@ -48,3 +48,7 @@ dev = [
     "sphinx",
     "black",
 ]
+
+benchmark = [
+    "tmm-fast",
+]
