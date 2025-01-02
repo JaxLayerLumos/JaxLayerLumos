@@ -23,7 +23,7 @@ def get_all_materials():
     return list(material_indices.keys())
 
 
-'''
+"""
 def load_material_f_ghz(material):
     material_indices, str_directory = load_json()
     str_file = material_indices.get(material)
@@ -77,7 +77,7 @@ def load_material_f_ghz(material):
         )
 
     return data_eps, data_mu
-'''
+"""
 
 
 def load_material_wavelength_um(material):
@@ -147,8 +147,12 @@ def load_material_wavelength(material):
 def load_material(material):
     data_n, data_k = load_material_wavelength(material)
 
-    data_n = data_n.at[:, 0].set(utils_spectra.convert_wavelengths_to_frequencies(data_n[:, 0]))
-    data_k = data_k.at[:, 0].set(utils_spectra.convert_wavelengths_to_frequencies(data_k[:, 0]))
+    data_n = data_n.at[:, 0].set(
+        utils_spectra.convert_wavelengths_to_frequencies(data_n[:, 0])
+    )
+    data_k = data_k.at[:, 0].set(
+        utils_spectra.convert_wavelengths_to_frequencies(data_k[:, 0])
+    )
 
     return data_n, data_k
 
@@ -197,20 +201,24 @@ def get_eps_mu(materials, frequencies):
     assert materials[0] == "Air"
 
     materials = onp.array(materials)
-    eps_r, mu_r = utils_radar_materials.get_eps_mu_Michielssen(materials[1:-1].astype(int), frequencies)
+    eps_r, mu_r = utils_radar_materials.get_eps_mu_Michielssen(
+        materials[1:-1].astype(int), frequencies
+    )
 
     n_k_air = get_n_k(materials[:1], frequencies)
     n_k_air = n_k_air.T
     eps_air, mu_air = convert_n_k_to_eps_mu_for_non_magnetic_materials(n_k_air)
 
-    if materials[-1] == 'PEC':
+    if materials[-1] == "PEC":
         eps_last = jnp.zeros_like(eps_air) + jnp.inf
         mu_last = jnp.ones_like(eps_air)
     else:
         try:
-            eps_last, mu_last = utils_radar_materials.get_eps_mu_Michielssen(materials[-1:].astype(int), frequencies)
+            eps_last, mu_last = utils_radar_materials.get_eps_mu_Michielssen(
+                materials[-1:].astype(int), frequencies
+            )
         except:
-            raise NotImplementedError('This condition is not implemented yet.')
+            raise NotImplementedError("This condition is not implemented yet.")
 
     eps_r = jnp.concatenate([eps_air, eps_r, eps_last], axis=0)
     mu_r = jnp.concatenate([mu_air, mu_r, mu_last], axis=0)

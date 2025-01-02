@@ -10,7 +10,7 @@ from jaxlayerlumos import utils_units
 def test_stackrt_1():
     wavelengths = jnp.linspace(300e-9, 900e-9, 3)
     frequencies = scic.c / wavelengths
-    #frequencies = 4e9
+    # frequencies = 4e9
 
     materials = onp.array(["Air", "Ag", "Air"])
     thickness_materials = [0, 2e-6, 0]

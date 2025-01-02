@@ -127,7 +127,9 @@ def stackrt_theta(n, d, f, theta):
     )
     R_TM = jnp.abs(r_TM) ** 2
     T_TM = jnp.abs(t_TM) ** 2 * jnp.real(
-        n[:, -1] * jnp.conj(jnp.cos(thetas_k)) / jnp.real(n[:, 0] * jnp.conj(jnp.cos(theta_rad)))
+        n[:, -1]
+        * jnp.conj(jnp.cos(thetas_k))
+        / jnp.real(n[:, 0] * jnp.conj(jnp.cos(theta_rad)))
     )
 
     # T_TM = jnp.abs(t_TM) ** 2 * jnp.real(

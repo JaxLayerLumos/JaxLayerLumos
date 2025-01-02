@@ -41,7 +41,7 @@ def test_gradient_stackrt_thickness_Ag():
             print(elem)
 
         onp.testing.assert_allclose(grad_R_TE, expected_grad_R_TE)
-    except: # for Python 3.8
+    except:  # for Python 3.8
         expected_grad_R_TE = jnp.array(
             [
                 7.342881048439224e-09,
@@ -85,7 +85,7 @@ def test_gradient_stackrt_thickness_Au():
 
     for elem in grad_R_TE:
         print(elem)
-    onp.testing.assert_allclose(grad_R_TE, expected_grad_R_TE, rtol = 6)
+    onp.testing.assert_allclose(grad_R_TE, expected_grad_R_TE, rtol=6)
 
 
 def test_gradient_stackrt_thickness_TiO2_W_SiO2():
