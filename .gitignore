@@ -155,7 +155,6 @@ cython_debug/
 .DS_Store
 __MACOSX/
 *.swp
-tests/test_stackrt_basic3.py
 tests/anya_script.py
 tests/anya_script2.py
 tests/anya_script3.py
