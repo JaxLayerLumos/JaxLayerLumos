@@ -149,22 +149,29 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, return_coeffs=F
             return jnp.matmul(b, a)
 
         DP_TE_rev = jnp.flip(DP_TE, axis=0)
+
         M_TE_all = jax.lax.associative_scan(matmul_left, DP_TE_rev)
         M_TE_flipped = jnp.flip(M_TE_all, axis=0)
+
         M_TE = M_TE_all[-1]
+
         coeff_TE = M_TE_flipped[:, :, 0]
         coeff_TE = jnp.concatenate((coeff_TE, jnp.array([[1, 0]])), axis=0)
         coeff_TE = coeff_TE / M_TE[0, 0]
+
         # M_TE_top_rows = M_TE_flipped[:, 0, :]
         # M_TE_column = jnp.transpose(M_TE_top_rows)
 
         DP_TM_rev = jnp.flip(DP_TM, axis=0)
+
         M_TM_all = jax.lax.associative_scan(matmul_left, DP_TM_rev)
         M_TM_flipped = jnp.flip(M_TM_all, axis=0)
         M_TM = M_TM_all[-1]
+
         coeff_TM = M_TM_flipped[:, :, 0]
         coeff_TM = jnp.concatenate((coeff_TM, jnp.array([[1, 0]])), axis=0)
         coeff_TM = coeff_TM / M_TM[0, 0]
+
         results_coeffs = {
             "coeff_TE": coeff_TE,
             "coeff_TM": coeff_TM,
@@ -209,6 +216,7 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, return_coeffs=F
         power_entering_TM = jnp.real(
             n[0] * jnp.conj(cos_theta_t[0]) * (1 + r_TM_i) * (1 - jnp.conj(r_TM_i))
         ) / jnp.real(n[0] * jnp.conj(cos_theta_t[0]))
+
         results_coeffs.update(
             {
                 "power_entering_TE": power_entering_TE,
@@ -250,11 +258,13 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, return_coeffs=False):
 
     if not return_coeffs:
         fun_mapped = jax.vmap(stackrt_eps_mu_base, (0, 0, None, 0, None), (0, 0, 0, 0))
+
         R_TE, T_TE, R_TM, T_TM = fun_mapped(eps_r, mu_r, d, f, theta_rad)
     else:
         fun_mapped = jax.vmap(
             stackrt_eps_mu_base, (0, 0, None, 0, None, None), (0, 0, 0, 0, 0)
         )
+
         R_TE, T_TE, R_TM, T_TM, results_coeffs = fun_mapped(
             eps_r, mu_r, d, f, theta_rad, return_coeffs
         )
