@@ -141,7 +141,7 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, return_coeffs=F
 
         M_TE = jax.lax.associative_scan(matmul_scan, DP_TE)[-1]
         M_TM = jax.lax.associative_scan(matmul_scan, DP_TM)[-1]
-        print(M_TM)
+#        print(M_TM)
     else:
 
         def matmul_left(a, b):
