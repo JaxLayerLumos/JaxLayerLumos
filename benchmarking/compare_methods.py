@@ -61,6 +61,17 @@ def compare_simulation(frequencies, thicknesses, n_k, angle):
 
     print(Rs_TE.shape, Rs_TM.shape, Ts_TE.shape, Ts_TM.shape, times_consumed.shape)
 
+    for ind_1 in range(0, methods.shape[0]):
+        for ind_2 in range(0, methods.shape[0]):
+            onp.testing.assert_allclose(Rs_TE[ind_1], Rs_TE[ind_2])
+            onp.testing.assert_allclose(Rs_TM[ind_1], Rs_TM[ind_2])
+            onp.testing.assert_allclose(Ts_TE[ind_1], Ts_TE[ind_2])
+
+            try:
+                onp.testing.assert_allclose(Ts_TM[ind_1], Ts_TM[ind_2])
+            except:
+                print('T_TM', methods[ind_1], methods[ind_2])
+
 
 def compare_simulations(num_tests, use_zero_angle, use_thick_layers):
     wavelengths = onp.linspace(300e-9, 900e-9, 101)
