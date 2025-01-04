@@ -152,7 +152,14 @@ def compare_simulations_layer(methods, num_layers, num_tests, use_zero_angle, us
 
     materials_layer = onp.array(materials_layer)
     print(materials_layer.shape, thicknesses_layer.shape, Rs_TE_layer.shape, Rs_TM_layer.shape, Ts_TE_layer.shape, Ts_TM_layer.shape, times_consumed_layer.shape)
-    print(np.mean(times_consumed_layer, axis=1))
+
+    mean_times_consumed_layer = onp.mean(times_consumed_layer, axis=1)
+    std_times_consumed_layer = onp.std(times_consumed_layer, axis=1)
+
+    print(f'{num_layers} layers')
+    for method, mean_time_consumed_layer, std_time_consumed_layer in zip(methods, mean_times_consumed_layer, std_times_consumed_layer):
+        print(f'{method} {mean_time_consumed_layer:.4f} +- {std_time_consumed_layer.4f} sec.')
+    print('')
 
 
 def compare_simulations(num_tests, use_zero_angle, use_thick_layers):
@@ -163,15 +170,14 @@ def compare_simulations(num_tests, use_zero_angle, use_thick_layers):
         'jaxlayerlumos',
     ])
 
-#    num_layerss = onp.array([2, 4, 6, 8, 10, 12, 14, 16])
-    num_layerss = onp.array([2, 4])
+    num_layerss = onp.array([2, 4, 6, 8, 10, 12, 14, 16])
 
     for num_layers in num_layerss:
         compare_simulations_layer(methods, num_layers, num_tests, use_zero_angle, use_thick_layers)
 
 
 if __name__ == "__main__":
-    num_tests = 10
+    num_tests = 100
 
     compare_simulations(num_tests=num_tests, use_zero_angle=True, use_thick_layers=False)
     compare_simulations(num_tests=num_tests, use_zero_angle=True, use_thick_layers=True)
