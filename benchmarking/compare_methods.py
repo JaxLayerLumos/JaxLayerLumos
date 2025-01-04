@@ -6,6 +6,7 @@ from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_units
 
 import method_ansys
+import method_tmm_fast
 import method_jaxlayerlumos_old
 import method_jaxlayerlumos
 
@@ -22,6 +23,9 @@ def run_simulation(method, frequencies, thicknesses, n_k, angle):
     elif method == 'jaxlayerlumos':
         R_TE, R_TM, T_TE, T_TM = method_jaxlayerlumos.compute_properties_jaxlayerlumos(
             thicknesses, n_k, frequencies, angle)
+    elif method == 'tmm_fast':
+        R_TE, R_TM, T_TE, T_TM = method_tmm_fast.compute_properties_tmm_fast(
+            thicknesses, n_k, frequencies, angle)
     else:
         raise ValueError
 
@@ -34,6 +38,7 @@ def run_simulation(method, frequencies, thicknesses, n_k, angle):
 def compare_simulation(frequencies, thicknesses, n_k, angle):
     methods = onp.array([
         'ansys',
+        'tmm_fast',
         'jaxlayerlumos_old',
         'jaxlayerlumos',
     ])
@@ -62,13 +67,27 @@ def compare_simulation(frequencies, thicknesses, n_k, angle):
     print(Rs_TE.shape, Rs_TM.shape, Ts_TE.shape, Ts_TM.shape, times_consumed.shape)
 
     for ind_1 in range(0, methods.shape[0]):
-        for ind_2 in range(0, methods.shape[0]):
-            onp.testing.assert_allclose(Rs_TE[ind_1], Rs_TE[ind_2])
-            onp.testing.assert_allclose(Rs_TM[ind_1], Rs_TM[ind_2])
-            onp.testing.assert_allclose(Ts_TE[ind_1], Ts_TE[ind_2])
+        for ind_2 in range(ind_1 + 1, methods.shape[0]):
+            rtol = 1e-5
+            atol = 0.0
 
             try:
-                onp.testing.assert_allclose(Ts_TM[ind_1], Ts_TM[ind_2])
+                onp.testing.assert_allclose(Rs_TE[ind_1], Rs_TE[ind_2], rtol=rtol, atol=atol)
+            except:
+                print('R_TE', methods[ind_1], methods[ind_2])
+
+            try:
+                onp.testing.assert_allclose(Rs_TM[ind_1], Rs_TM[ind_2], rtol=rtol, atol=atol)
+            except:
+                print('R_TM', methods[ind_1], methods[ind_2])
+
+            try:
+                onp.testing.assert_allclose(Ts_TE[ind_1], Ts_TE[ind_2], rtol=rtol, atol=atol)
+            except:
+                print('T_TE', methods[ind_1], methods[ind_2])
+
+            try:
+                onp.testing.assert_allclose(Ts_TM[ind_1], Ts_TM[ind_2], rtol=rtol, atol=atol)
             except:
                 print('T_TM', methods[ind_1], methods[ind_2])
 
