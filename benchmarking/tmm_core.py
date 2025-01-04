@@ -135,8 +135,6 @@ def interface_r(polarization, n_i, n_f, th_i, th_f):
         return ((n_i * cos(th_i) - n_f * cos(th_f)) /
                 (n_i * cos(th_i) + n_f * cos(th_f)))
     elif polarization == 'p':
-        return_value = ((-n_f * cos(th_i) + n_i * cos(th_f)) / (n_f * cos(th_i) + n_i * cos(th_f)))
-        print(return_value)
         return ((-n_f * cos(th_i) + n_i * cos(th_f)) /
                 (n_f * cos(th_i) + n_i * cos(th_f)))
     else:
