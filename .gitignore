@@ -155,6 +155,7 @@ cython_debug/
 .DS_Store
 __MACOSX/
 .idea/
+outputs/
 *.swp
 *.out
 *.synctex.gz
