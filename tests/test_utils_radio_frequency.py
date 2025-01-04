@@ -21,9 +21,7 @@ def test_stackrt_radio_frequency():
     n_stack = jnp.vstack([n_air, n_ag, n_air]).T  # Transpose to match expected shape
     d_stack = jnp.hstack([d_air, d_ag, d_air])  # Stack thickness
 
-    R_TE, T_TE, R_TM, T_TM = stackrt(
-        n_stack, d_stack, frequencies, jnp.array([0])
-    )
+    R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, jnp.array([0]))
 
     SE_TE = -10 * jnp.log10(T_TE)
     SE_TM = -10 * jnp.log10(T_TM)

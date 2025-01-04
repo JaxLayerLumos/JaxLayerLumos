@@ -20,7 +20,6 @@ def test_sizes():
     d_stack = utils_layers.get_thicknesses_surrounded_by_air(jnp.array([2e-8]))
     thetas = jnp.linspace(0, 89, num_angles)
 
-
     R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas)
 
     assert isinstance(R_TE, jnp.ndarray)
@@ -43,7 +42,7 @@ def test_angles_1():
         num_wavelengths=num_wavelengths
     )
 
-    materials = ['Air', 'TiO2', 'Air']
+    materials = ["Air", "TiO2", "Air"]
     d_stack = jnp.array([0, 2e-8, 0])
     thetas = jnp.linspace(0, 89, 3)
     n_k = utils_materials.get_n_k(materials, frequencies)
@@ -123,7 +122,7 @@ def test_angles_2():
     wavelengths = jnp.array([300e-9])
     frequencies = utils_units.get_light_speed() / wavelengths
 
-    materials = onp.array(['Air', 'FusedSilica', 'Si3N4'])
+    materials = onp.array(["Air", "FusedSilica", "Si3N4"])
     thickness_materials = [0, 2.91937911, 0]
     theta = 47.1756
 
@@ -168,7 +167,7 @@ def test_angles_3():
     wavelengths = jnp.array([300e-9])
     frequencies = utils_units.get_light_speed() / wavelengths
 
-    materials = onp.array(['Air', 'Ag', 'Cr'])
+    materials = onp.array(["Air", "Ag", "Cr"])
     thickness_materials = [0, 9.36793259, 0.0]
     theta = 34.767507632418315
 

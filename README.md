@@ -46,7 +46,24 @@ pip install .
 
 A collection of examples in the `examples` directory exhibits various use cases and capabilities of JaxLayerLumos.
 
-## Comparisons to Ansys Optics
+## Benchmarking
+
+You should install the packages required for benchmarking our software against existing methods.
+Before installing the packages, you should install PyTorch first.
+In particular, you can install it using the following command.
+
+```bash
+pip install torch --index-url https://download.pytorch.org/whl/cpu
+```
+
+For details, you can refer to [the official instruction of PyTorch](https://pytorch.org).
+Then, the required packages can be installed by the following command.
+
+```bash
+pip install .[benchmarking]
+```
+
+### Comparisons to Ansys Optics
 
 Simulation results of JaxLayerLumos are compared to the results of [stackrt](https://optics.ansys.com/hc/en-us/articles/360034406254-stackrt-Script-command), which is included in [Ansys Optics](https://www.ansys.com/products/optics).
 Our results are matched to the Ansys Optics results with sufficiently small errors.

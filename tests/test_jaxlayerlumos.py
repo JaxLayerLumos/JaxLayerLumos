@@ -20,9 +20,7 @@ def test_stackrt_n_k_sizes():
     d_stack = utils_layers.get_thicknesses_surrounded_by_air(jnp.array([2e-8]))
     thetas = jnp.linspace(0, 89, num_angles)
 
-    R_TE, T_TE, R_TM, T_TM = jll.stackrt_n_k(
-        n_stack, d_stack, frequencies, thetas
-    )
+    R_TE, T_TE, R_TM, T_TM = jll.stackrt_n_k(n_stack, d_stack, frequencies, thetas)
 
     assert isinstance(R_TE, jnp.ndarray)
     assert isinstance(R_TM, jnp.ndarray)
