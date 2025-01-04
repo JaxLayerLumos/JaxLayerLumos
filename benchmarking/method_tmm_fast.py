@@ -19,7 +19,7 @@ def compute_properties_tmm_fast(thicknesses, n_k, frequencies, angle_of_incidenc
     assert thicknesses.shape[0] == n_k.shape[0]
     assert frequencies.shape[0] == n_k.shape[1]
 
-    assert device in ['cpu', 'gpu']
+    assert device in ['cpu', 'cuda']
 
     wavelengths = utils_units.get_light_speed() / frequencies
     wavelengths = torch.tensor(wavelengths)
@@ -44,6 +44,12 @@ def compute_properties_tmm_fast(thicknesses, n_k, frequencies, angle_of_incidenc
     Ts = result_s['T']
     Rp = result_p['R']
     Tp = result_p['T']
+
+    if device == 'cuda':
+        Rs = Rs.cpu()
+        Ts = Ts.cpu()
+        Rp = Rp.cpu()
+        Tp = Tp.cpu()
 
     Rs = np.array(Rs)
     Ts = np.array(Ts)
