@@ -72,22 +72,22 @@ def compare_simulation(methods, frequencies, thicknesses, n_k, angle):
             try:
                 onp.testing.assert_allclose(Rs_TE[ind_1], Rs_TE[ind_2], rtol=rtol, atol=atol)
             except:
-                print('R_TE', methods[ind_1], methods[ind_2], flush=True)
+                print('R_TE not matched:', methods[ind_1], '<->', methods[ind_2], flush=True)
 
             try:
                 onp.testing.assert_allclose(Rs_TM[ind_1], Rs_TM[ind_2], rtol=rtol, atol=atol)
             except:
-                print('R_TM', methods[ind_1], methods[ind_2], flush=True)
+                print('R_TM not matched:', methods[ind_1], '<->', methods[ind_2], flush=True)
 
             try:
                 onp.testing.assert_allclose(Ts_TE[ind_1], Ts_TE[ind_2], rtol=rtol, atol=atol)
             except:
-                print('T_TE', methods[ind_1], methods[ind_2], flush=True)
+                print('T_TE not matched:', methods[ind_1], '<->', methods[ind_2], flush=True)
 
             try:
                 onp.testing.assert_allclose(Ts_TM[ind_1], Ts_TM[ind_2], rtol=rtol, atol=atol)
             except:
-                print('T_TM', methods[ind_1], methods[ind_2], flush=True)
+                print('T_TM not matched:', methods[ind_1], '<->', methods[ind_2], flush=True)
 
     return Rs_TE, Rs_TM, Ts_TE, Ts_TM, times_consumed
 
