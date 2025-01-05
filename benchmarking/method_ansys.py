@@ -1,6 +1,9 @@
 import numpy as np
 
-import lumapi
+try:
+    import lumapi
+except:
+    lumapi = None
 
 
 def compute_properties_ansys(thicknesses, n_k, frequencies, angle_of_incidence):

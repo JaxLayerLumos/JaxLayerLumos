@@ -6,9 +6,13 @@ from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_units
 
 import method_ansys
+import method_tmm
 import method_tmm_fast
 import method_jaxlayerlumos_old
 import method_jaxlayerlumos
+
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
 
 
 def run_simulation(method, frequencies, thicknesses, n_k, angle):
@@ -22,6 +26,9 @@ def run_simulation(method, frequencies, thicknesses, n_k, angle):
             thicknesses, n_k, frequencies, angle)
     elif method == 'jaxlayerlumos':
         R_TE, R_TM, T_TE, T_TM = method_jaxlayerlumos.compute_properties_jaxlayerlumos(
+            thicknesses, n_k, frequencies, angle)
+    elif method == 'tmm':
+        R_TE, R_TM, T_TE, T_TM = method_tmm.compute_properties_tmm(
             thicknesses, n_k, frequencies, angle)
     elif method == 'tmm_fast':
         R_TE, R_TM, T_TE, T_TM = method_tmm_fast.compute_properties_tmm_fast(
@@ -165,6 +172,7 @@ def compare_simulations_layer(methods, num_layers, num_tests, use_zero_angle, us
 def compare_simulations(num_tests, use_zero_angle, use_thick_layers):
     methods = onp.array([
         'ansys',
+        'tmm',
         'tmm_fast',
         'jaxlayerlumos_old',
         'jaxlayerlumos',
