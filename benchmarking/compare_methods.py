@@ -158,6 +158,7 @@ def compare_simulations_layer(methods, num_layers, num_tests, use_zero_angle, us
         times_consumed_layer = onp.concatenate([times_consumed_layer, times_consumed], axis=1)
 
     materials_layer = onp.array(materials_layer)
+    print('', flush=True)
     print(materials_layer.shape, thicknesses_layer.shape, Rs_TE_layer.shape, Rs_TM_layer.shape, Ts_TE_layer.shape, Ts_TM_layer.shape, times_consumed_layer.shape, flush=True)
 
     mean_times_consumed_layer = onp.mean(times_consumed_layer, axis=1)
