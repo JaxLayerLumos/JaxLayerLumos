@@ -6,9 +6,13 @@ from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_units
 
 import method_ansys
+import method_tmm
 import method_tmm_fast
 import method_jaxlayerlumos_old
 import method_jaxlayerlumos
+
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
 
 
 def run_simulation(method, frequencies, thicknesses, n_k, angle):
@@ -22,6 +26,9 @@ def run_simulation(method, frequencies, thicknesses, n_k, angle):
             thicknesses, n_k, frequencies, angle)
     elif method == 'jaxlayerlumos':
         R_TE, R_TM, T_TE, T_TM = method_jaxlayerlumos.compute_properties_jaxlayerlumos(
+            thicknesses, n_k, frequencies, angle)
+    elif method == 'tmm':
+        R_TE, R_TM, T_TE, T_TM = method_tmm.compute_properties_tmm(
             thicknesses, n_k, frequencies, angle)
     elif method == 'tmm_fast':
         R_TE, R_TM, T_TE, T_TM = method_tmm_fast.compute_properties_tmm_fast(
@@ -65,22 +72,22 @@ def compare_simulation(methods, frequencies, thicknesses, n_k, angle):
             try:
                 onp.testing.assert_allclose(Rs_TE[ind_1], Rs_TE[ind_2], rtol=rtol, atol=atol)
             except:
-                print('R_TE', methods[ind_1], methods[ind_2], flush=True)
+                print('R_TE not matched:', methods[ind_1], '<->', methods[ind_2], flush=True)
 
             try:
                 onp.testing.assert_allclose(Rs_TM[ind_1], Rs_TM[ind_2], rtol=rtol, atol=atol)
             except:
-                print('R_TM', methods[ind_1], methods[ind_2], flush=True)
+                print('R_TM not matched:', methods[ind_1], '<->', methods[ind_2], flush=True)
 
             try:
                 onp.testing.assert_allclose(Ts_TE[ind_1], Ts_TE[ind_2], rtol=rtol, atol=atol)
             except:
-                print('T_TE', methods[ind_1], methods[ind_2], flush=True)
+                print('T_TE not matched:', methods[ind_1], '<->', methods[ind_2], flush=True)
 
             try:
                 onp.testing.assert_allclose(Ts_TM[ind_1], Ts_TM[ind_2], rtol=rtol, atol=atol)
             except:
-                print('T_TM', methods[ind_1], methods[ind_2], flush=True)
+                print('T_TM not matched:', methods[ind_1], '<->', methods[ind_2], flush=True)
 
     return Rs_TE, Rs_TM, Ts_TE, Ts_TM, times_consumed
 
@@ -151,6 +158,7 @@ def compare_simulations_layer(methods, num_layers, num_tests, use_zero_angle, us
         times_consumed_layer = onp.concatenate([times_consumed_layer, times_consumed], axis=1)
 
     materials_layer = onp.array(materials_layer)
+    print('', flush=True)
     print(materials_layer.shape, thicknesses_layer.shape, Rs_TE_layer.shape, Rs_TM_layer.shape, Ts_TE_layer.shape, Ts_TM_layer.shape, times_consumed_layer.shape, flush=True)
 
     mean_times_consumed_layer = onp.mean(times_consumed_layer, axis=1)
@@ -165,6 +173,7 @@ def compare_simulations_layer(methods, num_layers, num_tests, use_zero_angle, us
 def compare_simulations(num_tests, use_zero_angle, use_thick_layers):
     methods = onp.array([
         'ansys',
+        'tmm',
         'tmm_fast',
         'jaxlayerlumos_old',
         'jaxlayerlumos',
