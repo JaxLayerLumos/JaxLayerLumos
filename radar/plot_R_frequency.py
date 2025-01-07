@@ -110,14 +110,14 @@ def get_max_reflection(freq_ghz, R_db, freq_range):
 
 def plot_R_frequency():
     # Table 2
-    frequencies = jnp.linspace(0.1e9, 10e9, 100)
+    frequencies = jnp.linspace(0.1e9, 10e9, 1000)
     #frequencies = jnp.array([0.1e9])
-    filename = "./data/TMH.csv"
+    filename = "./data/LF.csv"
     #filename = "./data/CHF.csv"
     prefix = filename.split("/")[-1].replace(".csv", "")
 
     #all_materials, d_stack = read_csv_file("./data/HF.csv")
-    all_materials, d_stack, freq_range, inc_angles, polarization = read_csv_file(filename)
+    all_materials, d_stack, freq_range, inc_angles, polarization, R_db_list = read_csv_file(filename)
     freq_ghz = frequencies / 1e9
     max_R_db = {}
     for i, (materials_stack, thicknesses) in enumerate(zip(all_materials, d_stack), start=1):
