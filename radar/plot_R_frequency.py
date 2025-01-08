@@ -67,10 +67,10 @@ def read_csv_file(filename):
                 thickness_part = [float(x) * 1e-3 for x in row[num_layers:2*num_layers]]
                 R_db_part = [float(x) for x in row[2 * num_layers:]]
 
-                if len(R_db_part) != len(inc_angles):
-                    raise ValueError(
-                        f"Mismatch: {len(R_db_part)} R_db values for {len(inc_angles)} incidence angles"
-                    )
+                # if len(R_db_part) != len(inc_angles):
+                #     raise ValueError(
+                #         f"Mismatch: {len(R_db_part)} R_db values for {len(inc_angles)} incidence angles"
+                #     )
 
                 # Map each R_db value to its corresponding incidence angle
                 # R_db_dict = {angle: R_db_part[idx] for idx, angle in enumerate(inc_angles)}
@@ -112,7 +112,7 @@ def plot_R_frequency():
     # Table 2
     frequencies = jnp.linspace(0.1e9, 10e9, 1000)
     #frequencies = jnp.array([0.1e9])
-    filename = "./data/LF.csv"
+    filename = "./data/TMH.csv"
     #filename = "./data/CHF.csv"
     prefix = filename.split("/")[-1].replace(".csv", "")
 
