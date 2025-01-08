@@ -170,13 +170,23 @@ def optimize_thicknesses_optax(
         return objective(thicknesses, material_layout, frequencies, inc_angles, freq_range, materials_list)
     
     # JIT compile the objective and its gradient
-    objective_jit = jax.jit(objective_fixed)
-    grad_fn = jax.jit(jax.grad(lambda x: objective_jit(x)[0]))
-    
+#    objective_jit = jax.jit(objective_fixed)
+#    grad_fn = jax.jit(jax.grad(lambda x: objective_jit(x)[0]))
+
+    objective_jit = lambda x: objective_fixed(x)[0]
+
     for step in range(max_iters):
         # Compute objective and gradients
-        scalar_obj, objectives = objective_jit(params)
-        gradient = grad_fn(params)
+#        scalar_obj, objectives = objective_jit(params)
+
+        params = params.at[0].set(0.0)
+        params = params.at[-1].set(0.0)
+
+        scalar_obj = objective_jit(params)
+#        gradient = grad_fn(params)
+        gradient = jax.grad(objective_jit)(params)
+
+        objectives = objective_fixed(params)[1]
         
         # Debugging: Print the values
         print(f"Iteration {step+1}: r_max={objectives[0]:.4f} dB, Sum Thickness={objectives[1]:.4e} m")
