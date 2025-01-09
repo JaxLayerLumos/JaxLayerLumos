@@ -163,14 +163,3 @@ outputs/
 *.toc
 *.upa
 *.upb
-tests/anya_script.py
-tests/anya_script2.py
-tests/anya_script3.py
-jaxcolors/__init__.py
-jaxcolors/color_matching_functions.py
-jaxcolors/composite.py
-jaxcolors/illuminants.py
-jaxcolors/transform.py
-jaxcolors/utils.py
-anya_script 2.py
-anya_script.py
