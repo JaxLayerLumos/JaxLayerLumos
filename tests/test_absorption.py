@@ -8,8 +8,6 @@ from jaxlayerlumos import utils_units
 
 from jaxlayerlumos import utils_position
 
-import matplotlib.pyplot as plt
-
 
 def test_absorption_1():
     # wavelengths = jnp.linspace(400e-9, 900e-9, 3)
@@ -27,7 +25,7 @@ def test_absorption_1():
 
     return_coeffs = True
     thicknesses = jnp.array(thickness_materials)
-    # n_k = utils_materials.get_n_k(materials, frequencies)
+
     n_k_in = [[1, 2.2 + 0.2j, 3.3 + 0.3j, 1]]
     n_k_in = onp.repeat(n_k_in, repeats=len(frequencies), axis=0)
     n_k = jnp.array(n_k_in)
@@ -38,6 +36,7 @@ def test_absorption_1():
 
     position = onp.array([200e-9])
     # position = onp.linspace(0, 400e-9, 1000)
+
     layer, position_in_layer = utils_position.calc_position_in_structure(
         thickness_materials, position
     )
@@ -47,35 +46,6 @@ def test_absorption_1():
     results_coeffs = utils_position.calc_absorption_in_each_layer(
         thicknesses, results_coeffs
     )
-
-    plt.figure(1)
-    plt.clf()
-
-    plt.plot(position, results_coeffs["poyn_TM"].squeeze(axis=0).T)
-    plt.xlabel("position")  # Label for x-axis
-    plt.ylabel("poyn_TM")  # Label for y-axis
-    plt.title("Plot of position vs. poyn_TM")
-
-    plt.legend(
-        [f"{wavelength * 1e9:.0f} nm" for wavelength in wavelengths],
-        title="Wavelengths",
-    )
-    plt.grid(True)
-    plt.show()
-
-    # Plot 2: d_s vs. absor_TE
-    plt.figure(2)
-    plt.clf()
-    plt.plot(position, results_coeffs["absorb_TM"].squeeze(axis=0).T)
-    plt.xlabel("position")  # Label for x-axis
-    plt.ylabel("absorb_TM")  # Label for y-axis
-    plt.legend(
-        [f"{wavelength * 1e9:.0f} nm" for wavelength in wavelengths],
-        title="Wavelengths",
-    )
-    plt.title("Plot of position vs. absor_TM")
-    plt.grid(True)  # Optional: Add grid lines
-    plt.show()
 
     expected_poyn_TE = [[[0.08841456721601584]]]
     expected_absorb_TE = [[[1094772.137299091]]]

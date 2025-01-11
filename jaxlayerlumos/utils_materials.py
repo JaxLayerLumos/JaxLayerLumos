@@ -1,5 +1,6 @@
 import jax.numpy as jnp
 import numpy as onp
+import os
 import csv
 import json
 from pathlib import Path
@@ -9,8 +10,8 @@ from jaxlayerlumos import utils_radar_materials
 
 
 def load_json():
-    current_dir = Path(__file__).parent
-    materials_file = current_dir / "materials.json"
+    current_dir = str(Path(__file__).parent)
+    materials_file = os.path.join(current_dir, "materials.json")
 
     with open(materials_file, "r") as file_json:
         material_indices = json.load(file_json)
@@ -23,63 +24,6 @@ def get_all_materials():
     return list(material_indices.keys())
 
 
-"""
-def load_material_f_ghz(material):
-    material_indices, str_directory = load_json()
-    str_file = material_indices.get(material)
-
-    if not str_file:
-        raise ValueError(f"Material {material} not found in JaxLayerLumos.")
-
-    str_csv = str_directory / str_file
-    data_eps = []
-    data_mu = []
-
-    with open(str_csv, "r") as csvfile:
-        csvreader = csv.reader(csvfile)
-        start_eps = False
-        start_mu = False
-
-        for row in csvreader:
-            if len(row) == 2:
-                if row[0] == "f" and row[1] == "eps_r":
-                    start_eps = True
-                    start_mu = False
-                elif row[0] == "f" and row[1] == "eps_mu":
-                    start_eps = False
-                    start_mu = True
-                else:
-                    f_GHz, value = map(float, row)
-
-                    if start_eps and not start_mu:
-                        data_mu.append([f_Ghz, value])
-                    elif not start_eps and start_mu:
-                        data_eps.append([f_Ghz, value])
-                    else:
-                        raise ValueError
-            elif len(row) == 0:
-                pass
-            else:
-                raise ValueError
-
-    data_eps = jnp.array(data_eps)
-    data_mu = jnp.array(data_mu)
-    assert data_eps.shape[0] > 0 or data_mu.shape[0] > 0
-
-    if data_eps.shape[0] == 0:
-        data_eps = jnp.concatenate(
-            [data_eps[:, 0][..., jnp.newaxis], jnp.zeros((data_eps.shape[0], 1))],
-            axis=1,
-        )
-    if data_mu.shape[0] == 0:
-        data_mu = jnp.concatenate(
-            [data_mu[:, 0][..., jnp.newaxis], jnp.zeros((data_mu.shape[0], 1))], axis=1
-        )
-
-    return data_eps, data_mu
-"""
-
-
 def load_material_wavelength_um(material):
     material_indices, str_directory = load_json()
     str_file = material_indices.get(material)
@@ -87,7 +31,7 @@ def load_material_wavelength_um(material):
     if not str_file:
         raise ValueError(f"Material {material} not found in JaxLayerLumos.")
 
-    str_csv = str_directory / str_file
+    str_csv = os.path.join(str_directory, str_file)
     data_n = []
     data_k = []
 

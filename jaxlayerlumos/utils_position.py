@@ -93,6 +93,7 @@ def calc_absorption_in_each_layer(thicknesses, results):
     # Loop for intermediate layers
     for i in range(2, num_layers - 1):
         results_out = calc_position_data([i], 0, results, update_results=False)
+
         power_entering_each_layer_TE[i, :] = results_out["poyn_TE"][0, :, 0]
         power_entering_each_layer_TM[i, :] = results_out["poyn_TM"][0, :, 0]
 
