@@ -94,8 +94,8 @@ def calc_absorption_in_each_layer(thicknesses, results):
     for i in range(2, num_layers - 1):
         results_out = calc_position_data([i], 0, results, update_results=False)
 
-        power_entering_each_layer_TE[i, :] = results_out["poyn_TE"][0, :, 0]
-        power_entering_each_layer_TM[i, :] = results_out["poyn_TM"][0, :, 0]
+        power_entering_each_layer_TE[i, :] = np.real(results_out["poyn_TE"][0, :, 0])
+        power_entering_each_layer_TM[i, :] = np.real(results_out["poyn_TM"][0, :, 0])
 
     # Calculate absorption
     absorption_TE = -np.diff(power_entering_each_layer_TE, axis=0)
