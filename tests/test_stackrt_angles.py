@@ -1,10 +1,11 @@
 import jax.numpy as jnp
-import numpy as np
+import numpy as onp
 
 from jaxlayerlumos import stackrt
 from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_spectra
 from jaxlayerlumos import utils_layers
+from jaxlayerlumos import utils_units
 
 
 def test_sizes():
@@ -14,7 +15,8 @@ def test_sizes():
     frequencies = utils_spectra.get_frequencies_wide_visible_light(
         num_wavelengths=num_wavelengths
     )
-    n_stack = utils_materials.get_n_k_surrounded_by_air(["TiO2"], frequencies)
+    materials = ["TiO2"]
+    n_stack = utils_materials.get_n_k_surrounded_by_air(materials, frequencies)
     d_stack = utils_layers.get_thicknesses_surrounded_by_air(jnp.array([2e-8]))
     thetas = jnp.linspace(0, 89, num_angles)
 
@@ -34,21 +36,18 @@ def test_sizes():
     assert T_TE.shape[1] == T_TM.shape[1] == num_wavelengths
 
 
-def test_angles():
+def test_angles_1():
     num_wavelengths = 5
     frequencies = utils_spectra.get_frequencies_visible_light(
         num_wavelengths=num_wavelengths
     )
 
-    n_TiO2, k_TiO2 = utils_materials.interpolate_material("TiO2", frequencies)
-    n_k_TiO2 = n_TiO2 + 1j * k_TiO2
-
-    n_air = jnp.ones_like(frequencies)
-    n_stack = jnp.vstack([n_air, n_k_TiO2, n_air]).T
+    materials = ["Air", "TiO2", "Air"]
     d_stack = jnp.array([0, 2e-8, 0])
     thetas = jnp.linspace(0, 89, 3)
+    n_k = utils_materials.get_n_k(materials, frequencies)
 
-    R_TE, T_TE, R_TM, T_TM = stackrt(n_stack, d_stack, frequencies, thetas)
+    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, d_stack, frequencies, thetas)
 
     R_avg = (R_TE + R_TM) / 2
     T_avg = (T_TE + T_TM) / 2
@@ -115,5 +114,94 @@ def test_angles():
         for elem_2 in elem_1:
             print(elem_2)
 
-    np.testing.assert_allclose(R_avg, expected_R_avg)
-    np.testing.assert_allclose(T_avg, expected_T_avg)
+    onp.testing.assert_allclose(R_avg, expected_R_avg)
+    onp.testing.assert_allclose(T_avg, expected_T_avg)
+
+
+def test_angles_2():
+    wavelengths = jnp.array([300e-9])
+    frequencies = utils_units.get_light_speed() / wavelengths
+
+    materials = onp.array(["Air", "FusedSilica", "Si3N4"])
+    thickness_materials = [0, 2.91937911, 0]
+    theta = 47.1756
+
+    thicknesses = jnp.array(thickness_materials)
+    n_k = utils_materials.get_n_k(materials, frequencies)
+
+    thicknesses *= utils_units.get_nano()
+
+    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, thicknesses, frequencies, theta)
+
+    R_avg = (R_TE + R_TM) / 2
+    T_avg = (T_TE + T_TM) / 2
+
+    print("R_TE")
+    for elem_1 in R_TE:
+        for elem_2 in elem_1:
+            print(elem_2)
+
+    print("T_TE")
+    for elem_1 in T_TE:
+        for elem_2 in elem_1:
+            print(elem_2)
+
+    print("R_TM")
+    for elem_1 in R_TM:
+        for elem_2 in elem_1:
+            print(elem_2)
+
+    print("T_TM")
+    for elem_1 in T_TM:
+        for elem_2 in elem_1:
+            print(elem_2)
+
+    expected_R_avg = jnp.array([[0.24877806962502294 + 0.048295322372087564]]) / 2
+    expected_T_avg = jnp.array([[0.7512219303749771 + 0.9517046776279122]]) / 2
+
+    onp.testing.assert_allclose(R_avg, expected_R_avg)
+    onp.testing.assert_allclose(T_avg, expected_T_avg)
+
+
+def test_angles_3():
+    wavelengths = jnp.array([300e-9])
+    frequencies = utils_units.get_light_speed() / wavelengths
+
+    materials = onp.array(["Air", "Ag", "Cr"])
+    thickness_materials = [0, 9.36793259, 0.0]
+    theta = 34.767507632418315
+
+    thicknesses = jnp.array(thickness_materials)
+    n_k = utils_materials.get_n_k(materials, frequencies)
+
+    thicknesses *= utils_units.get_nano()
+    R_TE, T_TE, R_TM, T_TM = stackrt(n_k, thicknesses, frequencies, theta)
+
+    R_avg = (R_TE + R_TM) / 2
+    T_avg = (T_TE + T_TM) / 2
+
+    print("R_TE")
+    for elem_1 in R_TE:
+        for elem_2 in elem_1:
+            print(elem_2)
+
+    print("T_TE")
+    for elem_1 in T_TE:
+        for elem_2 in elem_1:
+            print(elem_2)
+
+    print("R_TM")
+    for elem_1 in R_TM:
+        for elem_2 in elem_1:
+            print(elem_2)
+
+    print("T_TM")
+    for elem_1 in T_TM:
+        for elem_2 in elem_1:
+            print(elem_2)
+
+    expected_R_avg = jnp.array([[0.48574877]])
+    expected_T_avg = jnp.array([[0.32087105]])
+
+    onp.testing.assert_allclose(R_avg, expected_R_avg)
+    onp.testing.assert_allclose(T_avg, expected_T_avg)

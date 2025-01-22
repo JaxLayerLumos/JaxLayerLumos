@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 from jaxlayerlumos.utils_materials import (
     get_all_materials,
-    interpolate_material,
+    interpolate_material_n_k,
 )
 from jaxlayerlumos.utils_spectra import (
     get_frequencies_wide_visible_light,
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     materials = get_all_materials()
 
     for material in materials:
-        n_material, k_material = interpolate_material(material, frequencies)
+        n_material, k_material = interpolate_material_n_k(material, frequencies)
 
         print(material)
         print(n_material.shape)

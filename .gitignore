@@ -154,4 +154,12 @@ cython_debug/
 # custom
 .DS_Store
 __MACOSX/
+.idea/
+outputs/
 *.swp
+*.out
+*.synctex.gz
+*.aux
+*.toc
+*.upa
+*.upb
