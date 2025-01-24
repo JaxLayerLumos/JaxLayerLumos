@@ -46,6 +46,22 @@ pip install .
 
 A collection of examples in the `examples` directory exhibits various use cases and capabilities of JaxLayerLumos.
 
+### **Comparison of TMM Packages**  
+| Feature                | Ansys Optics (stackrt)          | JaxLayerLumos            | TMM-Fast                  | tmm (sbyrnes)       |  
+|------------------------|----------------------------------|--------------------------|---------------------------|---------------------|  
+| **Lightweight**        | ❌ (Commercial, bulky)           | ✅ (Minimal dependencies)| ✅ (PyTorch/NumPy)        | ✅ (Pure Python)     |  
+| **Speed**              | Moderate                         | ✅ Fast (JAX JIT)        | ✅ Fast(torch Cuda)| Slow (CPU-bound)    |  
+| **Gradient Support**   | ❌                               | ✅ (JAX autodiff)        | ✅ (PyTorch Autograd)     | ❌                  |  
+| **GPU/TPU Support**    | ❌                               | ✅ (JAX backend)         | ✅ (PyTorch GPU)          | ❌                  |  
+| **Wavelength Range**   |                                  |                          |                           |                    |  
+| - **Optical**          | ✅ Full-spectrum                 | ✅ User-defined          | ✅ Optimized              | ✅ Basic            |  
+| - **Infrared**         | ❌ Limited                  | ✅ User-defined          | ✅ Limited               | ❌                 |  
+| - **Radar (HF)**       | ❌ Limited                  | ✅ (Handle Magnetic Material)          | ❌                       | ❌                 |  
+| **Material Database**  | ✅ Extensive (Commercial)        | ✅ Growing library       | ❌ User-defined           | ❌ User-defined     |  
+| **License**            | Proprietary                      | MIT                      | MIT          | BSD-3-Clause       |  
+
+---
+
 ## Benchmarking
 
 You should install the packages required for benchmarking our software against existing methods.
