@@ -47,18 +47,19 @@ pip install .
 A collection of examples in the `examples` directory exhibits various use cases and capabilities of JaxLayerLumos.
 
 ### **Comparison of TMM Packages**  
-| Feature                | Ansys Optics (stackrt)          | JaxLayerLumos            | TMM-Fast                  | tmm (sbyrnes)       |  
-|------------------------|----------------------------------|--------------------------|---------------------------|---------------------|  
-| **Lightweight**        | ❌ (Commercial, bulky)           | ✅ (Minimal dependencies)| ✅ (PyTorch/NumPy)        | ✅ (Pure Python)     |  
-| **Speed**              | Moderate                         | ✅ Fast (JAX JIT)        | ✅ Fast(torch Cuda)| Slow (CPU-bound)    |  
-| **Gradient Support**   | ❌                               | ✅ (JAX autodiff)        | ✅ (PyTorch Autograd)     | ❌                  |  
-| **GPU/TPU Support**    | ❌                               | ✅ (JAX backend)         | ✅ (PyTorch GPU)          | ❌                  |  
-| **Wavelength Range**   |                                  |                          |                           |                    |  
-| - **Optical**          | ✅ Full-spectrum                 | ✅ User-defined          | ✅ Optimized              | ✅ Basic            |  
-| - **Infrared**         | ❌ Limited                  | ✅ User-defined          | ✅ Limited               | ❌                 |  
-| - **Radar (HF)**       | ❌ Limited                  | ✅ (Handle Magnetic Material)          | ❌                       | ❌                 |  
-| **Material Database**  | ✅ Extensive (Commercial)        | ✅ Growing library       | ❌ User-defined           | ❌ User-defined     |  
-| **License**            | Proprietary                      | MIT                      | MIT          | BSD-3-Clause       |  
+| Feature                | Ansys Optics (stackrt)          | TMM-Fast                  | tmm (sbyrnes)       | JaxLayerLumos            |  
+|------------------------|----------------------------------|---------------------------|---------------------|--------------------------|  
+| **Lightweight**        | ❌ (Commercial, bulky)           | ✅ (PyTorch/NumPy)        | ✅ (Pure Python)     | ✅ (Minimal dependencies)|  
+| **Speed**              | Moderate                         | ✅ Fast (PyTorch Cuda)    | Slow (CPU-bound)    | ✅ Fast (JAX JIT)        |  
+| **Gradient Support**   | ❌                               | ✅ (PyTorch Autograd)     | ❌                  | ✅ (JAX autodiff)        |  
+| **GPU Support**        | ❌                               | ✅ (PyTorch GPU)          | ❌                  | ✅ (JAX backend)         |  
+| **TPU Support**        | ❌                               | ❌                        | ❌                  | ✅ (JAX backend)         |  
+| **Position-Dependent Poynting** | ❌                  | ❌                        | ❌                  | ✅                          
+|  **Optical Simulation**          | ✅ Full-spectrum                 | ✅ Optimized              | ✅ Basic            | ✅ User-defined          |  
+|  **Infrared Simulation**         | ❌ Limited                       | ✅ Limited                | ❌                 | ✅ User-defined          |  
+|  **Radar (HF) Simulation**       | ❌ Limited                       | ❌                        | ❌                 | ✅ **Cover Magnetic Materials**|  
+| **Material Database**  | ✅ Extensive (Commercial)        | ❌ User-defined           | ❌ User-defined     | ✅ Growing library       |  
+| **Open Source**        | ❌                               | ✅ MIT                    | ✅ BSD-3-Clause     | ✅ MIT                   |  
 
 ---
 
