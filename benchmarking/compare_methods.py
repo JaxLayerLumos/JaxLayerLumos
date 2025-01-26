@@ -93,7 +93,7 @@ def compare_simulation(methods, frequencies, thicknesses, n_k, angle):
 
 
 def compare_simulations_layer(methods, num_layers, num_tests, use_zero_angle, use_thick_layers):
-    wavelengths = onp.linspace(300e-9, 900e-9, 101)
+    wavelengths = onp.linspace(300e-9, 900e-9, 10001)
     frequencies = utils_units.get_light_speed() / wavelengths
 
     all_materials = utils_materials.get_all_materials()
@@ -102,6 +102,7 @@ def compare_simulations_layer(methods, num_layers, num_tests, use_zero_angle, us
 
     materials_layer = []
     thicknesses_layer = onp.zeros((0, num_layers + 1))
+    angles_layer = onp.zeros((0, ))
     Rs_TE_layer = onp.zeros((methods.shape[0], 0, wavelengths.shape[0]))
     Rs_TM_layer = onp.zeros((methods.shape[0], 0, wavelengths.shape[0]))
     Ts_TE_layer = onp.zeros((methods.shape[0], 0, wavelengths.shape[0]))
@@ -143,6 +144,7 @@ def compare_simulations_layer(methods, num_layers, num_tests, use_zero_angle, us
             methods, frequencies, thicknesses, n_k, angle)
 
         thicknesses = onp.expand_dims(thicknesses, axis=0)
+        angle = onp.array([angle])
         Rs_TE = onp.expand_dims(Rs_TE, axis=1)
         Rs_TM = onp.expand_dims(Rs_TM, axis=1)
         Ts_TE = onp.expand_dims(Ts_TE, axis=1)
@@ -151,6 +153,7 @@ def compare_simulations_layer(methods, num_layers, num_tests, use_zero_angle, us
 
         materials_layer.append(materials)
         thicknesses_layer = onp.concatenate([thicknesses_layer, thicknesses], axis=0)
+        angles_layer = onp.concatenate([angles_layer, angle], axis=0)
         Rs_TE_layer = onp.concatenate([Rs_TE_layer, Rs_TE], axis=1)
         Rs_TM_layer = onp.concatenate([Rs_TM_layer, Rs_TM], axis=1)
         Ts_TE_layer = onp.concatenate([Ts_TE_layer, Ts_TE], axis=1)
@@ -159,7 +162,7 @@ def compare_simulations_layer(methods, num_layers, num_tests, use_zero_angle, us
 
     materials_layer = onp.array(materials_layer)
     print('', flush=True)
-    print(materials_layer.shape, thicknesses_layer.shape, Rs_TE_layer.shape, Rs_TM_layer.shape, Ts_TE_layer.shape, Ts_TM_layer.shape, times_consumed_layer.shape, flush=True)
+    print(materials_layer.shape, thicknesses_layer.shape, angles_layer.shape, Rs_TE_layer.shape, Rs_TM_layer.shape, Ts_TE_layer.shape, Ts_TM_layer.shape, times_consumed_layer.shape, flush=True)
 
     mean_times_consumed_layer = onp.mean(times_consumed_layer, axis=1)
     std_times_consumed_layer = onp.std(times_consumed_layer, axis=1)
@@ -169,6 +172,26 @@ def compare_simulations_layer(methods, num_layers, num_tests, use_zero_angle, us
         print(f'{method} {mean_time_consumed_layer:.4f} +- {std_time_consumed_layer:.4f} sec.', flush=True)
     print('', flush=True)
 
+    dict_result_layer = {
+        'methods': methods,
+        'num_layers': num_layers,
+        'num_tests': num_tests,
+        'use_zero_angle': use_zero_angle,
+        'use_thick_layers': use_thick_layers,
+        'materials_layer': materials_layer,
+        'thicknesses_layer': thicknesses_layer,
+        'angles_layer': angles_layer,
+        'Rs_TE_layer': Rs_TE_layer,
+        'Rs_TM_layer': Rs_TM_layer,
+        'Ts_TE_layer': Ts_TE_layer,
+        'Ts_TM_layer': Ts_TM_layer,
+        'times_consumed_layer': times_consumed_layer
+    }
+
+    onp.save(
+        f'results_{methods.shape[0]}_{num_layers}_{num_tests}_{use_zero_angle}_{use_thick_layers}.npy',
+        dict_result_layer
+    )
 
 def compare_simulations(num_tests, use_zero_angle, use_thick_layers):
     methods = onp.array([
