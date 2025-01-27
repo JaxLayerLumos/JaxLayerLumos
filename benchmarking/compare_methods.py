@@ -181,6 +181,8 @@ def compare_simulations_layer(methods, num_layers, num_tests, use_zero_angle, us
         'materials_layer': materials_layer,
         'thicknesses_layer': thicknesses_layer,
         'angles_layer': angles_layer,
+        'wavelengths': wavelengths,
+        'frequencies': frequencies,
         'Rs_TE_layer': Rs_TE_layer,
         'Rs_TM_layer': Rs_TM_layer,
         'Ts_TE_layer': Ts_TE_layer,
