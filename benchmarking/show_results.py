@@ -8,7 +8,7 @@ if __name__ == '__main__':
     num_layers = 8
     num_tests = 10
 
-    use_zero_angle = False
+    use_zero_angle = True
     use_thick_layers = True
 
     dict_results = np.load(f'results_{num_methods}_{num_layers}_{num_tests}_{use_zero_angle}_{use_thick_layers}.npy', allow_pickle=True)

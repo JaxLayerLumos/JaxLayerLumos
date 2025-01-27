@@ -33,7 +33,7 @@ def compute_properties_tmm(thicknesses, n_k, frequencies, angle_of_incidence):
 
     for wavelength, n_k_single in zip(wavelengths, n_k.T):
         result_s = tmm_core.coh_tmm('s', n_k_single, thicknesses, angle, wavelength)
-        result_p = tmm_core.coh_tmm('s', n_k_single, thicknesses, angle, wavelength)
+        result_p = tmm_core.coh_tmm('p', n_k_single, thicknesses, angle, wavelength)
 
         Rs = result_s['R']
         Ts = result_s['T']
