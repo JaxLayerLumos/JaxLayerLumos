@@ -46,6 +46,23 @@ pip install .
 
 A collection of examples in the `examples` directory exhibits various use cases and capabilities of JaxLayerLumos.
 
+### **Comparison of TMM Packages**  
+| Feature                | Ansys Optics (stackrt)          | TMM-Fast                  | tmm (sbyrnes)       | JaxLayerLumos            |  
+|------------------------|----------------------------------|---------------------------|---------------------|--------------------------|  
+| **Lightweight**        | ❌ (Commercial, bulky)           | ✅ (PyTorch/NumPy)        | ✅ (Pure Python)     | ✅ (Minimal dependencies)|  
+| **Speed**              | Moderate                         | ✅ Fast (PyTorch Cuda)    | Slow (CPU-bound)    | ✅ Fast (JAX JIT)        |  
+| **Gradient Support**   | ❌                               | ✅ (PyTorch Autograd)     | ❌                  | ✅ (JAX autodiff)        |  
+| **GPU Support**        | ❌                               | ✅ (PyTorch GPU)          | ❌                  | ✅ (JAX backend)         |  
+| **TPU Support**        | ❌                               | ❌                        | ❌                  | ✅ (JAX backend)         |  
+| **Position-Dependent Poynting** | ❌                  | ❌                        | ❌                  | ✅                          
+|  **Optical Simulation**          | ✅ Full-spectrum                 | ✅ Optimized              | ✅ Basic            | ✅ User-defined          |  
+|  **Infrared Simulation**         | ❌ Limited                       | ✅ Limited                | ❌                 | ✅ User-defined          |  
+|  **Radar (HF) Simulation**       | ❌ Limited                       | ❌                        | ❌                 | ✅ **Cover Magnetic Materials**|  
+| **Material Database**  | ✅ Extensive (Commercial)        | ❌ User-defined           | ❌ User-defined     | ✅ Growing library       |  
+| **Open Source**        | ❌                               | ✅ MIT                    | ✅ BSD-3-Clause     | ✅ MIT                   |  
+
+---
+
 ## Benchmarking
 
 You should install the packages required for benchmarking our software against existing methods.
