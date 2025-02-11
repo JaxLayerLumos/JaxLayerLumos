@@ -4,6 +4,8 @@ import os
 import csv
 import json
 from pathlib import Path
+import warnings
+
 
 from jaxlayerlumos import utils_spectra
 from jaxlayerlumos import utils_radar_materials
@@ -112,6 +114,9 @@ def interpolate(freqs_values, frequencies):
     assert jnp.min(freqs) * 0.70 <= jnp.min(frequencies)
     assert jnp.max(frequencies) <= jnp.max(freqs) * 1.30
 
+    if jnp.any(frequencies < jnp.min(freqs)) or jnp.any(frequencies > jnp.max(freqs)):
+        warnings.warn("Extrapolation detected: Some frequencies are outside the given data range.", UserWarning)
+
     values_interpolated = jnp.interp(
         frequencies,
         freqs,
@@ -129,6 +134,9 @@ def interpolate_material_n_k(material, frequencies):
 
     if material == "Air":
         n_material = jnp.ones_like(frequencies)
+        k_material = jnp.zeros_like(frequencies)
+    elif material == "PEC":
+        n_material = jnp.zeros_like(frequencies) + jnp.inf
         k_material = jnp.zeros_like(frequencies)
     else:
         data_n, data_k = load_material(material)
