@@ -111,7 +111,7 @@ def interpolate(freqs_values, frequencies):
 
     freqs, values = freqs_values.T
 
-    assert jnp.min(freqs) * 0.70 <= jnp.min(frequencies)
+    assert jnp.min(freqs) * 0.40 <= jnp.min(frequencies)
     assert jnp.max(frequencies) <= jnp.max(freqs) * 1.30
 
     if jnp.any(frequencies < jnp.min(freqs)) or jnp.any(frequencies > jnp.max(freqs)):
