@@ -21,17 +21,17 @@ def interpolate(wavelength, data_wavelength, data_irradiance):
     values_interpolated = jnp.interp(
         wavelength,
         data_wavelength,
-        data_irradiance,
-        left="extrapolate",
-        right="extrapolate",
-    )
+        data_irradiance)
     return values_interpolated
 
 def interpolate_light_source_irradiance(light_source, wavelength):
-    data_wavelength, data_irradiance = load_light_source_wavelength_nm(light_source)
+    data_wavelength, data_irradiance = load_light_source_wavelength(light_source)
     irradiance = interpolate(wavelength, data_wavelength, data_irradiance)
     return irradiance
 
+def load_light_source_wavelength(light_source):
+    data_wavelength, data_irradiance = load_light_source_wavelength_nm(light_source)
+    return data_wavelength*1e-9, data_irradiance
 
 
 def get_irradiance(light_source, wavelength):
