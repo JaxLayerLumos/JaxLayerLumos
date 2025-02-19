@@ -17,29 +17,44 @@ pip install .[benchmarking]
 
 ## Comparisons to Ansys Optics
 
-Simulation results of JaxLayerLumos are compared to the results of [stackrt](https://optics.ansys.com/hc/en-us/articles/360034406254-stackrt-Script-command), which is included in [Ansys Optics](https://www.ansys.com/products/optics).
-Our results are matched to the Ansys Optics results with sufficiently small errors.
+[Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), and [tmm](https://github.com/sbyrnes321/tmm) are compared to our software.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/tmm_Ag_100.0nm_angle_0.0_deg.png" width="400" />
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/tmm_Ag_100.0nm_angle_45.0_deg.png" width="400" />
-<br>
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/tmm_Ag_100.0nm_angle_75.0_deg.png" width="400" />
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/tmm_Ag_100.0nm_angle_89.0_deg.png" width="400" />
+<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_False_True_0.png" width="400" />
 </p>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/tmm_Ag_10.0nm_Al_11.0nm_Ag_12.0nm_angle_0.0_deg.png" width="400" />
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/tmm_Ag_10.0nm_Al_11.0nm_Ag_12.0nm_angle_45.0_deg.png" width="400" />
-<br>
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/tmm_Ag_10.0nm_Al_11.0nm_Ag_12.0nm_angle_75.0_deg.png" width="400" />
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/tmm_Ag_10.0nm_Al_11.0nm_Ag_12.0nm_angle_89.0_deg.png" width="400" />
+<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_False_True_1.png" width="400" />
 </p>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/tmm_TiO2_20.0nm_Ag_5.0nm_TiO2_30.0nm_angle_0.0_deg.png" width="400" />
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/tmm_TiO2_20.0nm_Ag_5.0nm_TiO2_30.0nm_angle_45.0_deg.png" width="400" />
-<br>
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/tmm_TiO2_20.0nm_Ag_5.0nm_TiO2_30.0nm_angle_75.0_deg.png" width="400" />
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/tmm_TiO2_20.0nm_Ag_5.0nm_TiO2_30.0nm_angle_89.0_deg.png" width="400" />
+<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_False_True_2.png" width="400" />
+</p>
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_False_True_3.png" width="400" />
+</p>
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_False_True_4.png" width="400" />
+</p>
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_True_True_0.png" width="400" />
+</p>
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_True_True_1.png" width="400" />
+</p>
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_True_True_2.png" width="400" />
+</p>
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_True_True_3.png" width="400" />
+</p>
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_True_True_4.png" width="400" />
 </p>
