@@ -1,12 +1,11 @@
 import jax.numpy as jnp
-
-from jaxlayerlumos import utils_units
-import scipy.constants as scic
 import os
-import pandas as pd
-
+import csv
 from pathlib import Path
 import json
+
+from jaxlayerlumos import utils_units
+
 
 def load_light_source_json():
     current_dir = str(Path(__file__).parent)
@@ -17,6 +16,7 @@ def load_light_source_json():
 
     return light_source_indices, current_dir
 
+
 def interpolate(wavelength, data_wavelength, data_irradiance):
     values_interpolated = jnp.interp(
         wavelength,
@@ -24,14 +24,16 @@ def interpolate(wavelength, data_wavelength, data_irradiance):
         data_irradiance)
     return values_interpolated
 
+
 def interpolate_light_source_irradiance(light_source, wavelength):
     data_wavelength, data_irradiance = load_light_source_wavelength(light_source)
     irradiance = interpolate(wavelength, data_wavelength, data_irradiance)
     return irradiance
 
+
 def load_light_source_wavelength(light_source):
     data_wavelength, data_irradiance = load_light_source_wavelength_nm(light_source)
-    return data_wavelength*1e-9, data_irradiance
+    return data_wavelength * 1e-9, data_irradiance
 
 
 def get_irradiance(light_source, wavelength):
@@ -47,14 +49,21 @@ def load_light_source_wavelength_nm(light_source):
         raise ValueError(f"Light Source {light_source} not found in JaxLayerLumos.")
 
     str_csv = os.path.join(str_directory, str_file)
-    df = pd.read_csv(str_csv, comment = '#', names=["Wavelength (nm)", "Irradiance (W/m²/nm)"])
 
-    wavelength = df["Wavelength (nm)"].values
-    irradiance = df["Irradiance (W/m²/nm)"].values
+    wavelength = []
+    irradiance = []
+
+    with open(str_csv, mode="r") as file_csv:
+        reader = csv.reader(file_csv)
+
+        for line in reader:
+            wavelength.append(float(line[0]))
+            irradiance.append(float(line[1]))
+
+    wavelength = jnp.array(wavelength)
+    irradiance = jnp.array(irradiance)
 
     return wavelength, irradiance
-
-
 
 
 def convert_frequencies_to_wavelengths(frequencies):
@@ -65,14 +74,12 @@ def convert_frequencies_to_wavelengths(frequencies):
     return wavelengths
 
 
-
-
 def convert_wavelengths_to_energy(wavelengths):
     # energy is in eV
     assert isinstance(wavelengths, jnp.ndarray)
     assert wavelengths.ndim == 1
 
-    energy = utils_units.get_light_speed()* scic.constants.h/ wavelengths/scic.e
+    energy = utils_units.get_light_speed() * utils_units.get_planck_constant() / wavelengths / utils_units.get_elementary_charge()
     return energy
 
 

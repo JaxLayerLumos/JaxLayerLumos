@@ -8,6 +8,7 @@ def get_light_speed():
 def get_nano():
     return scic.nano
 
+
 def get_micro():
     return scic.micro
 
@@ -22,6 +23,14 @@ def get_centi():
 
 def get_giga():
     return scic.giga
+
+
+def get_planck_constant():
+    return scic.h
+
+
+def get_elementary_charge():
+    return scic.e
 
 
 def convert_nm_to_m(thicknesses):

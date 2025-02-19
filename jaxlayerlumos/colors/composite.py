@@ -1,4 +1,4 @@
-from jaxcolors import transform
+from jaxlayerlumos.colors import transform
 
 
 def spectrum_to_xyY(wavelengths, values, str_color_space="cie1931", str_illuminant="d65"):

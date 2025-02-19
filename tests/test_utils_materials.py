@@ -23,6 +23,7 @@ LIST_MATERIALS = [
     "Fe",
     "FusedSilica",
     "GaAs",
+    "GaInP",
     "GaP",
     "Ge",
     "InP",

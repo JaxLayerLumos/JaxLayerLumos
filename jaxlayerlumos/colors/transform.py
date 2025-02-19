@@ -1,6 +1,6 @@
 import jax.numpy as jnp
 
-from jaxcolors import utils
+from jaxlayerlumos.colors import utils
 
 
 def spectrum_to_XYZ(wavelengths, values, str_color_space="cie1931", str_illuminant="d65"):

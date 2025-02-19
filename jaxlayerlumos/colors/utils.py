@@ -1,7 +1,7 @@
 import jax.numpy as jnp
 
-from jaxcolors import color_matching_functions
-from jaxcolors import illuminants
+from jaxlayerlumos.colors import color_matching_functions
+from jaxlayerlumos.colors import illuminants
 
 
 def get_cmfs(bx, str_color_space="cie1931"):

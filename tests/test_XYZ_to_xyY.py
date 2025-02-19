@@ -3,7 +3,7 @@ import numpy as onp
 
 import colour
 
-from jaxcolors import transform
+from jaxlayerlumos.colors import transform
 
 
 def _test_one_XYZ(XYZ):

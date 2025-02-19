@@ -3,7 +3,7 @@ import numpy as onp
 
 import colour
 
-from jaxcolors import transform
+from jaxlayerlumos.colors import transform
 
 
 def get_cmfs_illuminant_shape(increment=1.0):
