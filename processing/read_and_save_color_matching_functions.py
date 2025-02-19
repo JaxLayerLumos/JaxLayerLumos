@@ -25,7 +25,7 @@ def read_and_save(str_file, file_python, str_variable):
 
 
 if __name__ == "__main__":
-    file_python = open("../jaxcolors/color_matching_functions.py", mode="w")
+    file_python = open("../jaxlayerlumos/colors/color_matching_functions.py", mode="w")
 
     read_and_save("csv/ciexyz31_1.csv", file_python, "cmfs_cie1931")
 

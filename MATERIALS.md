@@ -1,6 +1,6 @@
 # Supported Materials
 
-38 materials: Ag, Air, Al2O3, Al, aSi, aSi-Zarei, Au, AZO-Zarei, BK7, Cr, cSi, Cu, Fe, FusedSilica, GaAs, GaP, Ge, InP, ITO, ITO-Zarei, Mg, Mn, Ni, Pb, Pd, Pt, Sapphire, Si3N4, Si3N4-Zarei, SiO2, SiO2-Zarei, TiN, TiO2, TiO2-Zarei, Ti, W, ZnO, Zn
+39 materials: Ag, Air, Al2O3, Al, aSi, aSi-Zarei, Au, AZO-Zarei, BK7, Cr, cSi, Cu, Fe, FusedSilica, GaAs, GaInP, GaP, Ge, InP, ITO, ITO-Zarei, Mg, Mn, Ni, Pb, Pd, Pt, Sapphire, Si3N4, Si3N4-Zarei, SiO2, SiO2-Zarei, TiN, TiO2, TiO2-Zarei, Ti, W, ZnO, Zn
 
 - Ag
 
@@ -61,6 +61,10 @@
 - GaAs
 
 <p align='center'><img src='assets/refractive_indices/GaAs.png' width='400' /></p>
+
+- GaInP
+
+<p align='center'><img src='assets/refractive_indices/GaInP.png' width='400' /></p>
 
 - GaP
 

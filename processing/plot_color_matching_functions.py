@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from jaxcolors import color_matching_functions
+from jaxlayerlumos.colors import color_matching_functions
 
 
 def plot(cmfs, str_variable):
@@ -32,13 +32,13 @@ def plot(cmfs, str_variable):
 
     plt.tight_layout()
     plt.savefig(
-        f"../figures/color_matching_functions_{str_variable}.png",
+        f"../assets/colors/color_matching_functions_{str_variable}.png",
         format="png",
         transparent=True,
         bbox_inches="tight",
     )
     plt.savefig(
-        f"../figures/color_matching_functions_{str_variable}.pdf",
+        f"../assets/colors/color_matching_functions_{str_variable}.pdf",
         format="pdf",
         transparent=True,
         bbox_inches="tight",

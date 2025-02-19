@@ -25,7 +25,7 @@ def read_and_save(str_file, file_python, str_variable):
 
 
 if __name__ == "__main__":
-    file_python = open("../jaxcolors/illuminants.py", mode="w")
+    file_python = open("../jaxlayerlumos/colors/illuminants.py", mode="w")
 
     read_and_save("csv/CIE_std_illum_D65.csv", file_python, "illuminant_d65")
 
