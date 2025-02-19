@@ -115,7 +115,10 @@ def interpolate(freqs_values, frequencies):
     assert jnp.max(frequencies) <= jnp.max(freqs) * 1.30
 
     if jnp.any(frequencies < jnp.min(freqs)) or jnp.any(frequencies > jnp.max(freqs)):
-        warnings.warn("Extrapolation detected: Some frequencies are outside the given data range.", UserWarning)
+        warnings.warn(
+            "Extrapolation detected: Some frequencies are outside the given data range.",
+            UserWarning,
+        )
 
     values_interpolated = jnp.interp(
         frequencies,

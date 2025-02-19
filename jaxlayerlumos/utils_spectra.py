@@ -18,10 +18,7 @@ def load_light_source_json():
 
 
 def interpolate(wavelength, data_wavelength, data_irradiance):
-    values_interpolated = jnp.interp(
-        wavelength,
-        data_wavelength,
-        data_irradiance)
+    values_interpolated = jnp.interp(wavelength, data_wavelength, data_irradiance)
     return values_interpolated
 
 
@@ -79,9 +76,13 @@ def convert_wavelengths_to_energy(wavelengths):
     assert isinstance(wavelengths, jnp.ndarray)
     assert wavelengths.ndim == 1
 
-    energy = utils_units.get_light_speed() * utils_units.get_planck_constant() / wavelengths / utils_units.get_elementary_charge()
+    energy = (
+        utils_units.get_light_speed()
+        * utils_units.get_planck_constant()
+        / wavelengths
+        / utils_units.get_elementary_charge()
+    )
     return energy
-
 
 
 def convert_wavelengths_to_frequencies(wavelengths):

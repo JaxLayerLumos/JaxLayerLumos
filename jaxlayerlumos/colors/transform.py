@@ -3,7 +3,9 @@ import jax.numpy as jnp
 from jaxlayerlumos.colors import utils
 
 
-def spectrum_to_XYZ(wavelengths, values, str_color_space="cie1931", str_illuminant="d65"):
+def spectrum_to_XYZ(
+    wavelengths, values, str_color_space="cie1931", str_illuminant="d65"
+):
     assert isinstance(wavelengths, jnp.ndarray)
     assert isinstance(values, jnp.ndarray)
     assert wavelengths.ndim == 1
@@ -71,15 +73,15 @@ def XYZ_to_sRGB(XYZ, use_clipping=True):
     Y = XYZ[1]
     Z = XYZ[2]
 
-    R =  3.2406 * X - 1.5372 * Y - 0.4986 * Z
+    R = 3.2406 * X - 1.5372 * Y - 0.4986 * Z
     G = -0.9689 * X + 1.8758 * Y + 0.0415 * Z
-    B =  0.0557 * X - 0.2040 * Y + 1.0570 * Z
+    B = 0.0557 * X - 0.2040 * Y + 1.0570 * Z
 
     def transform_nonlinear(C):
         if C <= 0.0031308:
             C *= 12.92
         else:
-            C = 1.055 * (C**(1 / 2.4)) - 0.055
+            C = 1.055 * (C ** (1 / 2.4)) - 0.055
 
         return C
 
@@ -117,9 +119,9 @@ def XYZ_to_Lab(XYZ, str_illuminant="d65"):
         delta = 6 / 29
 
         if t > delta**3:
-            output = t**(1/3)
+            output = t ** (1 / 3)
         else:
-            output = 1 / 3 * t * delta**(-2) + 4 / 29
+            output = 1 / 3 * t * delta ** (-2) + 4 / 29
 
         return output
 

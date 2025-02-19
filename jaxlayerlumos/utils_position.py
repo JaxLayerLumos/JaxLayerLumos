@@ -57,8 +57,8 @@ def calc_position_data(layer, position_in_layer, results, update_results=True):
     results_position = {
         "poyn_TE": poyn_TE,
         "poyn_TM": poyn_TM,
-        "absorb_TE": absorb_TE, # units of absorption/meter
-        "absorb_TM": absorb_TM, # units of absorption/meter
+        "absorb_TE": absorb_TE,  # units of absorption/meter
+        "absorb_TM": absorb_TM,  # units of absorption/meter
         "E_TE": E_TE,
         "E_TM": E_TM,
     }

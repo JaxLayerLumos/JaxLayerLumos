@@ -62,8 +62,7 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, return_coeffs=F
     r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM = jax.lax.cond(
         jnp.isinf(jnp.real(eps_r[-1]))
         # & jnp.isclose(jnp.imag(eps_r[-1]), 0)
-        & jnp.isclose(jnp.real(mu_r[-1]), 1)
-        & jnp.isclose(jnp.imag(mu_r[-1]), 0),
+        & jnp.isclose(jnp.real(mu_r[-1]), 1) & jnp.isclose(jnp.imag(mu_r[-1]), 0),
         true_fun,
         false_fun,
         r_jk_TE,

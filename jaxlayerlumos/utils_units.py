@@ -36,11 +36,13 @@ def get_elementary_charge():
 def convert_nm_to_m(thicknesses):
     return thicknesses * get_nano()
 
+
 def convert_m_to_nm(thicknesses):
-    return thicknesses/get_nano()
+    return thicknesses / get_nano()
+
 
 def convert_m_to_um(thicknesses):
-    return thicknesses/get_micro()
+    return thicknesses / get_micro()
 
 
 def convert_mm_to_m(thicknesses):
