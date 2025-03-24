@@ -20,7 +20,7 @@ def spectrum_to_sRGB(
     values,
     str_color_space="cie1931",
     str_illuminant="d65",
-    use_clipping=True,
+    use_clipping=False,
 ):
     XYZ = transform.spectrum_to_XYZ(
         wavelengths,

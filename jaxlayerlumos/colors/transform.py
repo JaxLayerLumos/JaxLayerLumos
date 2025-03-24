@@ -63,7 +63,7 @@ def XYZ_to_xyY(XYZ):
     return jnp.array([x, y, Y])
 
 
-def XYZ_to_sRGB(XYZ, use_clipping=True):
+def XYZ_to_sRGB(XYZ, use_clipping=False):
     assert isinstance(XYZ, jnp.ndarray)
     assert isinstance(use_clipping, bool)
     assert XYZ.ndim == 1
