@@ -1,7 +1,7 @@
 # JaxLayerLumos: A JAX-based Efficient Transfer-Matrix Method Framework for Optical Simulations
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/layerlumos.jpg" width="400" />
+<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/main/assets/layerlumos.jpg" width="400" />
 </p>
 
 

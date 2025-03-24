@@ -20,41 +20,41 @@ pip install .[benchmarking]
 [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), and [tmm](https://github.com/sbyrnes321/tmm) are compared to our software.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_False_True_0.png" width="800" />
+<img src="assets/comparisons/comparisons_5_8_10_False_True_0.png" width="800" />
 </p>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_False_True_1.png" width="800" />
+<img src="assets/comparisons/comparisons_5_8_10_False_True_1.png" width="800" />
 </p>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_False_True_2.png" width="800" />
+<img src="assets/comparisons/comparisons_5_8_10_False_True_2.png" width="800" />
 </p>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_False_True_3.png" width="800" />
+<img src="assets/comparisons/comparisons_5_8_10_False_True_3.png" width="800" />
 </p>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_False_True_4.png" width="800" />
+<img src="assets/comparisons/comparisons_5_8_10_False_True_4.png" width="800" />
 </p>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_True_True_0.png" width="800" />
+<img src="assets/comparisons/comparisons_5_8_10_True_True_0.png" width="800" />
 </p>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_True_True_1.png" width="800" />
+<img src="assets/comparisons/comparisons_5_8_10_True_True_1.png" width="800" />
 </p>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_True_True_2.png" width="800" />
+<img src="assets/comparisons/comparisons_5_8_10_True_True_2.png" width="800" />
 </p>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_True_True_3.png" width="800" />
+<img src="assets/comparisons/comparisons_5_8_10_True_True_3.png" width="800" />
 </p>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/mil152/JaxLayerLumos/main/assets/comparisons/comparisons_5_8_10_True_True_4.png" width="800" />
+<img src="assets/comparisons/comparisons_5_8_10_True_True_4.png" width="800" />
 </p>
