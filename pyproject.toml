@@ -53,3 +53,8 @@ dev = [
 benchmarking = [
     "tmm-fast",
 ]
+
+examples = [
+    "bayeso",
+    "optax",
+]
