@@ -19,6 +19,7 @@
 
 Our mission is to offer a lightweight, flexible, and fast alternative to commercial software, enabling users to perform complex optical simulations with ease. JaxLayerLumos is built with performance and usability in mind, facilitating the exploration of optical phenomena in research and development settings.
 
+
 ## Features
 
 - **Lightweight and Efficient**: Optimized for performance, JaxLayerLumos ensures rapid calculations without the overhead of large-scale commercial software.
@@ -27,6 +28,7 @@ Our mission is to offer a lightweight, flexible, and fast alternative to commerc
 - **Angle of Incidence Support**: Expands simulation capabilities to include angled light incidence, providing more detailed analysis for advanced optical designs.
 - **Open Source and Community-Driven**: Encourages contributions and feedback from the community, ensuring continuous improvement and innovation.
 - **Comprehensive Material Database**: Includes a growing database of materials with their optical properties, streamlining the simulation setup process.
+
 
 ## Installation
 
@@ -45,29 +47,44 @@ pip install .
 In addition, we support three installation modes, `dev`, `benchmarking`, and `examples`, where `dev` is defined for installing the packages required for development, `benchmarking` is for installing the packages required for benchmarking against differnt TMM software programs, and `examples` is needed for running the examples included in the `examples` directory.
 One of these modes can be used by commanding `pip install .[dev]`, `pip install .[benchmarking]`, or `pip install .[examples]`.
 
+
 ## Examples
 
-A collection of examples in the `examples` directory exhibits various use cases and capabilities of JaxLayerLumos.
+A collection of examples in the `examples` directory exhibits various use cases and capabilities of our software.
+We provide the following examples:
+
+1. [Reflection Spectra over Wavelengths Varying Incidence Angles](examples/angle-variation.ipynb)
+2. [Color Conversion](examples/color-conversion.ipynb)
+3. [Color Exploration with Thin-Film Structures](examples/color-exploration.ipynb)
+4. [Gradient Computation](examples/gradient-computation.ipynb)
+5. [Visualization of Light Sources](examples/light-source-visualization.ipynb)
+6. [Plotting of Optical Constants](examples/n-k-extrapolation.ipynb)
+7. [Thin-Film Structure Optimization with Bayesian Optimization](examples/optimization-bayeso.ipynb)
+8. [Thin-Film Structure Optimization with DoG Optimizer](examples/optimization-dog.ipynb)
+9. [Reflection Spectra over Frequencies for Radar Design](examples/radar-design.ipynb)
+10. [Analysis of Solar Cells](examples/solar-cell-analysis.ipynb)
+11. [Transmission Spectra over Wavelengths Varying Thicknesses](examples/thickness-variation.ipynb)
+12. [Triple Junction Solar Cells](examples/triple-junction-solar-cells.ipynb)
+
 
 ## Comparison of TMM Packages
 
 | Feature                | Ansys Optics (stackrt)          | TMM-Fast                  | tmm (sbyrnes)       | JaxLayerLumos            |  
 |------------------------|----------------------------------|---------------------------|---------------------|--------------------------|  
 | **Lightweight**        | ❌ (Commercial, bulky)           | ✅ (PyTorch/NumPy)        | ✅ (Pure Python)     | ✅ (Minimal dependencies)|  
-| **Speed**              | Moderate                         | ✅ Fast (PyTorch Cuda)    | Slow (CPU-bound)    | ✅ Fast (JAX JIT)        |  
-| **Gradient Support**   | ❌                               | ✅ (PyTorch Autograd)     | ❌                  | ✅ (JAX autodiff)        |  
-| **GPU Support**        | ❌                               | ✅ (PyTorch GPU)          | ❌                  | ✅ (JAX backend)         |  
+| **Speed**              | Moderate                         | ✅ Fast (PyTorch backend)    | Slow (CPU-bound)    | ✅ Fast (JAX backend)        |  
+| **Gradient Support**   | ❌                               | ✅ (PyTorch backend)     | ❌                  | ✅ (JAX backend)        |  
+| **GPU Support**        | ❌                               | ✅ (PyTorch backend)          | ❌                  | ✅ (JAX backend)         |  
 | **TPU Support**        | ❌                               | ❌                        | ❌                  | ✅ (JAX backend)         |  
 | **Position-Dependent Poynting** | ❌                  | ❌                        | ❌                  | ✅                          
 |  **Optical Simulation**          | ✅ Full-spectrum                 | ✅ Optimized              | ✅ Basic            | ✅ User-defined          |  
 |  **Infrared Simulation**         | ❌ Limited                       | ✅ Limited                | ❌                 | ✅ User-defined          |  
-|  **Radar (HF) Simulation**       | ❌ Limited                       | ❌                        | ❌                 | ✅ **Cover Magnetic Materials**|  
+|  **Radar (HF) Simulation**       | ❌ Limited                       | ❌                        | ❌                 | ✅ Magnetic Materials Covered |  
 | **Material Database**  | ✅ Extensive (Commercial)        | ❌ User-defined           | ❌ User-defined     | ✅ Growing library       |  
 | **Open Source**        | ❌                               | ✅ MIT                    | ✅ BSD-3-Clause     | ✅ MIT                   |  
 
----
 
-## Benchmarking
+## Benchmarking against Other Software
 
 You should install the packages required for benchmarking our software against existing methods.
 Before installing the packages, you should install PyTorch first.
@@ -84,18 +101,19 @@ Then, the required packages can be installed by the following command.
 pip install .[benchmarking]
 ```
 
-### Comparisons to Other Software
-
 We benchmark our software against other software; please refer to [this file](markdowns/COMPARISONS.md).
 These comparisons include the results by [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), and [tmm](https://github.com/sbyrnes321/tmm).
+
 
 ## Supported Materials
 
 Materials supported by JaxLayerLumos are described in [this file](markdowns/MATERIALS.md).
 
+
 ## License
 
 JaxLayerLumos is released under the [MIT License](LICENSE), promoting open and unrestricted access to software for academic and commercial use.
+
 
 ## Acknowledgments
 
