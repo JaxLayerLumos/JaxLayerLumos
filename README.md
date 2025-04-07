@@ -123,3 +123,4 @@ JaxLayerLumos is released under the [MIT License](LICENSE), promoting open and u
 ## Acknowledgments
 
 - We sincerely thank all contributors and users for your support and feedback.
+- This work is supported by the [Center for Materials Data Science for Reliability and Degradation (MDS-Rely)](https://mds-rely.org), which is the [Industry-University Cooperative Research Center (IUCRC)](https://iucrc.nsf.gov) of [National Science Foundation](https://www.nsf.gov).
