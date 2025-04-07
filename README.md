@@ -69,12 +69,14 @@ We provide the following examples:
 
 ## Comparison of TMM Packages
 
+We compare [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), and [tmm](https://github.com/sbyrnes321/tmm) to our software.
+
 | Feature | Ansys Optics (stackrt) | TMM-Fast | tmm (sbyrnes) | JaxLayerLumos |
 |-----|-----|-----|-----|-----|
 | **Lightweight** | ❌ (Commercial, bulky) | ✅ (PyTorch/NumPy) | ✅ (Pure Python) | ✅ (JAX) |
 | **Speed** | Moderate | ✅ Fast (PyTorch) | Slow (CPU-bound) | ✅ Fast (JAX) |
 | **Gradient Support** | ❌ | ✅ (PyTorch) | ❌ | ✅ (JAX) |
-| **GPU Support** | ❌                               | ✅ (PyTorch)          | ❌                  | ✅ (JAX)         |  
+| **GPU Support** | ❌ | ✅ (PyTorch) | ❌ | ✅ (JAX) |  
 | **TPU Support** | ❌                               | ❌                        | ❌                  | ✅ (JAX)         |  
 | **Position-Dependent Poynting** | ❌                  | ❌                        | ❌                  | ✅                          
 | **Optical Simulation** | ✅ Full-spectrum                 | ✅ Optimized              | ✅ Basic            | ✅ User-defined          |  
@@ -86,9 +88,13 @@ We provide the following examples:
 
 ## Benchmarking against Other Software
 
-You should install the packages required for benchmarking our software against existing methods.
+We benchmark JaxLayerLumos against other software.
+Detailed benchmarking results can be found in [this file](markdowns/COMPARISONS.md).
+These comparisons include the results of [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), and [tmm](https://github.com/sbyrnes321/tmm).
+
+To obtain these results, you should install additional required packages.
 Before installing the packages, you should install PyTorch first.
-In particular, you can install it using the following command.
+In particular, if you need the CPU version of PyTorch, you can install it using the following command.
 
 ```bash
 pip install torch --index-url https://download.pytorch.org/whl/cpu
@@ -101,13 +107,12 @@ Then, the required packages can be installed by the following command.
 pip install .[benchmarking]
 ```
 
-We benchmark our software against other software; please refer to [this file](markdowns/COMPARISONS.md).
-These comparisons include the results by [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), and [tmm](https://github.com/sbyrnes321/tmm).
+Finally, you can run the benchmarking code `compare_methods.py` in the `benchmarking` directory.
 
 
 ## Supported Materials
 
-Materials supported by JaxLayerLumos are described in [this file](markdowns/MATERIALS.md).
+Materials supported by our software are described in [this file](markdowns/MATERIALS.md).
 
 
 ## License
