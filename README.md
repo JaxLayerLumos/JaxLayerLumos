@@ -69,19 +69,19 @@ We provide the following examples:
 
 ## Comparison of TMM Packages
 
-| Feature                | Ansys Optics (stackrt)          | TMM-Fast                  | tmm (sbyrnes)       | JaxLayerLumos            |  
-|------------------------|----------------------------------|---------------------------|---------------------|--------------------------|  
-| **Lightweight**        | ❌ (Commercial, bulky)           | ✅ (PyTorch/NumPy)        | ✅ (Pure Python)     | ✅ (Minimal dependencies)|  
-| **Speed**              | Moderate                         | ✅ Fast (PyTorch backend)    | Slow (CPU-bound)    | ✅ Fast (JAX backend)        |  
-| **Gradient Support**   | ❌                               | ✅ (PyTorch backend)     | ❌                  | ✅ (JAX backend)        |  
-| **GPU Support**        | ❌                               | ✅ (PyTorch backend)          | ❌                  | ✅ (JAX backend)         |  
-| **TPU Support**        | ❌                               | ❌                        | ❌                  | ✅ (JAX backend)         |  
+| Feature | Ansys Optics (stackrt) | TMM-Fast | tmm (sbyrnes) | JaxLayerLumos |
+|-----|-----|-----|-----|-----|
+| **Lightweight** | ❌ (Commercial, bulky) | ✅ (PyTorch/NumPy) | ✅ (Pure Python) | ✅ (JAX) |
+| **Speed** | Moderate | ✅ Fast (PyTorch) | Slow (CPU-bound) | ✅ Fast (JAX) |
+| **Gradient Support** | ❌ | ✅ (PyTorch) | ❌ | ✅ (JAX) |
+| **GPU Support** | ❌                               | ✅ (PyTorch)          | ❌                  | ✅ (JAX)         |  
+| **TPU Support** | ❌                               | ❌                        | ❌                  | ✅ (JAX)         |  
 | **Position-Dependent Poynting** | ❌                  | ❌                        | ❌                  | ✅                          
-|  **Optical Simulation**          | ✅ Full-spectrum                 | ✅ Optimized              | ✅ Basic            | ✅ User-defined          |  
-|  **Infrared Simulation**         | ❌ Limited                       | ✅ Limited                | ❌                 | ✅ User-defined          |  
-|  **Radar (HF) Simulation**       | ❌ Limited                       | ❌                        | ❌                 | ✅ Magnetic Materials Covered |  
-| **Material Database**  | ✅ Extensive (Commercial)        | ❌ User-defined           | ❌ User-defined     | ✅ Growing library       |  
-| **Open Source**        | ❌                               | ✅ MIT                    | ✅ BSD-3-Clause     | ✅ MIT                   |  
+| **Optical Simulation** | ✅ Full-spectrum                 | ✅ Optimized              | ✅ Basic            | ✅ User-defined          |  
+| **Infrared Simulation** | ❌ Limited                       | ✅ Limited                | ❌                 | ✅ User-defined          |  
+| **Radar (HF) Simulation** | ❌ Limited                       | ❌                        | ❌                 | ✅ Magnetic materials covered |  
+| **Material Database** | ✅ Extensive (Commercial)        | ❌ User-defined           | ❌ User-defined     | ✅ Growing library       |  
+| **Open Source** | ❌                               | ✅ MIT                    | ✅ BSD-3-Clause     | ✅ MIT                   |  
 
 
 ## Benchmarking against Other Software
@@ -117,4 +117,4 @@ JaxLayerLumos is released under the [MIT License](LICENSE), promoting open and u
 
 ## Acknowledgments
 
-- Thanks to all contributors and users for your support and feedback.
+- We sincerely thank all contributors and users for your support and feedback.
