@@ -11,6 +11,20 @@ def convert_frequencies_to_wavelengths(frequencies):
     return wavelengths
 
 
+def convert_wavelengths_to_energy(wavelengths):
+    # energy is in eV
+    assert isinstance(wavelengths, jnp.ndarray)
+    assert wavelengths.ndim == 1
+
+    energy = (
+        utils_units.get_light_speed()
+        * utils_units.get_planck_constant()
+        / wavelengths
+        / utils_units.get_elementary_charge()
+    )
+    return energy
+
+
 def convert_wavelengths_to_frequencies(wavelengths):
     assert isinstance(wavelengths, jnp.ndarray)
     assert wavelengths.ndim == 1

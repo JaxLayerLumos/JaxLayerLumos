@@ -14,6 +14,7 @@
     "Fe": "materials/Fe-Werner-DFT-2009.csv",
     "FusedSilica": "materials/FusedSilica-Malitson-1965.csv",
     "GaAs": "materials/GaAs-Rakic-1996.csv",
+    "GaInP": "materials/GaInP-Schubert-1995.csv",
     "GaP": "materials/GaP-Adachi-1989.csv",
     "Ge": "materials/Ge-Nunley-2016.csv",
     "InP": "materials/InP-Adachi-1989.csv",

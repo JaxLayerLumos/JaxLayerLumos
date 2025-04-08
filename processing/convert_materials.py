@@ -1,5 +1,6 @@
 import jax.numpy as jnp
 import csv
+import os
 
 from jaxlayerlumos import utils_materials
 from jaxlayerlumos import utils_spectra
@@ -54,7 +55,7 @@ if __name__ == "__main__":
 
     for material in all_materials:
         str_path_material = material_indices.get(material)
-        str_path = str_directory / str_path_material
+        str_path = os.path.join(str_directory, str_path_material)
 
         n_material, k_material = convert_material(material)
         save_material(str_path, n_material, k_material)

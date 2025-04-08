@@ -19,14 +19,14 @@ def plot_refractive_indices(material, wavelengths, n_material, k_material):
     fig = plt.figure(figsize=(8, 6))
     ax = fig.gca()
 
-    ax.plot(wavelengths, n_material, linewidth=4, label="n")
-    ax.plot(wavelengths, k_material, linewidth=4, label="k")
+    ax.plot(wavelengths, n_material, linewidth=4, label="$n$")
+    ax.plot(wavelengths, k_material, linewidth=4, label="$k$")
 
     ax.set_xlim([np.min(wavelengths), np.max(wavelengths)])
     ax.grid()
 
     ax.set_xlabel("Wavelength (nm)", fontsize=18)
-    ax.set_ylabel("n, k", fontsize=18)
+    ax.set_ylabel("$n$, $k$", fontsize=18)
     ax.legend(fontsize=18)
 
     plt.tight_layout()
