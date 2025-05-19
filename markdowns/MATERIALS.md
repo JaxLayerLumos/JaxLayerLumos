@@ -1,6 +1,6 @@
 # Supported Materials
 
-39 materials: Ag, Air, Al2O3, Al, aSi, aSi-Zarei, Au, AZO-Zarei, BK7, Cr, cSi, Cu, Fe, FusedSilica, GaAs, GaInP, GaP, Ge, InP, ITO, ITO-Zarei, Mg, Mn, Ni, Pb, Pd, Pt, Sapphire, Si3N4, Si3N4-Zarei, SiO2, SiO2-Zarei, TiN, TiO2, TiO2-Zarei, Ti, W, ZnO, Zn
+41 materials: Ag, Air, Al2O3, Al, aSi, aSi-Zarei, Au, AZO-Zarei, BK7, Cr, cSi, Cu, Fe, FusedSilica, GaAs, GaAs-InAs, GaInP, GaP, Ge, InP, ITO, ITO-Zarei, Mg, Mn, Ni, Pb, Pd, Pt, Sapphire, SiC, Si3N4, Si3N4-Zarei, SiO2, SiO2-Zarei, TiN, TiO2, TiO2-Zarei, Ti, W, ZnO, Zn
 
 - Ag
 
@@ -62,6 +62,10 @@
 
 <p align='center'><img src='../assets/refractive_indices/GaAs.png' width='400' /></p>
 
+- GaAs-InAs
+
+<p align='center'><img src='../assets/refractive_indices/GaAs-InAs.png' width='400' /></p>
+
 - GaInP
 
 <p align='center'><img src='../assets/refractive_indices/GaInP.png' width='400' /></p>
@@ -113,6 +117,10 @@
 - Sapphire
 
 <p align='center'><img src='../assets/refractive_indices/Sapphire.png' width='400' /></p>
+
+- SiC
+
+<p align='center'><img src='../assets/refractive_indices/SiC.png' width='400' /></p>
 
 - Si3N4
 
