@@ -18,6 +18,7 @@
     "GaInP": "materials/GaInP-Schubert-1995.csv",
     "GaP": "materials/GaP-Adachi-1989.csv",
     "Ge": "materials/Ge-Nunley-2016.csv",
+    "InGaAs": "materials/GaAs-InAs-Adachi-1989.csv",
     "InP": "materials/InP-Adachi-1989.csv",
     "ITO": "materials/ITO-Konig-2014.csv",
     "ITO-Zarei": "materials/ITO-Zarei-2024.csv",

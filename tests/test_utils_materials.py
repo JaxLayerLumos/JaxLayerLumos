@@ -27,6 +27,7 @@ LIST_MATERIALS = [
     "GaInP",
     "GaP",
     "Ge",
+    "InGaAs",
     "InP",
     "ITO",
     "ITO-Zarei",
