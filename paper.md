@@ -16,23 +16,19 @@ authors:
     orcid: 0000-0001-6217-9382 # Replace with your ORCID
     affiliation: "1" # Corresponds to an index in the affiliations 
     corresponding: true # if you are the corresponding author
-  
   - name: Jungtaek Kim
     orcid: 0000-0002-1905-1399
     affiliation: "2" # Can list multiple affiliations
-  # Add other authors as needed following the JOSS format examples
-  - name: Paul W Leu # Or use given-names/surname structure if 
+  - name: Paul W. Leu # Or use given-names/surname structure if 
     orcid: 0000-0002-1599-7144 # Replace with your ORCID
-    affiliation: "1, 3" # Corresponds to an index in the 
-
+    affiliation: "1, 3" # Corresponds to an index in the
 affiliations:
  - name: Department of Chemical Engineering, University of Pittsburgh, Pittsburgh, PA 15261, USA
    index: 1
  - name: Department of Electrical and Computer Engineering, University of Wisconsin–Madison, Madison, WI 53706, USA
    index: 2
- - name: Department of Industrial Engineering, University of Pittsburgh, Pittsburgh, PA 15261
+ - name: Department of Industrial Engineering, University of Pittsburgh, Pittsburgh, PA 15261, USA
    index: 3
-   # ror: XXXXXXXXX # Optional
 date: 19 May 2025 # Use format: %e %B %Y, e.g., 9 October 2024
 bibliography: paper.bib
 ---
