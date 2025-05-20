@@ -25,10 +25,6 @@ authors:
     orcid: 0000-0002-1599-7144 # Replace with your ORCID
     affiliation: "1, 3" # Corresponds to an index in the 
 
-  - name: Oliver Hinder # Or use given-names/surname structure if 
-    orcid: 0000-0002-5077-0359 # Replace with your ORCID
-    affiliation: "3" # Corresponds to an index in the affiliations 
-
 affiliations:
  - name: Department of Chemical Engineering, University of Pittsburgh, Pittsburgh, PA 15261, USA
    index: 1
