@@ -88,6 +88,25 @@ JaxLayerLumos is built for a wide range of applications in optical and RF scienc
 
 Due to its differentiability and high-performance execution, JaxLayerLumos is well-suited for both advanced research in complex electromagnetic systems and educational use in computational photonics and applied electromagnetics.
 
+## Comparison of TMM Packages
+
+We compare [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), and [tmm](https://github.com/sbyrnes321/tmm) to our software.
+
+| Feature | Ansys Optics (stackrt) | TMM-Fast | tmm (sbyrnes) | JaxLayerLumos |
+|-----|-----|-----|-----|-----|
+| **Lightweight** | ❌ (Commercial, bulky) | ✅ (PyTorch/NumPy) | ✅ (Pure Python) | ✅ (JAX) |
+| **Speed** | Moderate | ✅ Fast (PyTorch) | Slow (CPU-bound) | ✅ Fast (JAX) |
+| **Gradient Support** | ❌ | ✅ (PyTorch) | ❌ | ✅ (JAX) |
+| **GPU Support** | ❌ | ✅ (PyTorch) | ❌ | ✅ (JAX) |  
+| **TPU Support** | ❌                               | ❌                        | ❌                  | ✅ (JAX)         |  
+| **Position-Dependent Poynting** | ❌                  | ❌                        | ❌                  | ✅                          
+| **Optical Simulation** | ✅ Full-spectrum                 | ✅ Optimized              | ✅ Basic            | ✅ User-defined          |  
+| **Infrared Simulation** | ❌ Limited                       | ✅ Limited                | ❌                 | ✅ User-defined          |  
+| **Radar (HF) Simulation** | ❌ Limited                       | ❌                        | ❌                 | ✅ Magnetic materials covered |  
+| **Material Database** | ✅ Extensive (Commercial)        | ❌ User-defined           | ❌ User-defined     | ✅ Growing library       |  
+| **Open Source** | ❌                               | ✅ MIT                    | ✅ BSD-3-Clause     | ✅ MIT                   |  
+
+
 # Acknowledgements
 
 We acknowledge the developers of JAX [@jax2018github] and other open-source libraries that JaxLayerLumos builds upon. This work was supported by the Center for Materials Data Science for Reliability and Degradation (MDS-Rely), an Industry-University Cooperative Research Center (IUCRC) of the National Science Foundation (NSF). The University of Pittsburgh, Case Western Reserve University, and Carnegie Mellon University are participating institutions in MDS-Rely. We also thank the open-source community for contributions and feedback.
