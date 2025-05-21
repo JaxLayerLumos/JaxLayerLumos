@@ -12,10 +12,10 @@ tags:
   - inverse design
   - machine learning
 authors:
-  - name: Mingxuan Li # Or use given-names/surname structure if 
-    orcid: 0000-0001-6217-9382 # Replace with your ORCID
-    affiliation: "1" # Corresponds to an index in the affiliations 
-    corresponding: true # if you are the corresponding author
+  - name: Mingxuan Li
+    orcid: 0000-0001-6217-9382
+    affiliation: "1"
+    corresponding: true
   - name: Jungtaek Kim
     orcid: 0000-0002-1905-1399
     affiliation: "2" # Can list multiple affiliations
@@ -36,7 +36,7 @@ bibliography: paper.bib
 # Summary
 JaxLayerLumos is an open-source Python software package for simulating electromagnetic wave interactions with multilayer structures using the transfer-matrix method (TMM). It is designed for researchers and engineers working with applications in optics, photonics, and radio frequencies.  The software efficiently computes  reflection, transmission, and absorption across a broad spectral range. A key feature of JaxLayerLumos is its implementation in JAX [@jax2018github], which enables automatic differentiation with respect to any input parameter (e.g., layer thickness, refractive index, permeability) and supports fast execution on GPUs and TPUs. This differentiability is especially valuable for gradient-based optimization and for integrating simulations into machine learning pipelines, accelerating the discovery and design of novel devices and materials.
 
-# Statement of Need
+# Statement of need
 
 Multilayer structures are essential in a wide range of technologies, including optical filters, next-generation solar cells, structural color coatings, and radar-absorbing materials. The transfer-matrix method [@BornWolf1999] is a foundational analytical technique for modeling wave inetractions in these systems. 
 
@@ -93,7 +93,7 @@ $\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P
 <!-- From the elements of $\mathbf{M}$, the complex reflection $r$ and transmission $t$ amplitudes are calculated, from which $R = |r|^2$ and $T = |t|^2 \times \text{factor}$ (where factor accounts for impedance and angles of incident/exit media) are derived. -->
 <!-- JaxLayerLumos uses `lax.associative_scan` in JAX for efficient parallel computation of the matrix product. Is this that important?-->
 
-# Mention of Use
+# Mention of use
 <!-- Add Figuer showing applications -->
 The use case can be found under example folder 
 
