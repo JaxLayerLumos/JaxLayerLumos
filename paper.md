@@ -56,8 +56,9 @@ in the table below:
 | **Material Database** | ✅ Extensive (Commercial)        | ❌ User-defined           | ❌ User-defined     | ✅ Growing library       |  
 | **Open Source** | ❌                               | ✅ MIT                    | ✅ BSD-3-Clause     | ✅ MIT                   |  
 
+![Applications of JaxLayerLumos](assets/applications.png)
 
-Most TMM implementations, such as [@tmmSbyrnes] and [@tmm_fast]), focus primarily on optical wavelengths (UV-Vis-IR) and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwae applications.  There is a growing need for simulation tols that 
+Most TMM implementations, such as [@tmmSbyrnes] and [@tmm_fast]), focus primarily on optical wavelengths (UV-Vis-IR) and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwave applications.  There is a growing need for simulation tols that 
 * Operate efficiently across a broader spectral range--including optical, RF, and microwave frequencies,
 * Handle magnetic and lossy materials with complex permittivities and permeability,
 * Support modern workflows that integrate machine learning and large-scale optimization.  
@@ -76,7 +77,6 @@ These capabilities make JaxLayerLumos particularly valuable for researchers work
 
 # Mathematics
 
-<!-- Add Figure showing schematic -->
 ![Schematic of the transfer-matrix method showing a multilayer structure with incident, reflected, and transmitted waves. Each layer is characterized by its thickness $d_j$, permittivity $\varepsilon_{r,j}$, and permeability $\mu_{r,j}$.](assets/TMM.png)
 
 The core of JaxLayerLumos implements the TMM method, which calculates the propagation of electromagnetic waves through a stack of $L$ planar layers.  It calculates key optical properties, such as reflection $R(f)$, transmission $T(f)$, and absorption $A(f)$, as functions of frequency $f$ or wavelength $\lambda$.  The software also supports position-resolved absorption and per-layer absorption calculations. Each layer $j$ is defined by 
