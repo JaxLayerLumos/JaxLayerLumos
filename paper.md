@@ -109,6 +109,6 @@ Due to its differentiability and high-performance execution, JaxLayerLumos is we
 
 # Acknowledgements
 
-We acknowledge the developers of JAX [@jax2018github] and other open-source libraries that JaxLayerLumos builds upon. This work was supported by the Center for Materials Data Science for Reliability and Degradation (MDS-Rely), an Industry-University Cooperative Research Center (IUCRC) of the National Science Foundation (NSF). The University of Pittsburgh, Case Western Reserve University, and Carnegie Mellon University are participating institutions in MDS-Rely. We also thank the open-source community for contributions and feedback.
+We acknowledge the developers of JAX [@jax2018github] and other open-source libraries that JaxLayerLumos builds upon. This work was supported by the Center for Materials Data Science for Reliability and Degradation (MDS-Rely), an Industry-University Cooperative Research Center (IUCRC) of the National Science Foundation (NSF). The University of Pittsburgh, Case Western Reserve University, and Carnegie Mellon University are official research sites of MDS-Rely. We also thank the open-source community for contributions and feedback.
 
 # References
