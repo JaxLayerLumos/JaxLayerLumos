@@ -1,5 +1,5 @@
 ---
-title: 'JaxLayerLumos: A JAX-based Differentiable Simulator for Multilayer Optical/RF Structures'
+title: 'JaxLayerLumos: A JAX-based Differentiable Simulator for Multilayer Optical and Radio Frequency Structures'
 tags:
   - Python
   - JAX
@@ -38,7 +38,7 @@ JaxLayerLumos is an open-source Python software package for simulating electroma
 
 # Statement of need
 
-Multilayer structures are essential in a wide range of technologies, including optical filters, next-generation solar cells, structural color coatings, and radar-absorbing materials. The transfer-matrix method [@BornWolf1999] is a foundational analytical technique for modeling wave inetractions in these systems. We compare the capabilities of several TMM implementations,
+Multilayer structures are essential in a wide range of technologies, including optical filters, next-generation solar cells, structural color coatings, and radar-absorbing materials. The transfer-matrix method [@BornWolf1999] is a foundational analytical technique for modeling wave interactions in these systems. We compare the capabilities of several TMM implementations,
 [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our open-source package, JaxLayerLumos, 
 in the table below:
 
@@ -58,7 +58,7 @@ in the table below:
 
 ![Applications of JaxLayerLumos](assets/applications.png)
 
-Most TMM implementations, such as [@tmmSbyrnes] and [@tmm_fast]), focus primarily on optical wavelengths (UV-Vis-IR) and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwave applications.  There is a growing need for simulation tols that 
+Most TMM implementations, such as [@tmmSbyrnes] and [@tmm_fast]), focus primarily on optical wavelengths (UV-Vis-IR) and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwave applications.  There is a growing need for simulation tools that 
 * Operate efficiently across a broader spectral range--including optical, RF, and microwave frequencies,
 * Handle magnetic and lossy materials with complex permittivities and permeability,
 * Support modern workflows that integrate machine learning and large-scale optimization.  
@@ -69,7 +69,7 @@ JaxLayerLumos addresses this need by offering a JAX-based TMM framework. Its cor
 
 * **High Performance**: Utilizes JAX’s just-in-time (JIT) compilation and hardware acceleration (CPU, GPU, TPU) for fast computation—ideal for large parameter sweeps or model training.
 
-* **Broad Spectral and Material Supporty**: Accommodates complex refractive indices and permeabilities (necessary for magnetic and RF materials), customizable layer structures, oblique incidence, and both TE and TM polarizations—enabling simulations across optical, RF, and microwave regimes.
+* **Broad Spectral and Material Support**: Accommodates complex refractive indices and permeabilities (necessary for magnetic and RF materials), customizable layer structures, oblique incidence, and both TE and TM polarizations—enabling simulations across optical, RF, and microwave regimes.
 
 * **Ecosystem Integration**: Easily integrates with Python’s scientific computing stack, including optimization libraries and ML frameworks like JAX and TensorFlow.
 
@@ -85,7 +85,7 @@ The core of JaxLayerLumos implements the TMM method, which calculates the propag
 * complex relative permeability $\mu_{r,j}$.
   
 For a given frequency $f$ and incidence angle $\theta_0$, the propagation of light is described by interface matrices $\mathbf{D}_j$ 
-that capture Fresnel coefficients at the boundary between adjacent layers and propagation matrices $\mathbf{P}_j$ representing full wave propation within each layer and captures both phase shift and attenuation due to absorption in lossy media.  The total transfer matrix $\mathbf{M}$ for the entire stack is the product of these individual matrices:
+that capture Fresnel coefficients at the boundary between adjacent layers and propagation matrices $\mathbf{P}_j$ representing full wave propagation within each layer and captures both phase shift and attenuation due to absorption in lossy media.  The total transfer matrix $\mathbf{M}$ for the entire stack is the product of these individual matrices:
 $\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P}_L\mathbf{D}_L)\mathbf{P}_{L+1}$
 <!--$\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P}_{L}\mathbf{D}_{L})\mathbf{P}_{L+1}$-->
 
