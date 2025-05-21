@@ -38,37 +38,55 @@ JaxLayerLumos is an open-source Python software package for simulating electroma
 
 # Statement of Need
 
-The design of multilayer structures is fundamental to numerous applications, including optical filters, advanced solar cells, engineered structural coloration, and radar-absorbing materials. The transfer-matrix method [@BornWolf1999] is a cornerstone analytical technique for modeling such systems. While several TMM implementations exist (e.g., [@tmmSbyrnes], [@tmm_fast]), many primarily focus on the optical (UV-Vis-IR) spectrum and may not readily support simulations involving magnetic materials or the lower frequencies typical of radio frequency (RF) and microwave applications. There is a growing need for tools that are not only fast and flexible across traditional optical ranges but also explicitly cater to these lower frequencies while seamlessly integrating with modern computational paradigms.
+Multilayer structures are essential in a wide range of technologies, including optical filters, next-generation solar cells, structural color coatings, and radar-absorbing materials. The transfer-matrix method [@BornWolf1999] is a foundational analytical technique for modeling wave inetractions in these systems. 
+
+<!-- Add Table of comparison with other methods -->
+
+However, most TMM implementaions (e.g., [@tmmSbyrnes], [@tmm_fast]) focus primarily on optical wavelengths (UV-Vis-IR) and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwae applications.  There is a growing need for simulation tols that 
+* Operate efficiently across a broader spectral range--including optical, RF, and microwave frequencies,
+* Handle magnetic and lossy materials with complex permittivities and permeability,
+* Support modern workflows that integrate machine learning and large-scale optimization.  
 
 JaxLayerLumos addresses this need by offering a JAX-based TMM framework. Its core advantages include:
 
-**Differentiability**: Automatic computation of gradients for any simulation parameter, crucial for inverse design and sensitivity analysis.
+* **Differentiability**: Automatically computes gradients with respect to any simulation parameter (e.g., layer thickness, refractive index), enabling inverse design, sensitivity analysis, and seamless integration with gradient-based optimization and machine learning pipelines.
 
-**Performance**: Leveraging JAX's JIT compilation and hardware acceleration (CPU, GPU, TPU) for rapid calculations, especially beneficial for large parameter sweeps or training machine learning models.
+* **High Performance**: Utilizes JAX’s just-in-time (JIT) compilation and hardware acceleration (CPU, GPU, TPU) for fast computation—ideal for large parameter sweeps or model training.
 
-**Broad Spectral Applicability & Flexibility**: Support for complex refractive indices *and permeabilities* (essential for RF/microwave and magnetic materials), customizable layer stacks, varying incidence angles, and both TE and TM polarizations, enabling simulations across a wide range of frequencies from optical to RF.
+* **Broad Spectral and Material Supporty**: Accommodates complex refractive indices and permeabilities (necessary for magnetic and RF materials), customizable layer structures, oblique incidence, and both TE and TM polarizations—enabling simulations across optical, RF, and microwave regimes.
 
-**Integration**: Easy integration with the Python scientific computing ecosystem, including optimization libraries and machine learning frameworks.
+* **Ecosystem Integration**: Easily integrates with Python’s scientific computing stack, including optimization libraries and ML frameworks like JAX and TensorFlow.
 
-These features make JaxLayerLumos particularly suited for research at the interface of computational electromagnetics and machine learning. This includes training neural networks for inverse design problems (i.e., predicting layer configurations from target spectral responses) across diverse spectral regions or performing large-scale optimization of device performance for both optical and RF applications. The software provides a lightweight, open-source alternative to some commercial packages, with a focus on speed, differentiability, and ease of use for advanced research.
+These capabilities make JaxLayerLumos particularly valuable for researchers working at the intersection of computational electromagnetics and machine learning. It is well-suited for tasks such as training neural networks for inverse design (predicting layer structures from target spectra) and performing large-scale device optimization across broad frequency ranges. As an open-source, lightweight alternative to commercial tools, it offers speed, flexibility, and ease of use for advanced research.
 
 # Mathematics
-The core of JaxLayerLumos implements the transfer-matrix method (TMM) for calculating the reflection $R$ and transmission $T$ of electromagnetic waves through a stack of $L$ planar layers. Each layer $j$ is defined by its thickness $d_j$, complex relative permittivity $\varepsilon_{r,j}$, and complex relative permeability $\mu_{r,j}$. The complex refractive index is $n_j = \sqrt{\varepsilon_{r,j}\mu_{r,j}}$.
 
-For a given wavelength $\lambda$ (or angular frequency $\omega$) and incidence angle $\theta_0$, the propagation of light is described by interface matrices $\mathbf{D}_j$ (capturing Fresnel coefficients at the boundary between layer $j$ and $j+1$) and propagation matrices $\mathbf{P}_j$ (capturing phase accumulation within layer $j$). The total transfer matrix $\mathbf{M}$ for the stack is the product of these individual matrices:
-$$ \mathbf{M} = (\mathbf{P}_0\mathbf{D}_0) (\mathbf{P}_1\mathbf{D}_1) \cdots (\mathbf{P}_{L}\mathbf{D}_{L}) \mathbf{P}_{L+1} $$
-From the elements of $\mathbf{M}$, the complex reflection $r$ and transmission $t$ amplitudes are calculated, from which $R = |r|^2$ and $T = |t|^2 \times \text{factor}$ (where factor accounts for impedance and angles of incident/exit media) are derived. JaxLayerLumos uses `lax.associative_scan` in JAX for efficient parallel computation of the matrix product.
+<!-- Add Figure showing schematic -->
+The core of JaxLayerLumos implements the TMM method, which calculates the propagation of electromagnetic waves through a stack of $L$ planar layers.  It calculates key optical properties, such as reflection $R(f)$, transmission $T(f)$, and absorption $A(f)$, as functions of frequency $f$ or wavelength $\lambda$.  The software also supports position-resolved absorption and per-layer absorption calculations. Each layer $j$ is defined by 
+* thickness $d_j$,
+* complex relative permittivity $\varepsilon_{r,j}$, and
+* complex relative permeability $\mu_{r,j}$.
+  
+For a given frequency $f$ and incidence angle $\theta_0$, the propagation of light is described by interface matrices $\mathbf{D}_j$ 
+that capture Fresnel coefficients at the boundary between adjacent layers and propagation matrices $\mathbf{P}_j$ representing full wave propation within each layer and captures both phase shift and attenuation due to absorption in lossy media.  The total transfer matrix $\mathbf{M}$ for the entire stack is the product of these individual matrices:
+$\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P}_L\mathbf{D}_L)\mathbf{P}_{L+1}$
+<!--$\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P}_{L}\mathbf{D}_{L})\mathbf{P}_{L+1}$-->
+
+<!-- From the elements of $\mathbf{M}$, the complex reflection $r$ and transmission $t$ amplitudes are calculated, from which $R = |r|^2$ and $T = |t|^2 \times \text{factor}$ (where factor accounts for impedance and angles of incident/exit media) are derived. -->
+<!-- JaxLayerLumos uses `lax.associative_scan` in JAX for efficient parallel computation of the matrix product. Is this that important?-->
 
 # Mention of Use
-JaxLayerLumos is designed for a range of applications in optical and RF science and engineering. Example use cases provided with the software include:
+<!-- Add Figuer showing applications -->
 
-* Design of radar-absorbing materials and frequency-selective surfaces by simulating spectra in microwave and radio frequency ranges, leveraging its support for magnetic material properties.
-* Optimization of thin-film structures for targeted spectral responses using Bayesian optimization or gradient-based methods across optical and RF spectra.
-* Analysis and design of solar cells, including multi-junction configurations.
-* Exploration of structural coloration in nature and for novel material design.
-* Inverse design of optical coatings and RF devices by training Transformer-based models on datasets generated by JaxLayerLumos.
+JaxLayerLumos is built for a wide range of applications in optical and RF science and engineering. Example use cases provided with the software demonstrate its versatility:
 
-The software's differentiability and performance make it a valuable tool for researchers exploring complex electromagnetic systems and for educators teaching computational photonics and applied electromagnetics.
+* **Radar-absorbing materials and frequency-selective surfaces**: Simulate spectral responses in the microwave and RF ranges, with full support for magnetic materials.
+* **THin-film structural optimization**: Use Bayesian optimization or gradient-based methods to tailor spectral responses across both optical and RF domains.
+* **Solar cell design**: Model and analyze single- and multi-junction solar cell architectures.
+* **Structural color**: Explore engineered structural coloration for novel material design.
+* **Inverse design with machine learning**: Train Transformer-based models using datasets generated by JaxLayerLumos to design optical coatings and RF devices.
+
+Due to its differentiability and high-performance execution, JaxLayerLumos is well-suited for both advanced research in complex electromagnetic systems and educational use in computational photonics and applied electromagnetics.
 
 # Acknowledgements
 
