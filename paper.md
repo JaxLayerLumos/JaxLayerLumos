@@ -34,8 +34,7 @@ bibliography: paper.bib
 ---
 
 # Summary
-
-JaxLayerLumos is an open-source Python software package for simulating electromagnetic wave interaction with multilayer structures using the transfer-matrix method (TMM). Designed for researchers and engineers working with applications from optics and photonics to radio frequencies, it provides a computationally efficient and intuitive tool for calculating properties like reflection and transmission across a broad spectral range. A key feature of JaxLayerLumos is its implementation in JAX [@jax2018github], which enables automatic differentiation with respect to any input parameter (e.g., layer thickness, refractive index, permeability) and allows for efficient execution on hardware accelerators like GPUs and TPUs. This differentiability is particularly valuable for gradient-based optimization in device design and for integrating simulations into machine learning workflows, facilitating the discovery of novel materials and devices.
+JaxLayerLumos is an open-source Python software package for simulating electromagnetic wave interactions with multilayer structures using the transfer-matrix method (TMM). It is designed for researchers and engineers working with applications in optics, photonics, and radio frequencies.  The software efficiently computes  reflection, transmission, and absorption across a broad spectral range. A key feature of JaxLayerLumos is its implementation in JAX [@jax2018github], which enables automatic differentiation with respect to any input parameter (e.g., layer thickness, refractive index, permeability) and supports fast execution on GPUs and TPUs. This differentiability is especially valuable for gradient-based optimization and for integrating simulations into machine learning pipelines, accelerating the discovery and design of novel devices and materials.
 
 # Statement of Need
 
