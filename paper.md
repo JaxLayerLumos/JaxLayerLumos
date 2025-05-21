@@ -38,27 +38,26 @@ JaxLayerLumos is an open-source Python software package for simulating electroma
 
 # Statement of need
 
-Multilayer structures are essential in a wide range of technologies, including optical filters, next-generation solar cells, structural color coatings, and radar-absorbing materials. The transfer-matrix method [@BornWolf1999] is a foundational analytical technique for modeling wave inetractions in these systems. 
+Multilayer structures are essential in a wide range of technologies, including optical filters, next-generation solar cells, structural color coatings, and radar-absorbing materials. The transfer-matrix method [@BornWolf1999] is a foundational analytical technique for modeling wave inetractions in these systems. We compare the capabilities of several TMM implementations,
+[Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our open-source package, JaxLayerLumos, 
+in the table below:
 
-<!-- Add Table of comparison with other methods -->
-We compare [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), and [tmm](https://github.com/sbyrnes321/tmm) to our software.
-
-| Feature | Ansys Optics (stackrt) | TMM-Fast | tmm (sbyrnes) | JaxLayerLumos |
+| Feature | Ansys Optics (stackrt) | TMM-Fast (PyTorch/NumPy) | tmm (sbyrnes) (Pure Python) | JaxLayerLumos (Jax) |
 |-----|-----|-----|-----|-----|
-| **Lightweight** | ❌ (Commercial, bulky) | ✅ (PyTorch/NumPy) | ✅ (Pure Python) | ✅ (JAX) |
-| **Speed** | Moderate | ✅ Fast (PyTorch) | Slow (CPU-bound) | ✅ Fast (JAX) |
-| **Gradient Support** | ❌ | ✅ (PyTorch) | ❌ | ✅ (JAX) |
-| **GPU Support** | ❌ | ✅ (PyTorch) | ❌ | ✅ (JAX) |  
-| **TPU Support** | ❌                               | ❌                        | ❌                  | ✅ (JAX)         |  
-| **Position-Dependent Poynting** | ❌                  | ❌                        | ❌                  | ✅                          
+| **Lightweight** | ❌ Commercial, bulky | ✅ Lightweight | ✅ Lightweight | ✅ Lightweight |
+| **Speed** | ⚠️ Moderate | ✅ Fast  | ❌ Slow (CPU-bound) | ✅ Fast |
+| **Gradient Support** | ❌ | ✅ Yes | ❌ | ✅ Yes |
+| **GPU Support** | ❌ | ✅ Yes | ❌ | ✅ Yes |  
+| **TPU Support** | ❌                               | ❌                        | ❌                  | ✅ Yes         |  
+| **Position-Dependent Poynting** | ❌                  | ❌                        | ❌                  | ✅  Supported                        
 | **Optical Simulation** | ✅ Full-spectrum                 | ✅ Optimized              | ✅ Basic            | ✅ User-defined          |  
 | **Infrared Simulation** | ❌ Limited                       | ✅ Limited                | ❌                 | ✅ User-defined          |  
-| **Radar (HF) Simulation** | ❌ Limited                       | ❌                        | ❌                 | ✅ Magnetic materials covered |  
+| **Radar (HF) Simulation** | ❌ Limited                       | ❌                        | ❌                 | ✅ Includes magnetic materials |  
 | **Material Database** | ✅ Extensive (Commercial)        | ❌ User-defined           | ❌ User-defined     | ✅ Growing library       |  
 | **Open Source** | ❌                               | ✅ MIT                    | ✅ BSD-3-Clause     | ✅ MIT                   |  
 
 
-However, most TMM implementaions (e.g., [@tmmSbyrnes], [@tmm_fast]) focus primarily on optical wavelengths (UV-Vis-IR) and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwae applications.  There is a growing need for simulation tols that 
+Most TMM implementations, such as [@tmmSbyrnes] and [@tmm_fast]), focus primarily on optical wavelengths (UV-Vis-IR) and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwae applications.  There is a growing need for simulation tols that 
 * Operate efficiently across a broader spectral range--including optical, RF, and microwave frequencies,
 * Handle magnetic and lossy materials with complex permittivities and permeability,
 * Support modern workflows that integrate machine learning and large-scale optimization.  
