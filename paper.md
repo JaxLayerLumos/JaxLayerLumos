@@ -94,7 +94,7 @@ $\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P
 
 # Mention of use
 <!-- Add Figuer showing applications -->
-The use case can be found under example folder 
+Example use cases are provided in the [examples folder](./examples/).
 
 JaxLayerLumos is built for a wide range of applications in optical and RF science and engineering. Example use cases provided with the software demonstrate its versatility:
 
