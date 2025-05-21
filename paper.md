@@ -18,14 +18,16 @@ authors:
     corresponding: true
   - name: Jungtaek Kim
     orcid: 0000-0002-1905-1399
-    affiliation: "2" # Can list multiple affiliations
-  - name: Paul W. Leu # Or use given-names/surname structure if 
-    orcid: 0000-0002-1599-7144 # Replace with your ORCID
-    affiliation: "1, 3" # Corresponds to an index in the
+    affiliation: "2"
+    corresponding: true
+  - name: Paul W. Leu 
+    orcid: 0000-0002-1599-7144
+    affiliation: "1, 3"
+    corresponding: true
 affiliations:
  - name: Department of Chemical Engineering, University of Pittsburgh, Pittsburgh, PA 15261, USA
    index: 1
- - name: Department of Electrical and Computer Engineering, University of Wisconsin–Madison, Madison, WI 53706, USA
+ - name: Department of Electrical and Computer Engineering, University of Wisconsin--Madison, Madison, WI 53706, USA
    index: 2
  - name: Department of Industrial Engineering, University of Pittsburgh, Pittsburgh, PA 15261, USA
    index: 3
@@ -40,7 +42,14 @@ JaxLayerLumos is an open-source Python software package for simulating electroma
 
 Multilayer structures are essential in a wide range of technologies, including optical filters, next-generation solar cells, structural color coatings, and radar-absorbing materials. The transfer-matrix method [@BornWolf1999] is a foundational analytical technique for modeling wave interactions in these systems. We compare the capabilities of several TMM implementations,
 [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our open-source package, JaxLayerLumos, 
-in the table below:
+in Table 1.
+
+![Applications of JaxLayerLumos](assets/applications.png)
+
+Most TMM implementations, such as [@tmmSbyrnes] and [@tmm_fast]), focus primarily on optical wavelengths (UV-Vis-IR) and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwave applications.  There is a growing need for simulation tools that 
+* Operate efficiently across a broader spectral range--including optical, RF, and microwave frequencies,
+* Handle magnetic and lossy materials with complex permittivities and permeability,
+* Support modern workflows that integrate machine learning and large-scale optimization.
 
 | Feature | Ansys Optics (stackrt) | TMM-Fast (PyTorch/NumPy) | tmm (sbyrnes) (Pure Python) | JaxLayerLumos (Jax) |
 |-----|-----|-----|-----|-----|
@@ -55,13 +64,6 @@ in the table below:
 | **Radar (HF) Simulation** | ❌ Limited                       | ❌                        | ❌                 | ✅ Includes magnetic materials |  
 | **Material Database** | ✅ Extensive (Commercial)        | ❌ User-defined           | ❌ User-defined     | ✅ Growing library       |  
 | **Open Source** | ❌                               | ✅ MIT                    | ✅ BSD-3-Clause     | ✅ MIT                   |  
-
-![Applications of JaxLayerLumos](assets/applications.png)
-
-Most TMM implementations, such as [@tmmSbyrnes] and [@tmm_fast]), focus primarily on optical wavelengths (UV-Vis-IR) and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwave applications.  There is a growing need for simulation tools that 
-* Operate efficiently across a broader spectral range--including optical, RF, and microwave frequencies,
-* Handle magnetic and lossy materials with complex permittivities and permeability,
-* Support modern workflows that integrate machine learning and large-scale optimization.  
 
 JaxLayerLumos addresses this need by offering a JAX-based TMM framework. Its core advantages include:
 
