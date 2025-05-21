@@ -50,20 +50,20 @@ Most TMM implementations, such as [@tmmSbyrnes] and [@tmm_fast]), focus primaril
 * Handle magnetic and lossy materials with complex permittivities and permeability,
 * Support modern workflows that integrate machine learning and large-scale optimization.
 
-[TEST]
 | Feature | Ansys Optics (stackrt) | TMM-Fast (PyTorch/NumPy) | tmm (sbyrnes) (Pure Python) | JaxLayerLumos (Jax) |
 |-----|-----|-----|-----|-----|
 | **Lightweight** | ❌ Commercial, bulky | ✅ Lightweight | ✅ Lightweight | ✅ Lightweight |
 | **Speed** | ⚠️ Moderate | ✅ Fast  | ❌ Slow (CPU-bound) | ✅ Fast |
 | **Gradient Support** | ❌ | ✅ Yes | ❌ | ✅ Yes |
-| **GPU Support** | ❌ | ✅ Yes | ❌ | ✅ Yes |  
-| **TPU Support** | ❌                               | ❌                        | ❌                  | ✅ Yes         |  
-| **Position-Dependent Poynting** | ❌                  | ❌                        | ❌                  | ✅  Supported                        
-| **Optical Simulation** | ✅ Full-spectrum                 | ✅ Optimized              | ✅ Basic            | ✅ User-defined          |  
-| **Infrared Simulation** | ❌ Limited                       | ✅ Limited                | ❌                 | ✅ User-defined          |  
-| **Radar (HF) Simulation** | ❌ Limited                       | ❌                        | ❌                 | ✅ Includes magnetic materials |  
-| **Material Database** | ✅ Extensive (Commercial)        | ❌ User-defined           | ❌ User-defined     | ✅ Growing library       |  
-| **Open Source** | ❌                               | ✅ MIT                    | ✅ BSD-3-Clause     | ✅ MIT                   |  
+| **GPU Support** | ❌ | ✅ Yes | ❌ | ✅ Yes |
+| **TPU Support** | ❌ | ❌ | ❌ | ✅ Yes |
+| **Position-Dependent Poynting** | ❌ | ❌ | ❌ | ✅ Supported |                   
+| **Optical Simulation** | ✅ Full-spectrum | ✅ Optimized | ✅ Basic | ✅ User-defined |
+| **Infrared Simulation** | ❌ Limited | ✅ Limited | ❌ | ✅ User-defined |
+| **Radar (HF) Simulation** | ❌ Limited | ❌ | ❌ | ✅ Includes magnetic materials |
+| **Material Database** | ✅ Extensive (Commercial) | ❌ User-defined | ❌ User-defined | ✅ Growing library |
+| **Open Source** | ❌ | ✅ MIT | ✅ BSD-3-Clause | ✅ MIT |
+[TEST CAPTION]
 
 JaxLayerLumos addresses this need by offering a JAX-based TMM framework. Its core advantages include:
 
@@ -95,7 +95,7 @@ $\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P
 <!-- JaxLayerLumos uses `lax.associative_scan` in JAX for efficient parallel computation of the matrix product. Is this that important?-->
 
 # Mention of use
-<!-- Add Figuer showing applications -->
+
 Jupyter notebook examples are available in the [examples folder](./examples/).
 
 JaxLayerLumos is built for a wide range of applications in optical and RF science and engineering. Example use cases provided with the software demonstrate its versatility:
@@ -108,9 +108,8 @@ JaxLayerLumos is built for a wide range of applications in optical and RF scienc
 
 Due to its differentiability and high-performance execution, JaxLayerLumos is well-suited for both advanced research in complex electromagnetic systems and educational use in computational photonics and applied electromagnetics.
 
-
 # Acknowledgements
 
-We acknowledge the developers of JAX [@jax2018github] and other open-source libraries that JaxLayerLumos builds upon. This work was supported by the Center for Materials Data Science for Reliability and Degradation ([MDS-Rely](https://mds-rely.org/)), an Industry-University Cooperative Research Center (IUCRC) of the National Science Foundation (NSF). The University of Pittsburgh, Case Western Reserve University, and Carnegie Mellon University are official research sites of MDS-Rely. We also thank the open-source community for contributions and feedback.
+We acknowledge the developers of JAX [@jax2018github] and other open-source libraries that JaxLayerLumos builds upon. This work was supported by the Center for Materials Data Science for Reliability and Degradation ([MDS-Rely](https://mds-rely.org/)), an Industry-University Cooperative Research Center (IUCRC) of the National Science Foundation (NSF). We also thank the open-source community for contributions and feedback.
 
 # References
