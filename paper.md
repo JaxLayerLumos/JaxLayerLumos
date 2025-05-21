@@ -63,7 +63,7 @@ Most TMM implementations, such as [@tmmSbyrnes] and [@tmm_fast]), focus primaril
 | **Radar (HF) Simulation** | ❌ Limited | ❌ | ❌ | ✅ Includes magnetic materials |
 | **Material Database** | ✅ Extensive (Commercial) | ❌ User-defined | ❌ User-defined | ✅ Growing library |
 | **Open Source** | ❌ | ✅ MIT | ✅ BSD-3-Clause | ✅ MIT |
-[TEST CAPTION]
+Table: TEST CAPTION
 
 JaxLayerLumos addresses this need by offering a JAX-based TMM framework. Its core advantages include:
 
@@ -110,6 +110,6 @@ Due to its differentiability and high-performance execution, JaxLayerLumos is we
 
 # Acknowledgements
 
-We acknowledge the developers of JAX [@jax2018github] and other open-source libraries that JaxLayerLumos builds upon. This work was supported by the Center for Materials Data Science for Reliability and Degradation ([MDS-Rely](https://mds-rely.org/)), an Industry-University Cooperative Research Center (IUCRC) of the National Science Foundation (NSF). We also thank the open-source community for contributions and feedback.
+We acknowledge the developers of JAX [@jax2018github] and other open-source libraries that JaxLayerLumos builds upon. This work was supported by the Center for Materials Data Science for Reliability and Degradation ([MDS-Rely](https://mds-rely.org/)), an Industry--University Cooperative Research Center of the National Science Foundation. We also thank the open-source community for contributions and feedback.
 
 # References
