@@ -36,13 +36,12 @@ bibliography: paper.bib
 ---
 
 # Summary
-JaxLayerLumos is an open-source Python software package for simulating electromagnetic wave interactions with multilayer structures using the transfer-matrix method (TMM). It is designed for researchers and engineers working with applications in optics, photonics, and radio frequencies.  The software efficiently computes  reflection, transmission, and absorption across a broad spectral range. A key feature of JaxLayerLumos is its implementation in JAX [@jax2018github], which enables automatic differentiation with respect to any input parameter (e.g., layer thickness, refractive index, permeability) and supports fast execution on GPUs and TPUs. This differentiability is especially valuable for gradient-based optimization and for integrating simulations into machine learning pipelines, accelerating the discovery and design of novel devices and materials.
+JaxLayerLumos is an open-source Python package for simulating electromagnetic wave interactions with multilayer structures using the transfer-matrix method (TMM). It is designed for researchers and engineers working with applications in optics and photonics. Our software efficiently computes reflection, transmission, and absorption across a broad spectral range. A key feature of JaxLayerLumos is its implementation in JAX, which enables automatic differentiation with respect to any input parameter (e.g., layer thicknesses and refractive indices) and supports fast execution on GPUs and TPUs. In particular, this differentiability is valuable for gradient-based optimization and for integrating simulations into machine learning pipelines, accelerating the discovery of novel devices and materials.
 
 # Statement of need
 
-Multilayer structures are essential in a wide range of technologies, including optical filters, next-generation solar cells, structural color coatings, and radar-absorbing materials. The transfer-matrix method [@BornWolf1999] is a foundational analytical technique for modeling wave interactions in these systems. We compare the capabilities of several TMM implementations,
-[Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our open-source package, JaxLayerLumos, 
-in Table 1.
+Multilayer structures are essential in a wide range of technologies, including optical filters, next-generation solar cells, structural color coatings, and radar-absorbing materials, as presented in Figure 1. The transfer-matrix method [@BornWolf1999] is a foundational analytical technique for modeling wave interactions in these systems. We compare the capabilities of several TMM implementations,
+[Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our open-source package in Table 1.
 
 ![Applications of JaxLayerLumos](assets/applications.png)
 
@@ -51,6 +50,7 @@ Most TMM implementations, such as [@tmmSbyrnes] and [@tmm_fast]), focus primaril
 * Handle magnetic and lossy materials with complex permittivities and permeability,
 * Support modern workflows that integrate machine learning and large-scale optimization.
 
+[TEST]
 | Feature | Ansys Optics (stackrt) | TMM-Fast (PyTorch/NumPy) | tmm (sbyrnes) (Pure Python) | JaxLayerLumos (Jax) |
 |-----|-----|-----|-----|-----|
 | **Lightweight** | ❌ Commercial, bulky | ✅ Lightweight | ✅ Lightweight | ✅ Lightweight |
