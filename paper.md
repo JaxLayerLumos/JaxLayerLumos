@@ -65,7 +65,7 @@ There is a growing need for simulation tools that
 | **TPU Support** | $\times$ | $\times$ | $\times$ | $\checkmark$ |
 | **Position-Dependent Absorption** | $\times$ | $\times$ | $\checkmark$ | $\checkmark$ |                   
 | **Optical Simulations** | $\checkmark$ | $\checkmark$ | $\checkmark$ | $\checkmark$ |
-| **Infrared Simulations** | $\sim$ Limited | $\sim$ Limited | $\times$ | $\checkmark$ User-defined |
+| **Infrared Simulations** | $\sim$ Limited | $\sim$ Limited | $\times$ | $\checkmark$ |
 | **Radio Wave Simulations** | $\sim$ Limited | $\times$ | $\times$ | $\checkmark$ Handles magnetic materials |
 | **Open Source** | $\times$ Commercial | $\checkmark$ MIT | $\checkmark$ BSD-3-Clause | $\checkmark$ MIT |
 Table: Comparison of other TMM packages with JaxLayerLumos
@@ -86,11 +86,7 @@ These capabilities make JaxLayerLumos particularly valuable for researchers work
 
 ![Schematic of TMM showing a multilayer structure with incident, reflected, and transmitted waves. Each layer is characterized by its thickness $d_j$, permittivity $\varepsilon_{r,j}$, and permeability $\mu_{r,j}$.](assets/TMM.png)
 
-The core of JaxLayerLumos implements the TMM method, which calculates the propagation of electromagnetic waves through a stack of $L$ planar layers.  It calculates key optical properties, such as reflection $R(f)$, transmission $T(f)$, and absorption $A(f)$, as functions of frequency $f$ or wavelength $\lambda$.  The software also supports position-resolved absorption and per-layer absorption calculations. Each layer $j$ is defined by 
-
-* thickness $d_j$,
-* complex relative permittivity $\varepsilon_{r,j}$, and
-* complex relative permeability $\mu_{r,j}$.
+The core of JaxLayerLumos implements TMM, which calculates the propagation of electromagnetic waves through a stack of $L$ planar layers [@BornWolf1999]. It calculates key optical properties, such as reflection $R(f)$, transmission $T(f)$, and absorption $A(f)$, as functions of frequency $f$ or wavelength $\lambda$. The software also supports position-resolved absorption and per-layer absorption calculations. Each layer $j$ is defined by thickness $d_j$, complex relative permittivity $\varepsilon_{r,j}$, and complex relative permeability $\mu_{r,j}$.
   
 For a given frequency $f$ and incidence angle $\theta_0$, the propagation of light is described by interface matrices $\mathbf{D}_j$ 
 that capture Fresnel coefficients at the boundary between layer $j$ and its following layer and propagation matrices $\mathbf{P}_j$ representing full wave propagation within each layer and captures both phase shift and attenuation due to absorption in lossy media.  The total transfer matrix $\mathbf{M}$ for the entire stack is the product of these individual matrices:
@@ -109,7 +105,7 @@ Diverse use cases demonstrate the versatility of JaxLayerLumos:
 * **Thin-film structural optimization**: Use Bayesian optimization [@garnett2023bayesian] or gradient-based methods [@boyd2004convex] to tailor spectral responses across both optical and RF domains.
 * **Solar cell design**: Model and analyze single- and multi-junction solar cell architectures.
 * **Structural color**: Explore engineered structural coloration for novel material design.
-* **Inverse design with machine learning**: Train Transformer-based models to design optical coatings and RF devices.
+* **Inverse design with machine learning**: Train Transformer-based models [@vaswani2017attention] to design optical coatings and RF devices.
 
 Jupyter notebook examples are available in the [examples directory](./examples/).
 
