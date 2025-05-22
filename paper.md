@@ -98,16 +98,19 @@ For a given frequency $f$ and incidence angle $\theta_0$, the propagation of lig
 that capture Fresnel coefficients at the boundary between layer $j$ and its following layer and propagation matrices $\mathbf{P}_j$ representing full wave propagation within each layer and captures both phase shift and attenuation due to absorption in lossy media.  The total transfer matrix $\mathbf{M}$ for the entire stack is the product of these individual matrices:
 $$\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P}_L\mathbf{D}_L)\mathbf{P}_{L+1}$$
 
-JaxLayerLumos includes a growing library of materials, which are specified using either complex refractive indices or complex permittivities and permeabilities.
-When only complex refractive indices are given, magnetic effects are assumed to be negligible, and the relative permeability is set to unity:
-$\mu_{r,j} = 1$. This assumption is typically valid at optical frequencies. Users can also define their own custom materials.
+JaxLayerLumos includes a growing library of materials, which are specified using either complex refractive indices or complex permittivities and permeabilities, which can be sourced from the literature or 
+specified by users based on experimental data.  
+When only complex refractive indices are provided, magnetic effects are assumed to be negligible, and the relative permeability is set to unity
+($\mu_{r,j} = 1$), an assumption typically valid at optical frequencies.
+In the RF and microwave regimes, the electromagnetic properties of metals are derived from their electrical conductivity and magnetic susceptibility, while dielectrics are generally modeled with constant permittivity and negligible loss.
 
+<!--
 For the RF and microwave frequencies relevant to EMI shielding (specifically, the X-band, 8-18 GHz, in this study), the optical properties of dielectric materials are typically sourced from literature or experimental data. For metallic layers, essential for high SE, the complex refractive index $\tilde{n}(\omega) = n(\omega) + ik(\omega)$ at a given angular frequency $\omega = 2\pi\nu$ (where $\nu$ is the frequency) is derived from their electrical conductivity $\sigma$. The metals considered include Cu, Cr, Ag, Al, Ni, W, Ti, and Pd, with their respective DC conductivities.
 The impedance of a metallic material, $Z_m(\omega)$, is given by:
 $$ Z_m(\omega) = \sqrt{\frac{j \omega \mu_0}{\sigma}} $$
 where $\mu_0 = 4\pi \times 10^{-7}$ H/m is the permeability of free space. The complex refractive index $\tilde{n}(\omega)$ is then calculated by relating $Z_m(\omega)$ to the impedance of free space, $Z_0 \approx 377 \, \Omega$:
 $$ \tilde{n}(\omega) = \frac{Z_0}{Z_m(\omega)} = Z_0 \sqrt{\frac{\sigma}{j \omega \mu_0}} $$
-The real part $n(\omega) = \text{Re}(\tilde{n}(\omega))$ and the imaginary part (extinction coefficient) $k(\omega) = \text{Im}(\tilde{n}(\omega))$ are extracted from $\tilde{n}(\omega)$. These calculations are performed across the 8-18 GHz range. For frequencies within this range not explicitly calculated, linear interpolation is applied. If a material in the optimization is not one of these specified metals (e.g., a dielectric), its RF properties are assumed to be non-dispersive with $n=1$ and $k=0$ in the X-band, unless other data are available.
+The real part $n(\omega) = \text{Re}(\tilde{n}(\omega))$ and the imaginary part (extinction coefficient) $k(\omega) = \text{Im}(\tilde{n}(\omega))$ are extracted from $\tilde{n}(\omega)$. These calculations are performed across the 8-18 GHz range. For frequencies within this range not explicitly calculated, linear interpolation is applied. If a material in the optimization is not one of these specified metals (e.g., a dielectric), its RF properties are assumed to be non-dispersive with $n=1$ and $k=0$ in the X-band, unless other data are available. -->
 
 <!-- From the elements of $\mathbf{M}$, the complex reflection $r$ and transmission $t$ amplitudes are calculated, from which $R = |r|^2$ and $T = |t|^2 \times \text{factor}$ (where factor accounts for impedance and angles of incident/exit media) are derived. -->
 <!-- JaxLayerLumos uses `lax.associative_scan` in JAX for efficient parallel computation of the matrix product. Is this that important?-->
