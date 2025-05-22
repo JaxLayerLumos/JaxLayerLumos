@@ -64,10 +64,10 @@ There is a growing need for simulation tools that
 | **Gradient Support** | $\times$ | $\checkmark$ Yes | $\times$ | $\checkmark$ Yes |
 | **GPU Support** | $\times$ | $\checkmark$ Yes | $\times$ | $\checkmark$ Yes |
 | **TPU Support** | $\times$ | $\times$ | $\times$ | $\checkmark$ Yes |
-| **Position-Dependent Poynting** | $\times$ | $\times$ | $\times$ | $\checkmark$ Supported |                   
-| **Optical Simulation** | $\checkmark$ Full-spectrum | $\checkmark$ Optimized | $\checkmark$ Basic | $\checkmark$ User-defined |
-| **Infrared Simulation** | $\sim$ Limited | $\sim$ Limited | $\times$ | $\checkmark$ User-defined |
-| **Radio Wave Simulation** | $\sim$ Limited | $\times$ | $\times$ | $\checkmark$ Handles magnetic materials |
+| **Position-Dependent Absorption** | $\times$ | $\times$ | $\checkmark$ Supported | $\checkmark$ Supported |                   
+| **Optical Simulations** | $\checkmark$ Full-spectrum | $\checkmark$ Optimized | $\checkmark$ Basic | $\checkmark$ User-defined |
+| **Infrared Simulations** | $\sim$ Limited | $\sim$ Limited | $\times$ | $\checkmark$ User-defined |
+| **Radio Wave Simulations** | $\sim$ Limited | $\times$ | $\times$ | $\checkmark$ Handles magnetic materials |
 | **Material Database** | $\checkmark$ Extensive (Commercial) | $\times$ User-defined | $\times$ User-defined | $\checkmark$ Growing library |
 | **Open Source** | $\times$ | $\checkmark$ MIT | $\checkmark$ BSD-3-Clause | $\checkmark$ MIT |
 Table: Comparison of other TMM packages with JaxLayerLumos
@@ -98,9 +98,10 @@ For a given frequency $f$ and incidence angle $\theta_0$, the propagation of lig
 that capture Fresnel coefficients at the boundary between layer $j$ and its following layer and propagation matrices $\mathbf{P}_j$ representing full wave propagation within each layer and captures both phase shift and attenuation due to absorption in lossy media.  The total transfer matrix $\mathbf{M}$ for the entire stack is the product of these individual matrices:
 $$\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P}_L\mathbf{D}_L)\mathbf{P}_{L+1}$$
 
-For optical frequencies, magnetic effects are negligible, so the relative permeability is assumed to be unity:
-$\mu_{r,j} = 1$.
-<!--$\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P}_{L}\mathbf{D}_{L})\mathbf{P}_{L+1}$-->
+JaxLayerLumos includes a growing library of materials, which are specified using either complex refractive indices or complex permittivities and permeabilities.
+When only complex refractive indices are given, magnetic effects are assumed to be negligible, and the relative permeability is set to unity:
+$\mu_{r,j} = 1$. This assumption is typically valid at optical frequencies. Users can also define their own custom materials.
+
 
 <!-- From the elements of $\mathbf{M}$, the complex reflection $r$ and transmission $t$ amplitudes are calculated, from which $R = |r|^2$ and $T = |t|^2 \times \text{factor}$ (where factor accounts for impedance and angles of incident/exit media) are derived. -->
 <!-- JaxLayerLumos uses `lax.associative_scan` in JAX for efficient parallel computation of the matrix product. Is this that important?-->
