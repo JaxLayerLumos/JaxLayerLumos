@@ -101,7 +101,7 @@ In the RF and microwave regimes, the electromagnetic properties of metals are de
 
 Diverse use cases demonstrate the versatility of JaxLayerLumos:
 
-* **Radar-absorbing materials and frequency-selective surfaces**: Simulate spectral responses in the microwave and RF ranges, with full support for magnetic materials.
+* **Radar-absorbing materials and frequency-selective surfaces**: Simulate spectral responses in the microwave and RF ranges [@michielssen2002design], with full support for magnetic materials.
 * **Thin-film structural optimization**: Use Bayesian optimization [@garnett2023bayesian] or gradient-based methods [@boyd2004convex] to tailor spectral responses across both optical and RF domains.
 * **Solar cell design**: Model and analyze single- and multi-junction solar cell architectures.
 * **Structural color**: Explore engineered structural coloration for novel material design.
