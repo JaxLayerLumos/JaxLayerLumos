@@ -49,7 +49,7 @@ They are also key components in optical filters, antireflection coatings, and ot
 The transfer-matrix method (TMM) [@BornWolf1999]  is a foundational analytical technique for modeling wave interactions in these systems. 
 Table 1 compares several TMM implementations, including
 [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our open-source package. Most TMM tools, such as [@tmmSbyrnes] and [@tmm_fast]), 
-using the complex refractive index formulation and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwave applications.
+use the complex refractive index formulation and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwave applications.
 <!-- focus primarily on optical wavelengths (UV-Vis-IR) and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwave applications.  -->
 There is a growing need for simulation tools that
 
@@ -99,8 +99,7 @@ that capture Fresnel coefficients at the boundary between layer $j$ and its foll
 $$\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P}_L\mathbf{D}_L)\mathbf{P}_{L+1}$$
 
 JaxLayerLumos includes a growing library of materials, which are specified using either complex refractive indices or complex permittivities and permeabilities, which can be sourced from the literature or 
-specified by users based on experimental data.  
-When only complex refractive indices are provided, magnetic effects are assumed to be negligible, and the relative permeability is set to unity
+specified by users based on experimental data.  When only complex refractive indices are provided, magnetic effects are assumed to be negligible, and the relative permeability is set to unity
 ($\mu_{r,j} = 1$), an assumption typically valid at optical frequencies.
 In the RF and microwave regimes, the electromagnetic properties of metals are derived from their electrical conductivity and magnetic susceptibility, while dielectrics are generally modeled with constant permittivity and negligible loss.
 
