@@ -107,7 +107,7 @@ Diverse use cases demonstrate the versatility of JaxLayerLumos:
 * **Structural color**: Explore engineered structural coloration for novel material design.
 * **Inverse design with machine learning**: Train Transformer-based models [@vaswani2017attention] to design optical coatings and RF devices.
 
-Jupyter notebook examples are available in the [examples directory](./examples/).
+Jupyter notebook examples are available in the [examples directory](https://github.com/JaxLayerLumos/JaxLayerLumos/tree/main/examples).
 
 # Acknowledgements
 
