@@ -72,13 +72,13 @@ Table: Comparison of other TMM packages with JaxLayerLumos
 
 JaxLayerLumos addresses this need by offering a JAX-based TMM framework. Its core advantages include:
 
-* **Differentiability**: Automatically computes gradients with respect to any simulation parameter (e.g., layer thickness, refractive index), enabling inverse design, sensitivity analysis, and seamless integration with gradient-based optimization and machine learning pipelines.
+* **Differentiability**: Automatically computes gradients with respect to any simulation parameters (e.g., layer thicknesses and refractive indices).
 
-* **High Performance**: Utilizes JAX’s just-in-time (JIT) compilation and hardware acceleration (CPU, GPU, TPU) for fast computation—ideal for large parameter sweeps or model training.
+* **High Performance**: Utilizes JAX’s just-in-time compilation and hardware acceleration (CPU, GPU, and TPU) for fast computation.
 
-* **Broad Spectral and Material Support**: Accommodates complex permittivities and permeabilities (necessary for magnetic and RF materials), customizable layer structures, oblique incidence, and both TE and TM polarizations—enabling simulations across optical, RF, and microwave regimes.
+* **Broad Spectral and Material Support**: Accommodates complex permittivities and permeabilities (necessary for magnetic and RF materials), customizable layer structures, oblique incidence, and both TE and TM polarizations.
 
-* **Ecosystem Integration**: Easily integrates with Python’s scientific computing stack, including optimization libraries and ML frameworks like JAX and TensorFlow.
+* **Ecosystem Integration**: Easily integrates with Python’s scientific computing stack, including optimization libraries and ML frameworks such as JAX and Scikit-learn.
 
 These capabilities make JaxLayerLumos particularly valuable for researchers working at the intersection of computational electromagnetics and machine learning. It is well-suited for tasks such as training neural networks for inverse design (predicting layer structures from target spectra) and performing large-scale device optimization across broad frequency ranges. As an open-source, lightweight alternative to commercial tools, it offers speed, flexibility, and ease of use for advanced research.
 
@@ -114,7 +114,7 @@ The real part $n(\omega) = \text{Re}(\tilde{n}(\omega))$ and the imaginary part 
 
 # Mention of use
 
-Jupyter notebook examples are available in the [examples folder](./examples/).
+Jupyter notebook examples are available in the [examples directory](./examples/).
 
 JaxLayerLumos is built for a wide range of applications in optical and RF science and engineering. Example use cases provided with the software demonstrate its versatility:
 
