@@ -56,15 +56,15 @@ Table 1 compares several TMM implementations, including
 
 | **Feature** | **Ansys Optics** (stackrt) | **TMM-Fast** (PyTorch/NumPy) | **tmm** (sbyrnes) (Pure Python) | **JaxLayerLumos** (Jax) |
 |-----|-----|-----|-----|-----|
-| **Lightweight** | $\times$ Commercial, bulky | \checkmark Lightweight | ✅ Lightweight | ✅ Lightweight |
+| **Lightweight** | $\times$ Commercial, bulky | $\checkmark$ Lightweight | ✅ Lightweight | ✅ Lightweight |
 | **Speed** | $\sim$ Moderate | ✅ Fast  | ❌ Slow (CPU-bound) | ✅ Fast |
 | **Gradient Support** | ❌ | ✅ Yes | ❌ | ✅ Yes |
 | **GPU Support** | ❌ | ✅ Yes | ❌ | ✅ Yes |
 | **TPU Support** | ❌ | ❌ | ❌ | ✅ Yes |
 | **Position-Dependent Poynting** | ❌ | ❌ | ❌ | ✅ Supported |                   
 | **Optical Simulation** | ✅ Full-spectrum | ✅ Optimized | ✅ Basic | ✅ User-defined |
-| **Infrared Simulation** | ❌ Limited | ✅ Limited | ❌ | ✅ User-defined |
-| **Radar (HF) Simulation** | ❌ Limited | ❌ | ❌ | ✅ Includes magnetic materials |
+| **Infrared Simulation** | $\sim$ Limited | ✅ Limited | ❌ | ✅ User-defined |
+| **Radio Wave Simulation** | $\sim$ Limited | ❌ | ❌ | ✅ Handles magnetic materials |
 | **Material Database** | ✅ Extensive (Commercial) | ❌ User-defined | ❌ User-defined | ✅ Growing library |
 | **Open Source** | ❌ | ✅ MIT | ✅ BSD-3-Clause | ✅ MIT |
 Table: Comparison of other TMM packages with JaxLayerLumos
@@ -92,7 +92,7 @@ The core of JaxLayerLumos implements the TMM method, which calculates the propag
 * complex relative permeability $\mu_{r,j}$.
   
 For a given frequency $f$ and incidence angle $\theta_0$, the propagation of light is described by interface matrices $\mathbf{D}_j$ 
-that capture Fresnel coefficients at the boundary between adjacent layers and propagation matrices $\mathbf{P}_j$ representing full wave propagation within each layer and captures both phase shift and attenuation due to absorption in lossy media.  The total transfer matrix $\mathbf{M}$ for the entire stack is the product of these individual matrices:
+that capture Fresnel coefficients at the boundary between layer $j$ and its following layer and propagation matrices $\mathbf{P}_j$ representing full wave propagation within each layer and captures both phase shift and attenuation due to absorption in lossy media.  The total transfer matrix $\mathbf{M}$ for the entire stack is the product of these individual matrices:
 $$\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P}_L\mathbf{D}_L)\mathbf{P}_{L+1}$$
 
 For optical frequencies, magnetic effects are negligible, so the relative permeability is assumed to be unity:
