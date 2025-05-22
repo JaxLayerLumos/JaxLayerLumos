@@ -40,12 +40,15 @@ JaxLayerLumos is an open-source Python package for simulating electromagnetic wa
 
 # Statement of need
 
-Multilayer structures are essential in a wide range of technologies, including optical filters, next-generation solar cells, structural color coatings, and radar-absorbing materials, as presented in Figure 1. The transfer-matrix method [@BornWolf1999] is a foundational analytical technique for modeling wave interactions in these systems. We compare the capabilities of several TMM implementations,
-[Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our open-source package in Table 1.
+Multilayer structures are essential in a wide range of technologies, including structural color coatings, 
+next-generation solar cells, radar-absorbing materials, and EMI shielding as presented in Figure 1. 
+They are also importnat for optical filters, antireflection coatings, and other photonic devices.
 
 ![Applications of JaxLayerLumos](assets/applications.png)
 
-Most TMM implementations, such as [@tmmSbyrnes] and [@tmm_fast]), focus primarily on optical wavelengths (UV-Vis-IR) and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwave applications.  There is a growing need for simulation tools that 
+The transfer-matrix method [@BornWolf1999] is a foundational analytical technique for modeling wave interactions in these systems. 
+Table 1 compares the capabilities of several TMM implementations,
+[Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our open-source package. Most TMM implementations, such as [@tmmSbyrnes] and [@tmm_fast]), focus primarily on optical wavelengths (UV-Vis-IR) and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwave applications.  There is a growing need for simulation tools that 
 * Operate efficiently across a broader spectral range--including optical, RF, and microwave frequencies,
 * Handle magnetic and lossy materials with complex permittivities and permeability,
 * Support modern workflows that integrate machine learning and large-scale optimization.
