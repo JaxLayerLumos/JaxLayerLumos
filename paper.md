@@ -46,11 +46,10 @@ They are also key components in optical filters, antireflection coatings, and ot
 
 ![Applications of JaxLayerLumos](assets/applications.png)
 
-The transfer-matrix method (TMM) [@BornWolf1999]  is a foundational analytical technique for modeling wave interactions in these systems. 
+TMM [@BornWolf1999] is a foundational analytical technique for modeling wave interactions in these systems. 
 Table 1 compares several TMM implementations, including
 [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our open-source package. Most TMM tools, such as [@tmmSbyrnes] and [@tmm_fast]), 
-use the complex refractive index formulation and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwave applications.
-<!-- focus primarily on optical wavelengths (UV-Vis-IR) and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwave applications.  -->
+use the complex refractive index formulation and lack support for magnetic materials or frequencies relevant to RF and microwave applications.
 There is a growing need for simulation tools that
 
 * Operate efficiently across a broader spectral range--including optical, RF, and microwave frequencies,
@@ -59,17 +58,16 @@ There is a growing need for simulation tools that
 
 | **Feature** | **Ansys Optics** (stackrt) | **TMM-Fast** (PyTorch/NumPy) | **tmm** (sbyrnes) (Pure Python) | **JaxLayerLumos** (Jax) |
 |-----|-----|-----|-----|-----|
-| **Lightweight** | $\times$ Commercial, bulky | $\checkmark$ Lightweight | $\checkmark$ Lightweight | $\checkmark$ Lightweight |
-| **Speed** | $\sim$ Moderate | $\checkmark$ Fast  | $\times$ Slow (CPU-bound) | $\checkmark$ Fast |
-| **Gradient Support** | $\times$ | $\checkmark$ Yes | $\times$ | $\checkmark$ Yes |
-| **GPU Support** | $\times$ | $\checkmark$ Yes | $\times$ | $\checkmark$ Yes |
-| **TPU Support** | $\times$ | $\times$ | $\times$ | $\checkmark$ Yes |
-| **Position-Dependent Absorption** | $\times$ | $\times$ | $\checkmark$ Supported | $\checkmark$ Supported |                   
-| **Optical Simulations** | $\checkmark$ Full-spectrum | $\checkmark$ Optimized | $\checkmark$ Basic | $\checkmark$ User-defined |
+| **Lightweight** | $\times$ Bulky | $\checkmark$ Lightweight | $\checkmark$ Lightweight | $\checkmark$ Lightweight |
+| **Speed** | $\sim$ Moderate | $\checkmark$ Fast  | $\sim$ Moderate | $\checkmark$ Fast |
+| **Gradient Support** | $\times$ | $\checkmark$ | $\times$ | $\checkmark$ |
+| **GPU Support** | $\times$ | $\checkmark$ | $\times$ | $\checkmark$ |
+| **TPU Support** | $\times$ | $\times$ | $\times$ | $\checkmark$ |
+| **Position-Dependent Absorption** | $\times$ | $\times$ | $\checkmark$ | $\checkmark$ |                   
+| **Optical Simulations** | $\checkmark$ | $\checkmark$ | $\checkmark$ | $\checkmark$ |
 | **Infrared Simulations** | $\sim$ Limited | $\sim$ Limited | $\times$ | $\checkmark$ User-defined |
 | **Radio Wave Simulations** | $\sim$ Limited | $\times$ | $\times$ | $\checkmark$ Handles magnetic materials |
-| **Material Database** | $\checkmark$ Extensive (Commercial) | $\times$ User-defined | $\times$ User-defined | $\checkmark$ Growing library |
-| **Open Source** | $\times$ | $\checkmark$ MIT | $\checkmark$ BSD-3-Clause | $\checkmark$ MIT |
+| **Open Source** | $\times$ Commercial | $\checkmark$ MIT | $\checkmark$ BSD-3-Clause | $\checkmark$ MIT |
 Table: Comparison of other TMM packages with JaxLayerLumos
 
 JaxLayerLumos addresses this need by offering a JAX-based TMM framework. Its core advantages include:
@@ -86,7 +84,7 @@ These capabilities make JaxLayerLumos particularly valuable for researchers work
 
 # Methodology
 
-![Schematic of a transfer-matrix method showing a multilayer structure with incident, reflected, and transmitted waves. Each layer is characterized by its thickness $d_j$, permittivity $\varepsilon_{r,j}$, and permeability $\mu_{r,j}$.](assets/TMM.png)
+![Schematic of TMM showing a multilayer structure with incident, reflected, and transmitted waves. Each layer is characterized by its thickness $d_j$, permittivity $\varepsilon_{r,j}$, and permeability $\mu_{r,j}$.](assets/TMM.png)
 
 The core of JaxLayerLumos implements the TMM method, which calculates the propagation of electromagnetic waves through a stack of $L$ planar layers.  It calculates key optical properties, such as reflection $R(f)$, transmission $T(f)$, and absorption $A(f)$, as functions of frequency $f$ or wavelength $\lambda$.  The software also supports position-resolved absorption and per-layer absorption calculations. Each layer $j$ is defined by 
 
