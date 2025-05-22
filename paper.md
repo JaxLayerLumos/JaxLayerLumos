@@ -48,7 +48,7 @@ They are also key components in optical filters, antireflection coatings, and ot
 
 TMM [@BornWolf1999] is a foundational analytical technique for modeling wave interactions in these systems. 
 Table 1 compares several TMM implementations, including
-[Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our open-source package. Most TMM tools, such as [@tmmSbyrnes] and [@tmm_fast]), 
+[Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our open-source package. Most TMM tools, such as [@tmmSbyrnes] and [@luce2022tmm], 
 use the complex refractive index formulation and lack support for magnetic materials or frequencies relevant to RF and microwave applications.
 There is a growing need for simulation tools that
 
