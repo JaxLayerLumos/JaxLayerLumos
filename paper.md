@@ -36,7 +36,7 @@ bibliography: paper.bib
 ---
 
 # Summary
-JaxLayerLumos is an open-source Python package for simulating electromagnetic wave interactions with multilayer structures using the transfer-matrix method (TMM). It is designed for researchers and engineers working with applications in optics and photonics. Our software efficiently computes reflection, transmission, and absorption across a broad spectral range. A key feature of JaxLayerLumos is its implementation in JAX, which enables automatic differentiation with respect to any input parameter (e.g., layer thicknesses and refractive indices) and supports fast execution on GPUs and TPUs. In particular, this differentiability is valuable for gradient-based optimization and for integrating simulations into machine learning pipelines, accelerating the discovery of novel devices and materials.
+JaxLayerLumos is an open-source Python package for simulating electromagnetic wave interactions with multilayer structures using the transfer-matrix method (TMM). It is designed for researchers and engineers working with applications in optics, photonics, and related fields. The software efficiently computes reflection, transmission, and absorption across a broad spectral range, including ultraviolet (UV), visible, infrared, microwave, and radio frequencies (RF), with support for magnetic effects in the microwave and radio regimes. A key feature of JaxLayerLumos is its implementation in JAX, which enables automatic differentiation with respect to any input parameter (e.g., layer thicknesses and refractive indices) and supports fast execution on GPUs and TPUs. In particular, this differentiability is valuable for gradient-based optimization and for integrating simulations into machine learning pipelines, accelerating the discovery of novel devices and materials.
 
 # Statement of need
 
@@ -46,9 +46,12 @@ They are also key components in optical filters, antireflection coatings, and ot
 
 ![Applications of JaxLayerLumos](assets/applications.png)
 
-The transfer-matrix method [@BornWolf1999] is a foundational analytical technique for modeling wave interactions in these systems. 
+The transfer-matrix method (TMM) [@BornWolf1999]  is a foundational analytical technique for modeling wave interactions in these systems. 
 Table 1 compares several TMM implementations, including
-[Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our open-source package. Most TMM tools, such as [@tmmSbyrnes] and [@tmm_fast]), focus primarily on optical wavelengths (UV-Vis-IR) and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwave applications.  There is a growing need for simulation tools that 
+[Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our open-source package. Most TMM tools, such as [@tmmSbyrnes] and [@tmm_fast]), 
+using the complex refractive index formulation and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwave applications.
+<!-- focus primarily on optical wavelengths (UV-Vis-IR) and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwave applications.  -->
+There is a growing need for simulation tools that
 
 * Operate efficiently across a broader spectral range--including optical, RF, and microwave frequencies,
 * Handle magnetic and lossy materials with complex permittivities and permeability,
@@ -56,17 +59,17 @@ Table 1 compares several TMM implementations, including
 
 | **Feature** | **Ansys Optics** (stackrt) | **TMM-Fast** (PyTorch/NumPy) | **tmm** (sbyrnes) (Pure Python) | **JaxLayerLumos** (Jax) |
 |-----|-----|-----|-----|-----|
-| **Lightweight** | $\times$ Commercial, bulky | $\checkmark$ Lightweight | ✅ Lightweight | ✅ Lightweight |
-| **Speed** | $\sim$ Moderate | ✅ Fast  | ❌ Slow (CPU-bound) | ✅ Fast |
-| **Gradient Support** | ❌ | ✅ Yes | ❌ | ✅ Yes |
-| **GPU Support** | ❌ | ✅ Yes | ❌ | ✅ Yes |
-| **TPU Support** | ❌ | ❌ | ❌ | ✅ Yes |
-| **Position-Dependent Poynting** | ❌ | ❌ | ❌ | ✅ Supported |                   
-| **Optical Simulation** | ✅ Full-spectrum | ✅ Optimized | ✅ Basic | ✅ User-defined |
-| **Infrared Simulation** | $\sim$ Limited | ✅ Limited | ❌ | ✅ User-defined |
-| **Radio Wave Simulation** | $\sim$ Limited | ❌ | ❌ | ✅ Handles magnetic materials |
-| **Material Database** | ✅ Extensive (Commercial) | ❌ User-defined | ❌ User-defined | ✅ Growing library |
-| **Open Source** | ❌ | ✅ MIT | ✅ BSD-3-Clause | ✅ MIT |
+| **Lightweight** | $\times$ Commercial, bulky | $\checkmark$ Lightweight | $\checkmark$ Lightweight | $\checkmark$ Lightweight |
+| **Speed** | $\sim$ Moderate | $\checkmark$ Fast  | $\times$ Slow (CPU-bound) | $\checkmark$ Fast |
+| **Gradient Support** | $\times$ | $\checkmark$ Yes | $\times$ | $\checkmark$ Yes |
+| **GPU Support** | $\times$ | $\checkmark$ Yes | $\times$ | $\checkmark$ Yes |
+| **TPU Support** | $\times$ | $\times$ | $\times$ | $\checkmark$ Yes |
+| **Position-Dependent Poynting** | $\times$ | $\times$ | $\times$ | $\checkmark$ Supported |                   
+| **Optical Simulation** | $\checkmark$ Full-spectrum | $\checkmark$ Optimized | $\checkmark$ Basic | $\checkmark$ User-defined |
+| **Infrared Simulation** | $\sim$ Limited | $\sim$ Limited | $\times$ | $\checkmark$ User-defined |
+| **Radio Wave Simulation** | $\sim$ Limited | $\times$ | $\times$ | $\checkmark$ Handles magnetic materials |
+| **Material Database** | $\checkmark$ Extensive (Commercial) | $\times$ User-defined | $\times$ User-defined | $\checkmark$ Growing library |
+| **Open Source** | $\times$ | $\checkmark$ MIT | $\checkmark$ BSD-3-Clause | $\checkmark$ MIT |
 Table: Comparison of other TMM packages with JaxLayerLumos
 
 JaxLayerLumos addresses this need by offering a JAX-based TMM framework. Its core advantages include:
@@ -75,7 +78,7 @@ JaxLayerLumos addresses this need by offering a JAX-based TMM framework. Its cor
 
 * **High Performance**: Utilizes JAX’s just-in-time (JIT) compilation and hardware acceleration (CPU, GPU, TPU) for fast computation—ideal for large parameter sweeps or model training.
 
-* **Broad Spectral and Material Support**: Accommodates complex refractive indices and permeabilities (necessary for magnetic and RF materials), customizable layer structures, oblique incidence, and both TE and TM polarizations—enabling simulations across optical, RF, and microwave regimes.
+* **Broad Spectral and Material Support**: Accommodates complex permittivities and permeabilities (necessary for magnetic and RF materials), customizable layer structures, oblique incidence, and both TE and TM polarizations—enabling simulations across optical, RF, and microwave regimes.
 
 * **Ecosystem Integration**: Easily integrates with Python’s scientific computing stack, including optimization libraries and ML frameworks like JAX and TensorFlow.
 
