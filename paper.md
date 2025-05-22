@@ -41,23 +41,23 @@ JaxLayerLumos is an open-source Python package for simulating electromagnetic wa
 # Statement of need
 
 Multilayer structures are essential in a wide range of technologies, including structural color coatings, 
-next-generation solar cells, radar-absorbing materials, and EMI shielding as presented in Figure 1. 
-They are also importnat for optical filters, antireflection coatings, and other photonic devices.
+next-generation solar cells, radar-absorbing materials, and electromagnetic interference (EMI) shielding, as presented in Figure 1. 
+They are also key components in optical filters, antireflection coatings, and other photonic devices.
 
 ![Applications of JaxLayerLumos](assets/applications.png)
 
 The transfer-matrix method [@BornWolf1999] is a foundational analytical technique for modeling wave interactions in these systems. 
-Table 1 compares the capabilities of several TMM implementations,
+Table 1 compares several TMM implementations, including
 [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our open-source package. Most TMM tools, such as [@tmmSbyrnes] and [@tmm_fast]), focus primarily on optical wavelengths (UV-Vis-IR) and lack support for magnetic materials or frequencies relevant to radio frequency (RF) and microwave applications.  There is a growing need for simulation tools that 
 
 * Operate efficiently across a broader spectral range--including optical, RF, and microwave frequencies,
 * Handle magnetic and lossy materials with complex permittivities and permeability,
 * Support modern workflows that integrate machine learning and large-scale optimization.
 
-| Feature | Ansys Optics (stackrt) | TMM-Fast (PyTorch/NumPy) | tmm (sbyrnes) (Pure Python) | JaxLayerLumos (Jax) |
+| **Feature** | **Ansys Optics** (stackrt) | **TMM-Fast** (PyTorch/NumPy) | **tmm** (sbyrnes) (Pure Python) | **JaxLayerLumos** (Jax) |
 |-----|-----|-----|-----|-----|
-| **Lightweight** | ❌ Commercial, bulky | ✅ Lightweight | ✅ Lightweight | ✅ Lightweight |
-| **Speed** | ⚠️ Moderate | ✅ Fast  | ❌ Slow (CPU-bound) | ✅ Fast |
+| **Lightweight** | $\times$ Commercial, bulky | \checkmark Lightweight | ✅ Lightweight | ✅ Lightweight |
+| **Speed** | $\sim$ Moderate | ✅ Fast  | ❌ Slow (CPU-bound) | ✅ Fast |
 | **Gradient Support** | ❌ | ✅ Yes | ❌ | ✅ Yes |
 | **GPU Support** | ❌ | ✅ Yes | ❌ | ✅ Yes |
 | **TPU Support** | ❌ | ❌ | ❌ | ✅ Yes |
@@ -94,6 +94,9 @@ The core of JaxLayerLumos implements the TMM method, which calculates the propag
 For a given frequency $f$ and incidence angle $\theta_0$, the propagation of light is described by interface matrices $\mathbf{D}_j$ 
 that capture Fresnel coefficients at the boundary between adjacent layers and propagation matrices $\mathbf{P}_j$ representing full wave propagation within each layer and captures both phase shift and attenuation due to absorption in lossy media.  The total transfer matrix $\mathbf{M}$ for the entire stack is the product of these individual matrices:
 $$\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P}_L\mathbf{D}_L)\mathbf{P}_{L+1}$$
+
+For optical frequencies, magnetic effects are negligible, so the relative permeability is assumed to be unity:
+$\mu_{r,j} = 1$.
 <!--$\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P}_{L}\mathbf{D}_{L})\mathbf{P}_{L+1}$-->
 
 <!-- From the elements of $\mathbf{M}$, the complex reflection $r$ and transmission $t$ amplitudes are calculated, from which $R = |r|^2$ and $T = |t|^2 \times \text{factor}$ (where factor accounts for impedance and angles of incident/exit media) are derived. -->
