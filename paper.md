@@ -78,9 +78,9 @@ JaxLayerLumos addresses this need by offering a JAX-based TMM framework. Its cor
 
 * **Broad Spectral and Material Support**: Accommodates complex permittivities and permeabilities (necessary for magnetic and RF materials), customizable layer structures, oblique incidence, and both TE and TM polarizations.
 
-* **Ecosystem Integration**: Easily integrates with Python’s scientific computing stack, including optimization libraries and ML frameworks such as JAX and Scikit-learn.
+* **Ecosystem Integration**: Easily integrates with Python’s scientific computing stack, including optimization libraries and ML frameworks such as JAX [@jax2018github] and Scikit-learn [@pedregosa2011scikit].
 
-These capabilities make JaxLayerLumos particularly valuable for researchers working at the intersection of computational electromagnetics and machine learning. It is well-suited for tasks such as training neural networks for inverse design (predicting layer structures from target spectra) and performing large-scale device optimization across broad frequency ranges. As an open-source, lightweight alternative to commercial tools, it offers speed, flexibility, and ease of use for advanced research.
+These capabilities make JaxLayerLumos particularly valuable for researchers working at the intersection of computational electromagnetics and machine learning. As an open-source, lightweight alternative to commercial tools, it offers speed, flexibility, and ease of use for advanced research.
 
 # Methodology
 
@@ -93,7 +93,8 @@ that capture Fresnel coefficients at the boundary between layer $j$ and its foll
 $$\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P}_L\mathbf{D}_L)\mathbf{P}_{L+1}$$
 
 JaxLayerLumos includes a growing library of materials, which are specified using either complex refractive indices or complex permittivities and permeabilities, which can be sourced from the literature or 
-specified by users based on experimental data.  When only complex refractive indices are provided, magnetic effects are assumed to be negligible, and the relative permeability is set to unity
+specified by users based on experimental data.
+When only complex refractive indices are provided, magnetic effects are assumed to be negligible, and the relative permeability is set to unity
 ($\mu_{r,j} = 1$), an assumption typically valid at optical frequencies.
 In the RF and microwave regimes, the electromagnetic properties of metals are derived from their electrical conductivity and magnetic susceptibility, while dielectrics are generally modeled with constant permittivity and negligible loss.
 
@@ -104,13 +105,13 @@ Diverse use cases demonstrate the versatility of JaxLayerLumos:
 * **Radar-absorbing materials and frequency-selective surfaces**: Simulate spectral responses in the microwave and RF ranges [@michielssen2002design], with full support for magnetic materials.
 * **Thin-film structural optimization**: Use Bayesian optimization [@garnett2023bayesian] or gradient-based methods [@boyd2004convex] to tailor spectral responses across both optical and RF domains.
 * **Solar cell design**: Model and analyze single- and multi-junction solar cell architectures.
-* **Structural color**: Explore engineered structural coloration for novel material design [@sun2013structural,@elkabbash2023fano].
+* **Structural color**: Explore engineered structural coloration for novel material design [@sun2013structural, @elkabbash2023fano].
 * **Inverse design with machine learning**: Train Transformer-based models [@vaswani2017attention] to design optical coatings and RF devices.
 
 Jupyter notebook examples are available in the [examples directory](https://github.com/JaxLayerLumos/JaxLayerLumos/tree/main/examples).
 
 # Acknowledgements
 
-We acknowledge the developers of JAX [@jax2018github] and other open-source libraries. This work was supported by the Center for Materials Data Science for Reliability and Degradation ([MDS-Rely](https://mds-rely.org/)), an Industry--University Cooperative Research Center of the National Science Foundation. We also thank the open-source community for contributions and feedback.
+We acknowledge the developers of JAX and other open-source libraries. This work was supported by the Center for Materials Data Science for Reliability and Degradation ([MDS-Rely](https://mds-rely.org/)), an Industry--University Cooperative Research Center of the National Science Foundation. We also thank the open-source community for contributions and feedback.
 
 # References
