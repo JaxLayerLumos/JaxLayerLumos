@@ -1,5 +1,5 @@
 ---
-title: 'JaxLayerLumos: A JAX-based Differentiable Simulator for Multilayer Optical and Radio Frequency Structures'
+title: 'JaxLayerLumos: A JAX-based Differentiable Optical and Radio Frequency Simulator for Multilayer Structures'
 tags:
   - Python
   - JAX
@@ -56,7 +56,7 @@ There is a growing need for simulation tools that
 * Handle magnetic and lossy materials with complex permittivities and complex permeabilities,
 * Support modern workflows that integrate machine learning and large-scale optimization.
 
-| **Feature** | **Ansys Optics** (stackrt) | **TMM-Fast** (PyTorch/NumPy) | **tmm** (sbyrnes) (Pure Python) | **JaxLayerLumos** (Jax) |
+| **Feature** | **Ansys Optics** (stackrt) | **TMM-Fast** (PyTorch/NumPy) | **tmm** (Pure Python) | **JaxLayerLumos** (Jax) |
 |-----|-----|-----|-----|-----|
 | **Lightweight** | $\times$ Bulky | $\checkmark$ Lightweight | $\checkmark$ Lightweight | $\checkmark$ Lightweight |
 | **Speed** | $\sim$ Moderate | $\checkmark$ Fast  | $\sim$ Moderate | $\checkmark$ Fast |
