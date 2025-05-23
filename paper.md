@@ -36,6 +36,7 @@ bibliography: paper.bib
 ---
 
 # Summary
+
 JaxLayerLumos is an open-source Python package for simulating electromagnetic wave interactions with multilayer structures using the transfer-matrix method (TMM). It is designed for researchers and engineers working with applications in optics, photonics, and related fields. The software efficiently computes reflection, transmission, and absorption across a broad spectral range, including ultraviolet, visible, infrared, microwave, and radio frequencies (RF), with support for magnetic effects in the microwave and radio regimes. A key feature of JaxLayerLumos is its implementation in JAX, which enables automatic differentiation with respect to any input parameter (e.g., layer thicknesses and refractive indices) and supports fast execution on GPUs and TPUs. In particular, this differentiability is valuable for gradient-based optimization and for integrating simulations into machine learning pipelines, accelerating the discovery of novel devices and materials.
 
 # Statement of need
@@ -47,11 +48,11 @@ They are also key components in optical filters, antireflection coatings [@Hagha
 
 TMM [@BornWolf1999] is a foundational analytical technique for modeling wave interactions in these systems. 
 Table 1 compares several TMM implementations, including
-[Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our open-source package. Most TMM tools, such as [@tmmSbyrnes] and [@luce2022tmm], 
+[Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our package. Most TMM tools, such as [@tmmSbyrnes] and [@luce2022tmm], 
 use the complex refractive index formulation and lack support for magnetic materials or frequencies relevant to RF and microwave applications.
 There is a growing need for simulation tools that
 
-* Operate efficiently across a broader spectral range--including optical, RF, and microwave frequencies,
+* Operate efficiently across a broader spectral range including optical, RF, and microwave frequencies,
 * Handle magnetic and lossy materials with complex permittivities and permeability,
 * Support modern workflows that integrate machine learning and large-scale optimization.
 
@@ -73,7 +74,7 @@ JaxLayerLumos addresses this need by offering a JAX-based TMM framework. Its cor
 
 * **Differentiability**: Automatically computes gradients with respect to any simulation parameters (e.g., layer thicknesses and refractive indices).
 
-* **High Performance**: Utilizes JAX’s just-in-time compilation and hardware acceleration (CPU, GPU, and TPU) for fast computation.
+* **High Performance**: Utilizes JAX’s just-in-time compilation and hardware acceleration with CPUs, GPUs, or TPUs for fast computation.
 
 * **Broad Spectral and Material Support**: Accommodates complex permittivities and permeabilities (necessary for magnetic and RF materials), customizable layer structures, oblique incidence, and both TE and TM polarizations.
 
