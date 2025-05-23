@@ -84,7 +84,7 @@ We compare [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](htt
 | Feature | Ansys Optics (stackrt) | TMM-Fast (PyTorch/NumPy) | tmm (Pure Python) | JaxLayerLumos (JAX) |
 |-----|-----|-----|-----|-----|
 | **Lightweight** | ❌ Bulky | ✅ | ✅ | ✅ |
-| **Speed** | 🟨 Moderate | ✅ Fast | Moderate | ✅ Fast |
+| **Speed** | 🟨 Moderate | ✅ Fast | 🟨 Moderate | ✅ Fast |
 | **Gradient Support** | ❌ | ✅ | ❌ | ✅ |
 | **GPU Support** | ❌ | ✅ | ❌ | ✅ |
 | **TPU Support** | ❌ | ❌ | ❌ | ✅ |
