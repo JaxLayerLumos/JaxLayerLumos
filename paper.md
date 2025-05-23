@@ -53,7 +53,7 @@ use the complex refractive index formulation and lack support for magnetic mater
 There is a growing need for simulation tools that
 
 * Operate efficiently across a broader spectral range including optical, RF, and microwave frequencies,
-* Handle magnetic and lossy materials with complex permittivities and permeability,
+* Handle magnetic and lossy materials with complex permittivities and complex permeabilities,
 * Support modern workflows that integrate machine learning and large-scale optimization.
 
 | **Feature** | **Ansys Optics** (stackrt) | **TMM-Fast** (PyTorch/NumPy) | **tmm** (sbyrnes) (Pure Python) | **JaxLayerLumos** (Jax) |
