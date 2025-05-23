@@ -42,7 +42,7 @@ JaxLayerLumos is an open-source Python package for simulating electromagnetic wa
 
 Multilayer structures are essential in a wide range of technologies, including structural color coatings, 
 next-generation solar cells, radar-absorbing materials, and electromagnetic interference (EMI) shielding, as presented in Figure 1. 
-They are also key components in optical filters, antireflection coatings, and other photonic devices.
+They are also key components in optical filters, antireflection coatings [@Haghanifar:20], and other photonic devices.
 
 ![Applications of JaxLayerLumos](assets/applications.png)
 
