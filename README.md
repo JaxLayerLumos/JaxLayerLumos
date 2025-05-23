@@ -79,7 +79,7 @@ We provide the following examples:
 
 We compare [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), and [tmm](https://github.com/sbyrnes321/tmm) to our software.
 
-| Feature | Ansys Optics (stackrt) | TMM-Fast (PyTorch/NymPy) | tmm (Pure Python) | JaxLayerLumos (JAX) |
+| Feature | Ansys Optics (stackrt) | TMM-Fast (PyTorch/NumPy) | tmm (Pure Python) | JaxLayerLumos (JAX) |
 |-----|-----|-----|-----|-----|
 | **Lightweight** | ❌ Bulky | ✅ Lightweight | ✅ Lightweight | ✅ Lightweight |
 | **Speed** | Moderate | ✅ Fast | Moderate | ✅ Fast |
@@ -119,13 +119,13 @@ Finally, you can run the benchmarking code `compare_methods.py` in the `benchmar
 
 ## Supported Materials
 
-Materials supported by our software are described in [this file](markdowns/MATERIALS.md).
-
 JaxLayerLumos includes a growing library of materials, which are specified using either complex refractive indices or complex permittivities and permeabilities, which can be sourced from the literature or 
 specified by users based on experimental data.
 When only complex refractive indices are provided, magnetic effects are assumed to be negligible, and the relative permeability is set to unity
 ($\mu_{r,j} = 1$), an assumption typically valid at optical frequencies.
 In the RF and microwave regimes, the electromagnetic properties of metals are derived from their electrical conductivity and magnetic susceptibility, while dielectrics are generally modeled with constant permittivity and negligible loss.
+
+Materials supported by our software are described in [this file](markdowns/MATERIALS.md).
 
 ## License
 
