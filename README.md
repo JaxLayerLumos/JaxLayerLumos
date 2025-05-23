@@ -1,4 +1,4 @@
-# JaxLayerLumos: A JAX-based Efficient Transfer-Matrix Method Framework for Optical Simulations
+# JaxLayerLumos: A JAX-based Efficient Transfer-Matrix Method Framework for Optical and Radio Frequency Simulations
 
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12602789.svg)](https://doi.org/10.5281/zenodo.12602789)
@@ -71,7 +71,7 @@ We provide the following examples:
 
 We compare [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), and [tmm](https://github.com/sbyrnes321/tmm) to our software.
 
-| Feature | Ansys Optics (stackrt) | TMM-Fast | tmm (sbyrnes) | JaxLayerLumos |
+| Feature | Ansys Optics (stackrt) | TMM-Fast (PyTorch/NymPy) | tmm (Pure Python) | JaxLayerLumos |
 |-----|-----|-----|-----|-----|
 | **Lightweight** | ❌ (Commercial, bulky) | ✅ (PyTorch/NumPy) | ✅ (Pure Python) | ✅ (JAX) |
 | **Speed** | Moderate | ✅ Fast (PyTorch) | Slow (CPU-bound) | ✅ Fast (JAX) |
