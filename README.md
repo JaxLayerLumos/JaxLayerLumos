@@ -86,7 +86,7 @@ We compare [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](htt
 | **Gradient Support** | ❌ | ✅ | ❌ | ✅ |
 | **GPU Support** | ❌ | ✅ | ❌ | ✅ |
 | **TPU Support** | ❌ | ❌ | ❌ | ✅ |
-| **Position-Dependent Absorption** | ❌ | ❌ | ❌ | ✅ |
+| **Position-Dependent Absorption** | ❌ | ❌ | ✅ | ✅ |
 | **Optical Simulation** | ✅ | ✅ | ✅ | ✅ |
 | **Infrared Simulation** | Limited | Limited | ❌ | ✅ |
 | **Radio Wave Simulation** | Limited | ❌ | ❌ | ✅ Handles magnetic materials |
