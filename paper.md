@@ -56,9 +56,9 @@ There is a growing need for simulation tools that
 * Handle magnetic and lossy materials with complex permittivities and complex permeabilities,
 * Support modern workflows that integrate machine learning and large-scale optimization.
 
-| **Feature** | **Ansys Optics** (stackrt) | **TMM-Fast** (PyTorch/NumPy) | **tmm** (Pure Python) | **JaxLayerLumos** (Jax) |
+| **Feature** | **Ansys Optics** (stackrt) | **TMM-Fast** (PyTorch/NumPy) | **tmm** (Pure Python) | **JaxLayerLumos** (JAX) |
 |-----|-----|-----|-----|-----|
-| **Lightweight** | $\times$ Bulky | $\checkmark$ Lightweight | $\checkmark$ Lightweight | $\checkmark$ Lightweight |
+| **Lightweight** | $\times$ Bulky | $\checkmark$ | $\checkmark$ | $\checkmark$ |
 | **Speed** | $\sim$ Moderate | $\checkmark$ Fast  | $\sim$ Moderate | $\checkmark$ Fast |
 | **Gradient Support** | $\times$ | $\checkmark$ | $\times$ | $\checkmark$ |
 | **GPU Support** | $\times$ | $\checkmark$ | $\times$ | $\checkmark$ |
