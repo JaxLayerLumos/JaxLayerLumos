@@ -41,7 +41,7 @@ JaxLayerLumos is an open-source Python package for simulating electromagnetic wa
 # Statement of need
 
 Multilayer structures are essential in a wide range of technologies, including structural color coatings, 
-next-generation solar cells [@Gao:14aug,@Gao:16,@Wang:15apr] , radar-absorbing materials [@Michielssen:93], and electromagnetic interference (EMI) shielding [@Li:22], as presented in Figure 1. 
+next-generation solar cells [@Gao:14aug;@Gao:16;@Wang:15apr] , radar-absorbing materials [@michielssen1993design], and electromagnetic interference (EMI) shielding [@Li:22], as presented in Figure 1. 
 They are also key components in optical filters, antireflection coatings [@Haghanifar:20], and other photonic devices.
 
 ![Applications of JaxLayerLumos](assets/applications.png)
@@ -102,9 +102,9 @@ In the RF and microwave regimes, the electromagnetic properties of metals are de
 
 Diverse use cases demonstrate the versatility of JaxLayerLumos:
 
-* **Radar-absorbing materials and frequency-selective surfaces**: Simulate spectral responses in the microwave and RF ranges [@michielssen2002design], with full support for magnetic materials.
+* **Radar-absorbing materials and frequency-selective surfaces**: Simulate spectral responses in the microwave and RF ranges [@michielssen1993design], with full support for magnetic materials.
 * **Thin-film structural optimization**: Use Bayesian optimization [@garnett2023bayesian] or gradient-based methods [@boyd2004convex] to tailor spectral responses across both optical and RF domains.
-* **Solar cell design**: Model and analyze single- and multi-junction solar cell architectures.
+* **Solar cell design**: Model and analyze single- and multi-junction solar cell architectures [@Gao:14aug;@Gao:16;@Wang:15apr].
 * **Structural color**: Explore engineered structural coloration for novel material design [@sun2013structural;@elkabbash2023fano].
 * **Inverse design with machine learning**: Train Transformer-based models [@vaswani2017attention] to design optical coatings and RF devices.
 
