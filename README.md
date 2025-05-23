@@ -27,7 +27,7 @@ Our mission is to offer a lightweight, flexible, and fast alternative to commerc
 ## Features
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/JOSS/assets/applications.png" width="400" />
+<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/JOSS/assets/applications.png" width="800" />
 </p>
 
 - **Lightweight and Efficient**: Optimized for performance, JaxLayerLumos ensures rapid calculations without the overhead of large-scale commercial software.
