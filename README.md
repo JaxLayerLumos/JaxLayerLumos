@@ -16,19 +16,16 @@
 ## Overview
 
 **JaxLayerLumos** is open-source transfer-matrix method (TMM) software designed for scientists, engineers, and researchers in optics and photonics. It provides a powerful yet intuitive interface for calculating the reflection and transmission (RT) of light through multi-layer optical structures. By inputting the refractive index, thickness of each layer, and the frequency vector, users can analyze how light interacts with layered materials, including the option to adjust for incidence angles.
+Our mission is to offer a lightweight, flexible, and fast alternative to commercial software, enabling users to perform complex optical simulations with ease. JaxLayerLumos is built with performance and usability in mind, facilitating the exploration of optical phenomena in research and development settings.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/JOSS/assets/TMM.png" width="400" />
+<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/JOSS/assets/TMM.png" width="700" />
 </p>
 
-Our mission is to offer a lightweight, flexible, and fast alternative to commercial software, enabling users to perform complex optical simulations with ease. JaxLayerLumos is built with performance and usability in mind, facilitating the exploration of optical phenomena in research and development settings.
 
 
 ## Features
 
-<p align="center">
-<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/JOSS/assets/applications.png" width="800" />
-</p>
 
 - **Lightweight and Efficient**: Optimized for performance, JaxLayerLumos ensures rapid calculations without the overhead of large-scale commercial software.
 - **Gradient Calculation**: Calculates the gradients over any variables involved in RT, powered by JAX.
@@ -58,6 +55,11 @@ One of these modes can be used by commanding `pip install .[dev]`, `pip install 
 
 ## Examples
 
+<p align="center">
+<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/JOSS/assets/applications.png" width="800" />
+</p>
+
+
 A collection of examples in the `examples` directory exhibits various use cases and capabilities of our software.
 We provide the following examples:
 
@@ -82,14 +84,14 @@ We compare [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](htt
 | Feature | Ansys Optics (stackrt) | TMM-Fast (PyTorch/NumPy) | tmm (Pure Python) | JaxLayerLumos (JAX) |
 |-----|-----|-----|-----|-----|
 | **Lightweight** | ❌ Bulky | ✅ | ✅ | ✅ |
-| **Speed** | Moderate | ✅ Fast | Moderate | ✅ Fast |
+| **Speed** | 🟨 Moderate | ✅ Fast | Moderate | ✅ Fast |
 | **Gradient Support** | ❌ | ✅ | ❌ | ✅ |
 | **GPU Support** | ❌ | ✅ | ❌ | ✅ |
 | **TPU Support** | ❌ | ❌ | ❌ | ✅ |
 | **Position-Dependent Absorption** | ❌ | ❌ | ✅ | ✅ |
 | **Optical Simulations** | ✅ | ✅ | ✅ | ✅ |
-| **Infrared Simulations** | Limited | Limited | ❌ | ✅ |
-| **Radio Wave Simulations** | Limited | ❌ | ❌ | ✅ Handles magnetic materials |
+| **Infrared Simulations** | 🟨 Limited | 🟨 Limited | ❌ | ✅ |
+| **Radio Wave Simulations** | 🟨 Limited | ❌ | ❌ | ✅ Handles magnetic materials |
 | **Open Source** | ❌ Commercial | ✅ MIT | ✅ BSD-3-Clause | ✅ MIT |
 
 
