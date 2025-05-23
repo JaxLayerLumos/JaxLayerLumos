@@ -1,4 +1,4 @@
-# JaxLayerLumos: A JAX-based Efficient Transfer-Matrix Method Framework for Optical and Radio Frequency Simulations
+# JaxLayerLumos: A JAX-based Differentiable Optical and Radio Frequency Simulator for Multilayer Structures
 
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12602789.svg)](https://doi.org/10.5281/zenodo.12602789)
@@ -17,10 +17,18 @@
 
 **JaxLayerLumos** is open-source transfer-matrix method (TMM) software designed for scientists, engineers, and researchers in optics and photonics. It provides a powerful yet intuitive interface for calculating the reflection and transmission (RT) of light through multi-layer optical structures. By inputting the refractive index, thickness of each layer, and the frequency vector, users can analyze how light interacts with layered materials, including the option to adjust for incidence angles.
 
+<p align="center">
+<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/JOSS/assets/TMM.png" width="400" />
+</p>
+
 Our mission is to offer a lightweight, flexible, and fast alternative to commercial software, enabling users to perform complex optical simulations with ease. JaxLayerLumos is built with performance and usability in mind, facilitating the exploration of optical phenomena in research and development settings.
 
 
 ## Features
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/JOSS/assets/applications.png" width="400" />
+</p>
 
 - **Lightweight and Efficient**: Optimized for performance, JaxLayerLumos ensures rapid calculations without the overhead of large-scale commercial software.
 - **Gradient Calculation**: Calculates the gradients over any variables involved in RT, powered by JAX.
@@ -71,19 +79,18 @@ We provide the following examples:
 
 We compare [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), and [tmm](https://github.com/sbyrnes321/tmm) to our software.
 
-| Feature | Ansys Optics (stackrt) | TMM-Fast (PyTorch/NymPy) | tmm (Pure Python) | JaxLayerLumos |
+| Feature | Ansys Optics (stackrt) | TMM-Fast (PyTorch/NymPy) | tmm (Pure Python) | JaxLayerLumos (JAX) |
 |-----|-----|-----|-----|-----|
-| **Lightweight** | ❌ (Commercial, bulky) | ✅ (PyTorch/NumPy) | ✅ (Pure Python) | ✅ (JAX) |
-| **Speed** | Moderate | ✅ Fast (PyTorch) | Slow (CPU-bound) | ✅ Fast (JAX) |
-| **Gradient Support** | ❌ | ✅ (PyTorch) | ❌ | ✅ (JAX) |
-| **GPU Support** | ❌ | ✅ (PyTorch) | ❌ | ✅ (JAX) |  
-| **TPU Support** | ❌                               | ❌                        | ❌                  | ✅ (JAX)         |  
-| **Position-Dependent Poynting** | ❌                  | ❌                        | ❌                  | ✅                          
-| **Optical Simulation** | ✅ Full-spectrum                 | ✅ Optimized              | ✅ Basic            | ✅ User-defined          |  
-| **Infrared Simulation** | ❌ Limited                       | ✅ Limited                | ❌                 | ✅ User-defined          |  
-| **Radar (HF) Simulation** | ❌ Limited                       | ❌                        | ❌                 | ✅ Magnetic materials covered |  
-| **Material Database** | ✅ Extensive (Commercial)        | ❌ User-defined           | ❌ User-defined     | ✅ Growing library       |  
-| **Open Source** | ❌                               | ✅ MIT                    | ✅ BSD-3-Clause     | ✅ MIT                   |  
+| **Lightweight** | ❌ Bulky | ✅ Lightweight | ✅ Lightweight | ✅ Lightweight |
+| **Speed** | Moderate | ✅ Fast | Moderate | ✅ Fast |
+| **Gradient Support** | ❌ | ✅ | ❌ | ✅ |
+| **GPU Support** | ❌ | ✅ | ❌ | ✅ |
+| **TPU Support** | ❌ | ❌ | ❌ | ✅ |
+| **Position-Dependent Absorption** | ❌ | ❌ | ❌ | ✅ |
+| **Optical Simulation** | ✅ | ✅ | ✅ | ✅ |
+| **Infrared Simulation** | Limited | Limited | ❌ | ✅ |
+| **Radio Wave Simulation** | Limited | ❌ | ❌ | ✅ Handles magnetic materials |
+| **Open Source** | ❌ Commercial | ✅ MIT | ✅ BSD-3-Clause | ✅ MIT |
 
 
 ## Benchmarking against Other Software
