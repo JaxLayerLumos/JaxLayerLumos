@@ -81,15 +81,15 @@ We compare [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](htt
 
 | Feature | Ansys Optics (stackrt) | TMM-Fast (PyTorch/NumPy) | tmm (Pure Python) | JaxLayerLumos (JAX) |
 |-----|-----|-----|-----|-----|
-| **Lightweight** | ❌ Bulky | ✅ Lightweight | ✅ Lightweight | ✅ Lightweight |
+| **Lightweight** | ❌ Bulky | ✅ | ✅ | ✅ |
 | **Speed** | Moderate | ✅ Fast | Moderate | ✅ Fast |
 | **Gradient Support** | ❌ | ✅ | ❌ | ✅ |
 | **GPU Support** | ❌ | ✅ | ❌ | ✅ |
 | **TPU Support** | ❌ | ❌ | ❌ | ✅ |
 | **Position-Dependent Absorption** | ❌ | ❌ | ✅ | ✅ |
-| **Optical Simulation** | ✅ | ✅ | ✅ | ✅ |
-| **Infrared Simulation** | Limited | Limited | ❌ | ✅ |
-| **Radio Wave Simulation** | Limited | ❌ | ❌ | ✅ Handles magnetic materials |
+| **Optical Simulations** | ✅ | ✅ | ✅ | ✅ |
+| **Infrared Simulations** | Limited | Limited | ❌ | ✅ |
+| **Radio Wave Simulations** | Limited | ❌ | ❌ | ✅ Handles magnetic materials |
 | **Open Source** | ❌ Commercial | ✅ MIT | ✅ BSD-3-Clause | ✅ MIT |
 
 
