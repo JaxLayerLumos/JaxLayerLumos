@@ -1,3 +1,12 @@
+"""
+Radio frequency material properties for electromagnetic calculations.
+
+This module provides functions for accessing radio frequency (RF) material properties,
+particularly for metals in the GHz frequency range. It includes conductivity data
+for common metals and calculates frequency-dependent refractive indices based on
+the Drude model for metals.
+"""
+
 import jax.numpy as jnp
 
 
@@ -39,16 +48,27 @@ for metal, sigma in Metals_sigma.items():
 
 def load_material_RF(material_name, frequencies):
     """
-    Load material RF data for a given material and frequencies. Adapted for JAX.
-
-    Parameters:
-    - material_name: The name of the material to load.
-    - frequencies: Array of frequencies for which data is requested.
-
+    Load material RF data for a given material and frequencies.
+    
+    This function provides frequency-dependent refractive indices for metals
+    in the radio frequency range (8-18 GHz). It uses the Drude model to calculate
+    complex refractive indices based on material conductivity.
+    
+    Args:
+        material_name (str): Name of the metal material (e.g., "Cu", "Ag", "Al").
+        frequencies (jnp.ndarray): Frequencies in Hz for which to calculate properties.
+    
     Returns:
-    - A JAX array with columns for frequency, n, and k.
+        jnp.ndarray: Array with shape (n_frequencies, 3) containing columns for
+                    [frequency, n, k] where n and k are the real and imaginary
+                    parts of the refractive index.
+    
+    Note:
+        - Supported materials: Cu, Cr, Ag, Al, Ni, W, Ti, Pd
+        - For unsupported materials, returns n=1, k=0 (air-like properties)
+        - Interpolation is used for frequencies outside the 8-18 GHz range
+        - The refractive indices are calculated using the Drude model for metals
     """
-
     frequencies = jnp.array(frequencies)  # Ensure input frequencies are JAX arrays
 
     if material_name not in Metals_nk_updated_specific_sigma:
