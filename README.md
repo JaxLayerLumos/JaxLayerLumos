@@ -1,17 +1,14 @@
 # JaxLayerLumos: A JAX-based Differentiable Optical and Radio Frequency Simulator for Multilayer Structures
 
-
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12602789.svg)](https://doi.org/10.5281/zenodo.12602789)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/jaxlayerlumos)](https://pypi.org/project/jaxlayerlumos/)
 ![GitHub Release](https://img.shields.io/github/v/release/JaxLayerLumos/jaxlayerlumos)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-
 <p align="center">
 <img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/main/assets/jaxlayerlumos.jpg" width="400" />
 </p>
-
 
 ## Overview
 
@@ -22,10 +19,7 @@ Our mission is to offer a lightweight, flexible, and fast alternative to commerc
 <img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/JOSS/assets/TMM.png" width="700" />
 </p>
 
-
-
 ## Features
-
 
 - **Lightweight and Efficient**: Optimized for performance, JaxLayerLumos ensures rapid calculations without the overhead of large-scale commercial software.
 - **Gradient Calculation**: Calculates the gradients over any variables involved in RT, powered by JAX.
@@ -33,7 +27,6 @@ Our mission is to offer a lightweight, flexible, and fast alternative to commerc
 - **Angle of Incidence Support**: Expands simulation capabilities to include angled light incidence, providing more detailed analysis for advanced optical designs.
 - **Open Source and Community-Driven**: Encourages contributions and feedback from the community, ensuring continuous improvement and innovation.
 - **Comprehensive Material Database**: Includes a growing database of materials with their optical properties, streamlining the simulation setup process.
-
 
 ## Installation
 
@@ -49,16 +42,14 @@ Alternatively, JaxLayerLumos can be installed from source.
 pip install .
 ```
 
-In addition, we support three installation modes, `dev`, `benchmarking`, and `examples`, where `dev` is defined for installing the packages required for development, `benchmarking` is for installing the packages required for benchmarking against differnt TMM software programs, and `examples` is needed for running the examples included in the `examples` directory.
+In addition, we support three installation modes, `dev`, `benchmarking`, and `examples`, where `dev` is defined for installing the packages required for development and software testing, `benchmarking` is for installing the packages required for benchmarking against differnt TMM software programs, and `examples` is needed for running the examples included in the `examples` directory.
 One of these modes can be used by commanding `pip install .[dev]`, `pip install .[benchmarking]`, or `pip install .[examples]`.
-
 
 ## Examples
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/JOSS/assets/applications.png" width="800" />
 </p>
-
 
 A collection of examples in the `examples` directory exhibits various use cases and capabilities of our software.
 We provide the following examples:
@@ -76,7 +67,6 @@ We provide the following examples:
 11. [Transmission Spectra over Wavelengths Varying Thicknesses](examples/thickness-variation.ipynb)
 12. [Triple Junction Solar Cells](examples/triple-junction-solar-cells.ipynb)
 
-
 ## Comparison of TMM Packages
 
 We compare [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), and [tmm](https://github.com/sbyrnes321/tmm) to our software.
@@ -93,7 +83,6 @@ We compare [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](htt
 | **Infrared Simulations** | 🟨 Limited | 🟨 Limited | ❌ | ✅ |
 | **Radio Wave Simulations** | 🟨 Limited | ❌ | ❌ | ✅ Handles magnetic materials |
 | **Open Source** | ❌ Commercial | ✅ MIT | ✅ BSD-3-Clause | ✅ MIT |
-
 
 ## Benchmarking against Other Software
 
@@ -118,6 +107,12 @@ pip install .[benchmarking]
 
 Finally, you can run the benchmarking code `compare_methods.py` in the `benchmarking` directory.
 
+## Software Testing and Test Automation
+
+We provide a variety of test files in the `tests` directory.
+Before running the test files, the required packages should be installed by using `pip install .[dev]`.
+They can be run by commanding `pytest tests/`.
+Moreover, these test files are automatically tested via GitHub Actions, of which the configuration is defined in `.github/workflows/pytest.yml`.
 
 ## Supported Materials
 
