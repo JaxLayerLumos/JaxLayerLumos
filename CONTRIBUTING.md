@@ -24,7 +24,7 @@ All types of contributions are encouraged and valued. This document provides gui
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [JaxLayerLumos Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [jungtaek.kim.mail@gmail.com].
+This project and everyone participating in it is governed by the [JaxLayerLumos Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [jungtaek.kim.mail@gmail.com](mailto:jungtaek.kim.mail@gmail.com).
 
 ## I Have a Question
 
