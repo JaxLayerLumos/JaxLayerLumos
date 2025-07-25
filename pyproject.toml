@@ -46,6 +46,7 @@ dev = [
     "build",
     "twine",
     "sphinx",
+    "sphinx_rtd_theme",
     "black",
     "colour-science",
 ]
