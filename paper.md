@@ -15,11 +15,11 @@ authors:
   - name: Mingxuan Li
     orcid: 0000-0001-6217-9382
     affiliation: "1"
-    corresponding: true
+    equal-contrib: true
   - name: Jungtaek Kim
     orcid: 0000-0002-1905-1399
     affiliation: "2"
-    corresponding: true
+    equal-contrib: true
   - name: Paul W. Leu 
     orcid: 0000-0002-1599-7144
     affiliation: "1, 3"
