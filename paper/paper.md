@@ -44,7 +44,7 @@ JaxLayerLumos is an open-source Python package for simulating electromagnetic wa
 Multilayer structures are essential in a wide range of technologies, including structural color coatings [@sun2013structural;@elkabbash2023fano], next-generation solar cells [@Gao:14aug;@Gao:16;@Wang:15apr;@bati2023next], radar-absorbing materials [@michielssen1993design;@vinoy1996radar], and electromagnetic interference (EMI) shielding [@Li:22;@KimJ2023neurips;@KimJ2024dd;@zhao2024electromagnetic], as presented in Figure 1. 
 They are also key components in optical filters, antireflection coatings [@Haghanifar:20], and other photonic devices.
 
-![Applications of JaxLayerLumos](assets/applications.png)
+![Applications of JaxLayerLumos](../assets/applications.png)
 
 TMM [@BornWolf1999] is a foundational analytical technique for modeling wave interactions in these systems. 
 Table 1 compares several TMM implementations, including
@@ -84,7 +84,7 @@ These capabilities make JaxLayerLumos particularly valuable for researchers work
 
 # Methodology
 
-![Schematic of TMM showing a multilayer structure with incident, reflected, and transmitted waves. Each layer is characterized by its thickness $d_j$, permittivity $\varepsilon_{r,j}$, and permeability $\mu_{r,j}$.](assets/TMM.png)
+![Schematic of TMM showing a multilayer structure with incident, reflected, and transmitted waves. Each layer is characterized by its thickness $d_j$, permittivity $\varepsilon_{r,j}$, and permeability $\mu_{r,j}$.](../assets/TMM.png)
 
 The core of JaxLayerLumos implements TMM, which calculates the propagation of electromagnetic waves through a stack of $L$ planar layers [@BornWolf1999]. It calculates key optical properties, such as reflection $R(f)$, transmission $T(f)$, and absorption $A(f)$, as functions of frequency $f$ or wavelength $\lambda$. The software also supports position-resolved absorption and per-layer absorption calculations. Each layer $j$ is defined by thickness $d_j$, complex relative permittivity $\varepsilon_{r,j}$, and complex relative permeability $\mu_{r,j}$.
   
