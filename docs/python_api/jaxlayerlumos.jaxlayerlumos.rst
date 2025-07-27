@@ -1,5 +1,5 @@
 jaxlayerlumos.jaxlayerlumos
-==========================
+===========================
 
 .. automodule:: jaxlayerlumos.jaxlayerlumos
     :members:
