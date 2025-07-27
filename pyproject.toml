@@ -45,7 +45,6 @@ dev = [
     "wheel",
     "build",
     "twine",
-    "sphinx",
     "black",
     "colour-science",
 ]
