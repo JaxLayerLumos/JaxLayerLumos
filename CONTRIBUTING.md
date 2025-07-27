@@ -52,7 +52,7 @@ We will try to address your question as soon as possible.
 A good bug report shouldn't leave others needing to chase you up for more information. Please investigate carefully, collect information, and describe the issue in detail.
 
 - **Ensure you are using the latest version** of JaxLayerLumos.
-- **Verify the bug:** Determine if it's a bug in JaxLayerLumos or an issue with your setup or usage (e.g., incompatible environment components/versions). Please consult the [documentation](LINK_TO_YOUR_DOCUMENTATION_SITE_OR_README_SECTION).
+- **Verify the bug:** Determine if it's a bug in JaxLayerLumos or an issue with your setup or usage (e.g., incompatible environment components/versions). Please consult the [documentation](https://jaxlayerlumos.readthedocs.io).
 - **Check existing issues:** Search [GitHub Issues](https://github.com/JaxLayerLumos/JaxLayerLumos/issues) to see if the bug has already been reported.
 - **Collect information:**
     - Full stack trace (Traceback) if applicable.
@@ -88,7 +88,7 @@ New to JAX or electromagnetic simulations? Here are some tips:
 
 ### Improving the Documentation
 
-Good documentation is crucial! If you find areas for improvement, typos, or missing information in the [documentation](LINK_TO_YOUR_DOCUMENTATION_SITE_OR_README_SECTION) or in code docstrings:
+Good documentation is crucial! If you find areas for improvement, typos, or missing information in the [documentation](https://jaxlayerlumos.readthedocs.io) or in code docstrings:
 - You can open an issue to discuss the changes.
 - Or, directly submit a Pull Request with your improvements.
 
