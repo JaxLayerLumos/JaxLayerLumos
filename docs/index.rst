@@ -1,5 +1,5 @@
-Documentation of JaxLayerLumos
-==============================
+Documentation for JaxLayerLumos
+===============================
 
 .. toctree::
     :maxdepth: 2

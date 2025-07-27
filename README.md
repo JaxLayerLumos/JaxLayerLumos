@@ -5,6 +5,7 @@
 ![GitHub Release](https://img.shields.io/github/v/release/JaxLayerLumos/jaxlayerlumos)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Documentation Status](https://readthedocs.org/projects/jaxlayerlumos/badge/?version=main)](https://jaxlayerlumos.readthedocs.io)
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/main/assets/jaxlayerlumos.jpg" width="400" />
