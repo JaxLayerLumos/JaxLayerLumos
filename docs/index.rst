@@ -12,4 +12,3 @@ Documentation for JaxLayerLumos
     :caption: Python API:
 
     python_api/jaxlayerlumos
-    python_api/jaxlayerlumos.colors
