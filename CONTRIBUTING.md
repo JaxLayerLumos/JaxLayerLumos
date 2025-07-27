@@ -29,7 +29,7 @@ This project and everyone participating in it is governed by the [JaxLayerLumos 
 ## I Have a Question
 
 Before you ask a question, please ensure you have:
-- Read the available [Documentation for JaxLayerLumos](LINK_TO_YOUR_DOCUMENTATION_SITE_OR_README_SECTION).
+- Read the available [Documentation for JaxLayerLumos](https://jaxlayerlumos.readthedocs.io).
 - Searched for existing [GitHub Issues](https://github.com/JaxLayerLumos/JaxLayerLumos/issues) that might address your question.
 - Searched the Internet for answers.
 
