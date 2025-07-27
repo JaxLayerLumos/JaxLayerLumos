@@ -1,7 +1,7 @@
 Documentation for JaxLayerLumos
 ===============================
 
-.. automodule:: python_api/jaxlayerlumos
+.. automodule:: jaxlayerlumos
     :members:
     :private-members:
     :undoc-members:
