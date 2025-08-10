@@ -88,7 +88,7 @@ We compare [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](htt
 ## Benchmarking against Other Software
 
 We benchmark JaxLayerLumos against other software.
-Detailed benchmarking results can be found in [this file](markdowns/COMPARISONS.md).
+Detailed benchmarking results can be found in [COMPARISONS.md](markdowns/COMPARISONS.md).
 These comparisons include the results of [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), and [tmm](https://github.com/sbyrnes321/tmm).
 
 To obtain these results, you should install additional required packages.
@@ -117,13 +117,17 @@ Moreover, these test files are automatically tested via GitHub Actions, of which
 
 ## Supported Materials
 
-Materials supported by our software are described in [this file](markdowns/MATERIALS.md).
+Materials supported by our software are described in [MATERIALS.md](markdowns/MATERIALS.md).
 
 JaxLayerLumos includes a growing library of materials, which are specified using either complex refractive indices or complex permittivities and permeabilities, which can be sourced from the literature or 
 specified by users based on experimental data.
 When only complex refractive indices are provided, magnetic effects are assumed to be negligible, and the relative permeability is set to unity
-($\mu_{r,j} = 1$), an assumption typically valid at optical frequencies.
+($\mu\_{r,j} = 1$), an assumption typically valid at optical frequencies.
 In the RF and microwave regimes, the electromagnetic properties of metals are derived from their electrical conductivity and magnetic susceptibility, while dielectrics are generally modeled with constant permittivity and negligible loss.
+
+## Contributing Guidelines
+
+To contribute, please read [CONTRIBUTING.md](markdowns/CONTRIBUTING.md) for our guidelines on issues, enhancements, and pull requests. Follow the outlined standards to keep the project consistent and collaborative.
 
 ## License
 
