@@ -74,11 +74,11 @@ JaxLayerLumos addresses this need by offering a JAX-based TMM framework. Its cor
 
 * **Differentiability**: Automatically computes gradients with respect to any simulation parameters (e.g., layer thicknesses and refractive indices).
 
-* **High Performance**: Utilizes JAX’s just-in-time compilation and hardware acceleration with central processing units (CPUs), GPUs, or TPUs for fast computation.
+* **High Performance**: Utilizes JAX’s just-in-time compilation and hardware acceleration with CPUs, GPUs, or TPUs for fast computation.
 
 * **Broad Spectral and Material Support**: Accommodates complex permittivities and permeabilities (necessary for magnetic and RF materials), customizable layer structures, oblique incidence, and both TE and TM polarizations.
 
-* **Ecosystem Integration**: Easily integrates with Python’s scientific computing stack, including optimization libraries and ML frameworks such as JAX [@jax2018github] and Scikit-learn [@pedregosa2011scikit].
+* **Ecosystem Integration**: Easily integrates with Python’s scientific computing stack, including optimization libraries and machine learning frameworks such as JAX [@jax2018github] and Scikit-learn [@pedregosa2011scikit].
 
 These capabilities make JaxLayerLumos particularly valuable for researchers working at the intersection of computational electromagnetics and machine learning. As an open-source, lightweight alternative to commercial tools, it offers speed, flexibility, and ease of use for advanced research.
 
