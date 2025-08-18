@@ -60,7 +60,7 @@ There is a growing need for simulation tools that
 |-----|-----|-----|-----|-----|
 | **Lightweight** | $\times$ Bulky | $\checkmark$ | $\checkmark$ | $\checkmark$ |
 | **Speed on CPUs** | $\sim$ Slow | $\checkmark$ Fast  | $\sim$ Slow | $\checkmark$ Moderate |
-| **Speed on GPUs** | --- | $\checkmark$ Fast  | --- | $\checkmark$ Fast |
+| **Speed on GPUs** | -- | $\checkmark$ Fast  | -- | $\checkmark$ Fast |
 | **Gradient Support** | $\times$ | $\checkmark$ | $\times$ | $\checkmark$ |
 | **GPU Support** | $\times$ | $\checkmark$ | $\times$ | $\checkmark$ |
 | **TPU Support** | $\times$ | $\times$ | $\times$ | $\checkmark$ |
