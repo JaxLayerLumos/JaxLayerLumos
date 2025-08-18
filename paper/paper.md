@@ -59,7 +59,8 @@ There is a growing need for simulation tools that
 | **Feature** | **Ansys Optics** (stackrt) | **TMM-Fast** (PyTorch/NumPy) | **tmm** (Pure Python) | **JaxLayerLumos** (JAX) |
 |-----|-----|-----|-----|-----|
 | **Lightweight** | $\times$ Bulky | $\checkmark$ | $\checkmark$ | $\checkmark$ |
-| **Speed** | $\sim$ Moderate | $\checkmark$ Fast  | $\sim$ Moderate | $\checkmark$ Fast |
+| **Speed on CPUs** | $\sim$ Slow | $\checkmark$ Fast  | $\sim$ Slow | $\checkmark$ Moderate |
+| **Speed on GPUs** | --- | $\checkmark$ Fast  | --- | $\checkmark$ Fast |
 | **Gradient Support** | $\times$ | $\checkmark$ | $\times$ | $\checkmark$ |
 | **GPU Support** | $\times$ | $\checkmark$ | $\times$ | $\checkmark$ |
 | **TPU Support** | $\times$ | $\times$ | $\times$ | $\checkmark$ |
