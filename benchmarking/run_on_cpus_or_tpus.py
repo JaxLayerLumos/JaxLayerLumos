@@ -125,11 +125,7 @@ def compare_simulations(num_tests, use_zero_angle, use_thick_layers):
             with set_config(device):
                 materials_layer, thicknesses_layer, angles_layer, Rs_TE_layer, Rs_TM_layer, Ts_TE_layer, Ts_TM_layer, times_consumed_layer = compare_simulations_layer(num_layers, num_tests, use_zero_angle, use_thick_layers)
 
-                mean_times_consumed_layer = onp.mean(times_consumed_layer, axis=0)
-                std_times_consumed_layer = onp.std(times_consumed_layer, axis=0)
-
                 print(f'{num_layers} layers {device}', flush=True)
-                print(f'{mean_times_consumed_layer:.4f} +- {std_times_consumed_layer:.4f} sec.', flush=True)
                 print('R_TE', onp.mean(Rs_TE_layer, axis=0), flush=True)
                 print('R_TM', onp.mean(Rs_TM_layer, axis=0), flush=True)
                 print('T_TE', onp.mean(Ts_TE_layer, axis=0), flush=True)
