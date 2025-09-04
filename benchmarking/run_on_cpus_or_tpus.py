@@ -39,7 +39,7 @@ def run_simulation(frequencies, thicknesses, n_k, angle):
 
 
 def compare_simulations_layer(num_layers, num_tests, use_zero_angle, use_thick_layers):
-    wavelengths = onp.linspace(300e-9, 900e-9, 10001)
+    wavelengths = onp.linspace(300e-9, 900e-9, 11)
     frequencies = utils_units.get_light_speed() / wavelengths
 
     all_materials = utils_materials.get_all_materials()
@@ -109,10 +109,7 @@ def compare_simulations_layer(num_layers, num_tests, use_zero_angle, use_thick_l
     print('', flush=True)
     print(materials_layer.shape, thicknesses_layer.shape, angles_layer.shape, Rs_TE_layer.shape, Rs_TM_layer.shape, Ts_TE_layer.shape, Ts_TM_layer.shape, times_consumed_layer.shape, flush=True)
 
-    mean_times_consumed_layer = onp.mean(times_consumed_layer, axis=0)
-    std_times_consumed_layer = onp.std(times_consumed_layer, axis=0)
-
-    return mean_times_consumed_layer, std_times_consumed_layer
+    return materials_layer, thicknesses_layer, angles_layer, Rs_TE_layer, Rs_TM_layer, Ts_TE_layer, Ts_TM_layer, times_consumed_layer
 
 
 def compare_simulations(num_tests, use_zero_angle, use_thick_layers):
@@ -121,20 +118,28 @@ def compare_simulations(num_tests, use_zero_angle, use_thick_layers):
         'tpu',
     ])
 
-    num_layerss = onp.array([2, 4, 6, 8, 10, 12, 14, 16])
+    num_layerss = onp.array([4, 8, 12, 16])
 
     for num_layers in num_layerss:
         for device in devices:
             with set_config(device):
-                mean_time_consumed_layer, std_time_consumed_layer = compare_simulations_layer(num_layers, num_tests, use_zero_angle, use_thick_layers)
+                materials_layer, thicknesses_layer, angles_layer, Rs_TE_layer, Rs_TM_layer, Ts_TE_layer, Ts_TM_layer, times_consumed_layer = compare_simulations_layer(num_layers, num_tests, use_zero_angle, use_thick_layers)
 
-                print(f'{num_layers} layers {device} {mean_time_consumed_layer:.4f} +- {std_time_consumed_layer:.4f} sec.', flush=True)
+                mean_times_consumed_layer = onp.mean(times_consumed_layer, axis=0)
+                std_times_consumed_layer = onp.std(times_consumed_layer, axis=0)
+
+                print(f'{num_layers} layers {device}', flush=True)
+                print(f'{mean_times_consumed_layer:.4f} +- {std_times_consumed_layer:.4f} sec.', flush=True)
+                print('R_TE', onp.mean(Rs_TE_layer, axis=0), flush=True)
+                print('R_TM', onp.mean(Rs_TM_layer, axis=0), flush=True)
+                print('T_TE', onp.mean(Ts_TE_layer, axis=0), flush=True)
+                print('T_TM', onp.mean(Ts_TM_layer, axis=0), flush=True)
 
 
 if __name__ == "__main__":
-    num_tests = 10
+    num_tests = 1
 
     compare_simulations(num_tests=num_tests, use_zero_angle=True, use_thick_layers=False)
-    compare_simulations(num_tests=num_tests, use_zero_angle=True, use_thick_layers=True)
-    compare_simulations(num_tests=num_tests, use_zero_angle=False, use_thick_layers=False)
-    compare_simulations(num_tests=num_tests, use_zero_angle=False, use_thick_layers=True)
+#    compare_simulations(num_tests=num_tests, use_zero_angle=True, use_thick_layers=True)
+#    compare_simulations(num_tests=num_tests, use_zero_angle=False, use_thick_layers=False)
+#    compare_simulations(num_tests=num_tests, use_zero_angle=False, use_thick_layers=True)
