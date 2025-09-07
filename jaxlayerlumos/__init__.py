@@ -1,5 +1,5 @@
 """
-JaxLayerLumos: A JAX-based library for optical multilayer stack calculations.
+JaxLayerLumos: A JAX-based Differentiable Optical and Radio Frequency Simulator for Multilayer Structures
 
 This package provides tools for calculating reflection and transmission coefficients
 for multilayer optical stacks using JAX for efficient computation and automatic differentiation.

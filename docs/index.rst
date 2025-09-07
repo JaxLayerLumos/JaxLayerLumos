@@ -8,6 +8,11 @@ Documentation for JaxLayerLumos
     :show-inheritance:
 
 .. toctree::
+   :maxdepth: 1
+
+   about/about_jaxlayerlumos
+
+.. toctree::
     :maxdepth: 2
     :caption: Python API:
 
