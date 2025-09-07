@@ -63,7 +63,7 @@ There is a growing need for simulation tools that
 | **Speed on GPUs** | -- | $\checkmark$ Fast  | -- | $\checkmark$ Fast |
 | **Gradient Support** | $\times$ | $\checkmark$ | $\times$ | $\checkmark$ |
 | **GPU Support** | $\times$ | $\checkmark$ | $\times$ | $\checkmark$ |
-| **TPU Support** | $\times$ | $\times$ | $\times$ | $\checkmark$ |
+| **TPU Support**[^1] | $\times$ | $\times$ | $\times$ | $\checkmark$ |
 | **Position-Dependent Absorption** | $\times$ | $\times$ | $\checkmark$ | $\checkmark$ |                   
 | **Optical Simulations** | $\checkmark$ | $\checkmark$ | $\checkmark$ | $\checkmark$ |
 | **Infrared Simulations** | $\sim$ Limited | $\sim$ Limited | $\times$ | $\checkmark$ |
@@ -82,6 +82,8 @@ JaxLayerLumos addresses this need by offering a JAX-based TMM framework. Its cor
 * **Ecosystem Integration**: Easily integrates with Python’s scientific computing stack, including optimization libraries and machine learning frameworks such as JAX [@jax2018github] and Scikit-learn [@pedregosa2011scikit].
 
 These capabilities make JaxLayerLumos particularly valuable for researchers working at the intersection of computational electromagnetics and machine learning. As an open-source, lightweight alternative to commercial tools, it offers speed, flexibility, and ease of use for advanced research.
+
+[^1]: Because TPUs are optimized for low-precision computation, their numerical precision may be reduced.
 
 # Methodology
 
