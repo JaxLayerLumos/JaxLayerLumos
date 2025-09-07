@@ -41,16 +41,11 @@ JaxLayerLumos is an open-source Python package for simulating electromagnetic wa
 
 # Statement of need
 
-Multilayer structures are essential in a wide range of technologies, including structural color coatings [@sun2013structural;@elkabbash2023fano], next-generation solar cells [@Gao:14aug;@Gao:16;@Wang:15apr;@bati2023next], radar-absorbing materials [@michielssen1993design;@vinoy1996radar], and electromagnetic interference (EMI) shielding [@Li:22;@KimJ2023neurips;@KimJ2024dd;@zhao2024electromagnetic], as presented in Figure 1. 
-They are also key components in optical filters, antireflection coatings [@Haghanifar:20], and other photonic devices.
+Multilayer structures are essential in a wide range of technologies, including structural color coatings [@sun2013structural;@elkabbash2023fano], next-generation solar cells [@Gao:14aug;@Gao:16;@Wang:15apr;@bati2023next], radar-absorbing materials [@michielssen1993design;@vinoy1996radar], and electromagnetic interference (EMI) shielding [@Li:22;@KimJ2023neurips;@KimJ2024dd;@zhao2024electromagnetic], as presented in Figure 1. They are also key components in optical filters, antireflection coatings [@Haghanifar:20], and other photonic devices.
 
 ![Applications of JaxLayerLumos](../assets/applications.png)
 
-TMM [@BornWolf1999] is a foundational analytical technique for modeling wave interactions in these systems. 
-Table 1 compares several TMM implementations, including
-[Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our package. Most TMM tools, such as [@tmmSbyrnes] and [@luce2022tmm], 
-use the complex refractive index formulation and lack support for magnetic materials or frequencies relevant to RF and microwave applications.
-There is a growing need for simulation tools that
+TMM [@BornWolf1999] is a foundational analytical technique for modeling wave interactions in these systems. Table 1 compares several TMM implementations, including [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), [tmm](https://github.com/sbyrnes321/tmm), and our package. Most TMM tools, such as [@tmmSbyrnes] and [@luce2022tmm], use the complex refractive index formulation and lack support for magnetic materials or frequencies relevant to RF and microwave applications. There is a growing need for simulation tools that
 
 * Operate efficiently across a broader spectral range including optical, RF, and microwave frequencies,
 * Handle magnetic and lossy materials with complex permittivities and complex permeabilities,
@@ -89,16 +84,10 @@ These capabilities make JaxLayerLumos particularly valuable for researchers work
 ![Schematic of TMM showing a multilayer structure with incident, reflected, and transmitted waves. Each layer is characterized by its thickness $d_j$, permittivity $\varepsilon_{r,j}$, and permeability $\mu_{r,j}$.](../assets/TMM.png)
 
 The core of JaxLayerLumos implements TMM, which calculates the propagation of electromagnetic waves through a stack of $L$ planar layers [@BornWolf1999]. It calculates key optical properties, such as reflection $R(f)$, transmission $T(f)$, and absorption $A(f)$, as functions of frequency $f$ or wavelength $\lambda$. The software also supports position-resolved absorption and per-layer absorption calculations. Each layer $j$ is defined by thickness $d_j$, complex relative permittivity $\varepsilon_{r,j}$, and complex relative permeability $\mu_{r,j}$.
-  
-For a given frequency $f$ and incidence angle $\theta_0$, the propagation of light is described by interface matrices $\mathbf{D}_j$ 
-that capture Fresnel coefficients at the boundary between layer $j$ and its following layer and propagation matrices $\mathbf{P}_j$ representing full wave propagation within each layer and captures both phase shift and attenuation due to absorption in lossy media.  The total transfer matrix $\mathbf{M}$ for the entire stack is the product of these individual matrices:
-$$\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P}_L\mathbf{D}_L)\mathbf{P}_{L+1}$$
 
-JaxLayerLumos includes a growing library of materials, which are specified using either complex refractive indices or complex permittivities and permeabilities, which can be sourced from the literature or 
-specified by users based on experimental data.
-When only complex refractive indices are provided, magnetic effects are assumed to be negligible, and the relative permeability is set to unity
-($\mu_{r,j} = 1$), an assumption typically valid at optical frequencies.
-In the RF and microwave regimes, the electromagnetic properties of metals are derived from their electrical conductivity and magnetic susceptibility, while dielectrics are generally modeled with constant permittivity and negligible loss.
+For a given frequency $f$ and incidence angle $\theta_0$, the propagation of light is described by interface matrices $\mathbf{D}_j$ that capture Fresnel coefficients at the boundary between layer $j$ and its following layer, and propagation matrices $\mathbf{P}_j$ representing full wave propagation within each layer and captures both phase shift and attenuation due to absorption in lossy media. The total transfer matrix $\mathbf{M}$ for the entire stack is the product of these individual matrices: $$\mathbf{M}=(\mathbf{P}_0\mathbf{D}_0)(\mathbf{P}_1\mathbf{D}_1)\cdots(\mathbf{P}_L\mathbf{D}_L)\mathbf{P}_{L+1}$$
+
+JaxLayerLumos includes a growing library of materials, which are specified using either complex refractive indices or complex permittivities and permeabilities, which can be sourced from the literature or specified by users based on experimental data. When only complex refractive indices are provided, magnetic effects are assumed to be negligible, and the relative permeability is set to unity ($\mu_{r,j} = 1$), an assumption typically valid at optical frequencies. In the RF and microwave regimes, the electromagnetic properties of metals are derived from their electrical conductivity and magnetic susceptibility, while dielectrics are generally modeled with constant permittivity and negligible loss.
 
 # Mention of use
 
