@@ -23,19 +23,21 @@ Installation
 JaxLayerLumos can be easily installed by the following command using the `PyPI repository <https://pypi.org/project/jaxlayerlumos/>`_.
 
 .. code-block:: bash
+
     pip install jaxlayerlumos
 
 Alternatively, JaxLayerLumos can be installed from source.
 
 .. code-block:: bash
+
     pip install .
 
-In addition, we support three installation modes, ``dev``, <code>benchmarking</code>, and <code>examples</code>, where <code>dev</code> is defined for installing the packages required for development and software testing, <code>benchmarking</code> is for installing the packages required for benchmarking against differnt TMM software programs, and <code>examples</code> is needed for running the examples included in the <code>examples</code> directory. One of these modes can be used by commanding <code>pip install .[dev]</code>, <code>pip install .[benchmarking]</code>, or <code>pip install .[examples]</code>.
+In addition, we support three installation modes, ``dev``, ``benchmarking``, and ``examples``, where ``dev`` is defined for installing the packages required for development and software testing, ``benchmarking`` is for installing the packages required for benchmarking against differnt TMM software programs, and ``examples`` is needed for running the examples included in the ``examples`` directory. One of these modes can be used by commanding ``pip install .[dev]``, ``pip install .[benchmarking]``, or ``pip install .[examples]``.
 
 Examples
 ========
 
-A collection of examples in the <code>examples</code> directory exhibits various use cases and capabilities of our software. We provide the following examples:
+A collection of examples in the ``examples`` directory exhibits various use cases and capabilities of our software. We provide the following examples:
 
 1. `Reflection Spectra over Wavelengths Varying Incidence Angles <https://github.com/JaxLayerLumos/JaxLayerLumos/blob/main/examples/angle-variation.ipynb>`_
 2. `Color Conversion <https://github.com/JaxLayerLumos/JaxLayerLumos/blob/main/examples/color-conversion.ipynb>`_
@@ -55,7 +57,7 @@ A collection of examples in the <code>examples</code> directory exhibits various
 Software Testing and Test Automation
 ====================================
 
-We provide a variety of test files in the <code>tests</code> directory. Before running the test files, the required packages should be installed by using <code>pip install .[dev]</code>. They can be run by commanding <code>pytest tests/</code>. Moreover, these test files are automatically tested via GitHub Actions, of which the configuration is defined in <code>.github/workflows/pytest.yml</code>.
+We provide a variety of test files in the ``tests`` directory. Before running the test files, the required packages should be installed by using ``pip install .[dev]``. They can be run by commanding ``pytest tests/``. Moreover, these test files are automatically tested via GitHub Actions, of which the configuration is defined in ``.github/workflows/pytest.yml``.
 
 Supported Materials
 ===================
@@ -78,6 +80,7 @@ Citation
 ========
 
 .. code-block:: latex
+
     @misc{LiM2024jaxlayerlumos,
         title={{JaxLayerLumos}: A {JAX}-based Efficient Transfer-Matrix Method Framework for Optical Simulations},
         author={Li, Mingxuan and Kim, Jungtaek and Leu, Paul W.},
