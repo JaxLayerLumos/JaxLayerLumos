@@ -114,6 +114,6 @@ Jupyter notebook examples are available in the [examples directory](https://gith
 
 # Acknowledgements
 
-We acknowledge the developers of JAX and other open-source libraries. This work was supported by the Center for Materials Data Science for Reliability and Degradation ([MDS-Rely](https://mds-rely.org/)), an Industry--University Cooperative Research Center of the National Science Foundation. We also thank the open-source community for contributions and feedback.
+We acknowledge the developers of JAX and other open-source libraries. This work was supported by the Center for Materials Data Science for Reliability and Degradation ([MDS-Rely](https://mds-rely.org/)), an Industry--University Cooperative Research Center of the National Science Foundation, through awards EEC-2052662, EEC-2052776, and EEC-2435402. We also thank the open-source community for contributions and feedback.
 
 # References
