@@ -2,7 +2,7 @@ Examples
 ########
 
 .. image:: ../_static/img/applications.png
-    :width: 400
+    :width: 600
     :align: center
     :alt: applications
 
