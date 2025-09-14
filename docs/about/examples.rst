@@ -1,6 +1,11 @@
 Examples
 ########
 
+.. image:: _static/img/applications.jpg
+    :width: 400
+    :align: center
+    :alt: applications
+
 A collection of examples in the ``examples`` directory exhibits various use cases and capabilities of our software. We provide the following examples:
 
 1. `Reflection Spectra over Wavelengths Varying Incidence Angles <https://github.com/JaxLayerLumos/JaxLayerLumos/blob/main/examples/angle-variation.ipynb>`_
