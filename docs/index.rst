@@ -8,14 +8,19 @@ Documentation for JaxLayerLumos
     :show-inheritance:
 
 .. toctree::
-   :maxdepth: 1
+    :maxdepth: 1
     :caption: JaxLayerLumos:
 
-   about/overview
-   about/features
-   about/installation
-   about/examples
-   about/software_testing
+    about/overview
+    about/features
+    about/installation
+    about/examples
+    about/software_testing
+    about/supported_materials
+    about/contributing_guidelines
+    about/license
+    about/acknowledgments
+    about/citation
 
 .. toctree::
     :maxdepth: 2
