@@ -9,14 +9,14 @@ JaxLayerLumos: A JAX-based Differentiable Optical and Radio Frequency Simulator 
 JaxLayerLumos is open-source transfer-matrix method (TMM) software designed for scientists, engineers, and researchers in optics and photonics. It provides a powerful yet intuitive interface for calculating the reflection and transmission (RT) of light through multi-layer optical structures. By inputting the refractive index, thickness of each layer, and the frequency vector, users can analyze how light interacts with layered materials, including the option to adjust for incidence angles.
 
 .. image:: _static/img/TMM.png
-    :width: 480
+    :width: 600
     :align: center
     :alt: TMM
 
 Our mission is to offer a lightweight, flexible, and fast alternative to commercial software, enabling users to perform complex optical simulations with ease. JaxLayerLumos is built with performance and usability in mind, facilitating the exploration of optical phenomena in research and development settings.
 
-Features
---------
+Features:
+---------
 
 - Gradient Calculation: Calculates the gradients over any variables involved in RT, powered by JAX.
 - Flexibility: Accommodates a wide range of materials and structures by allowing users to specify complex refractive indices, layer thicknesses, and frequency vectors.
@@ -34,8 +34,7 @@ Features
     about/supported_materials
     about/contributing_guidelines
     about/license
-    about/acknowledgments
-    about/citation
+    about/acknowledgments_citation
 
 .. toctree::
     :maxdepth: 2
