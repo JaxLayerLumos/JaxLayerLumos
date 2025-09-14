@@ -9,10 +9,17 @@ Documentation for JaxLayerLumos
 
 .. toctree::
    :maxdepth: 1
+    :caption: JaxLayerLumos:
 
    about/overview
    about/features
    about/installation
+   about/examples
+   about/software_testing
+   about/supported_materials
+   about/contributing_guidelines
+   about/license
+   about/acknowledgments
 
 .. toctree::
     :maxdepth: 2
