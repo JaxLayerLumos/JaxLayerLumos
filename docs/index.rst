@@ -10,7 +10,9 @@ Documentation for JaxLayerLumos
 .. toctree::
    :maxdepth: 1
 
-   about/about_jaxlayerlumos
+   about/overview
+   about/features
+   about/installation
 
 .. toctree::
     :maxdepth: 2
