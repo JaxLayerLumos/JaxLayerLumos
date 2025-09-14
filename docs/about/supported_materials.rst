@@ -1,12 +1,12 @@
 Supported Materials
 ###################
 
-.. image:: _static/img/Ag.png
+.. image:: ../_static/img/Ag.png
     :width: 400
     :align: center
     :alt: Ag
 
-.. image:: _static/img/TiO2.png
+.. image:: ../_static/img/TiO2.png
     :width: 400
     :align: center
     :alt: TiO2
