@@ -1,7 +1,7 @@
 Examples
 ########
 
-.. image:: _static/img/applications.jpg
+.. image:: _static/img/applications.png
     :width: 400
     :align: center
     :alt: applications
