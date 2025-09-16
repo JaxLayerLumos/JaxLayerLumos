@@ -37,7 +37,7 @@ bibliography: paper.bib
 
 # Summary
 
-JaxLayerLumos is an open-source Python package for simulating electromagnetic wave interactions with multilayer structures using the transfer-matrix method (TMM). It is designed for researchers and engineers working with applications in optics, photonics, and related fields. The software efficiently computes reflection, transmission, and absorption across a broad spectral range, including ultraviolet, visible, infrared, microwave, and radio frequencies (RF), with support for magnetic effects in the microwave and radio regimes. A key feature of JaxLayerLumos is its implementation in JAX, which enables automatic differentiation with respect to any input parameter (e.g., layer thicknesses and refractive indices) and supports seamless execution on graphics processing units (GPUs) and tensor processing units (TPUs). In particular, this differentiability is valuable for gradient-based optimization and for integrating simulations into machine learning pipelines, accelerating the discovery of novel devices and materials.
+JaxLayerLumos is an open-source Python package for simulating electromagnetic wave interactions with multilayer structures using the transfer-matrix method (TMM). It is designed for researchers and engineers working with applications in optics, photonics, and related fields. The software efficiently computes reflection, transmission, and absorption across a broad spectral range, including ultraviolet, visible, infrared, microwave, and radio frequencies (RF), with support for magnetic effects in the microwave and radio regimes. A key feature of JaxLayerLumos is its implementation in JAX, which enables automatic differentiation with respect to any input parameter, e.g., layer thicknesses and refractive indices, and supports seamless execution on graphics processing units (GPUs) and tensor processing units (TPUs). This differentiability is valuable for gradient-based optimization and for integrating simulations into machine learning pipelines, accelerating the discovery of novel devices and materials.
 
 # Statement of need
 
@@ -77,7 +77,7 @@ JaxLayerLumos addresses this need by offering a JAX-based TMM framework. Its cor
 
 These capabilities make JaxLayerLumos particularly valuable for researchers working at the intersection of computational electromagnetics and machine learning. As an open-source, lightweight alternative to commercial tools, it offers speed, flexibility, and ease of use for advanced research.
 
-[^1]: Because TPUs are optimized for low-precision computation, their numerical precision may be reduced.
+[^1]: Because TPUs are optimized for low-precision computation, their results may show reduced numerical precision.
 
 # Methodology
 
