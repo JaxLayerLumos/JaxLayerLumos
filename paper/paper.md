@@ -77,7 +77,7 @@ JaxLayerLumos addresses this need by offering a JAX-based TMM framework. Its cor
 
 These capabilities make JaxLayerLumos particularly valuable for researchers working at the intersection of computational electromagnetics and machine learning. As an open-source, lightweight alternative to commercial tools, it offers speed, flexibility, and ease of use for advanced research.
 
-[^1]: Because TPUs are optimized for low-precision computation, their results may show reduced numerical precision.
+[^1]: Because TPUs are optimized for low-precision computation, their simulation results may show reduced numerical precision.
 
 # Methodology
 
