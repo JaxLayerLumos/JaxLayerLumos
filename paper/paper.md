@@ -25,11 +25,11 @@ authors:
     affiliation: "1, 3"
     corresponding: true
 affiliations:
- - name: Department of Chemical Engineering, University of Pittsburgh, Pittsburgh, PA 15261, USA
+ - name: Department of Chemical Engineering, University of Pittsburgh, Pittsburgh, PA 15261, United States of America
    index: 1
- - name: Department of Electrical and Computer Engineering, University of Wisconsin--Madison, Madison, WI 53706, USA
+ - name: Department of Electrical and Computer Engineering, University of Wisconsin--Madison, Madison, WI 53706, United States of America
    index: 2
- - name: Department of Industrial Engineering, University of Pittsburgh, Pittsburgh, PA 15261, USA
+ - name: Department of Industrial Engineering, University of Pittsburgh, Pittsburgh, PA 15261, United States of America
    index: 3
 date: 19 May 2025 # Use format: %e %B %Y, e.g., 9 October 2024
 bibliography: paper.bib
