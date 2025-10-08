@@ -89,7 +89,7 @@ For a given frequency $f$ and incidence angle $\theta_0$, the propagation of lig
 
 JaxLayerLumos includes a growing library of materials, which are specified using either complex refractive indices or complex permittivities and permeabilities, which can be sourced from the literature or specified by users based on experimental data. When only complex refractive indices are provided, magnetic effects are assumed to be negligible, and the relative permeability is set to unity ($\mu_{r,j} = 1$), an assumption typically valid at optical frequencies. In the RF and microwave regimes, the electromagnetic properties of metals are derived from their electrical conductivity and magnetic susceptibility, while dielectrics are generally modeled with constant permittivity and negligible loss.
 
-# Mention of use
+# Potential applications
 
 Diverse use cases demonstrate the versatility of JaxLayerLumos:
 
