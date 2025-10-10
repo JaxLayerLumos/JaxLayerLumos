@@ -1,3 +1,11 @@
+"""
+Standard illuminant data for color calculations.
+
+This module contains spectral power distribution data for standard illuminants
+used in color science, including CIE D65 which represents average daylight.
+The data is provided in nanometers and relative spectral power units.
+"""
+
 illuminant_d65 = [
     [300, 0.0341],
     [301, 0.36014],

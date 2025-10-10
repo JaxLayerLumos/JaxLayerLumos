@@ -1,3 +1,11 @@
+"""
+Color utility functions for accessing and interpolating color data.
+
+This module provides functions for loading and interpolating color matching functions
+and illuminant data to arbitrary wavelength ranges. It serves as an interface between
+the color transformation functions and the underlying color data.
+"""
+
 import jax.numpy as jnp
 
 from jaxlayerlumos.colors import color_matching_functions
@@ -5,6 +13,28 @@ from jaxlayerlumos.colors import illuminants
 
 
 def get_cmfs(bx, str_color_space="cie1931"):
+    """
+    Get color matching functions interpolated to target wavelengths.
+    
+    This function loads color matching functions for the specified color space
+    and interpolates them to the target wavelength range.
+    
+    Args:
+        bx (jnp.ndarray): Target wavelengths in meters.
+        str_color_space (str, optional): Color space name. Currently only supports
+                                        "cie1931". Defaults to "cie1931".
+    
+    Returns:
+        jnp.ndarray: Color matching functions with shape (n_wavelengths, 4) containing
+                    [wavelength, x_bar, y_bar, z_bar] columns.
+    
+    Raises:
+        ValueError: If the color space is not supported.
+    
+    Note:
+        The target wavelengths must be within the range of the available color
+        matching function data.
+    """
     assert isinstance(bx, jnp.ndarray)
 
     if str_color_space == "cie1931":
@@ -31,6 +61,27 @@ def get_cmfs(bx, str_color_space="cie1931"):
 
 
 def get_illuminant(bx, str_illuminant="d65"):
+    """
+    Get illuminant data interpolated to target wavelengths.
+    
+    This function loads illuminant data for the specified illuminant and interpolates
+    it to the target wavelength range.
+    
+    Args:
+        bx (jnp.ndarray): Target wavelengths in meters.
+        str_illuminant (str, optional): Illuminant name. Currently only supports
+                                       "d65". Defaults to "d65".
+    
+    Returns:
+        jnp.ndarray: Illuminant data with shape (n_wavelengths, 2) containing
+                    [wavelength, relative_spectral_power] columns.
+    
+    Raises:
+        ValueError: If the illuminant is not supported.
+    
+    Note:
+        The target wavelengths must be within the range of the available illuminant data.
+    """
     assert isinstance(bx, jnp.ndarray)
 
     if str_illuminant == "d65":

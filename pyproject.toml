@@ -13,7 +13,7 @@ packages = [
 [project]
 name = "jaxlayerlumos"
 version = "0.3.3"
-description = "A JAX-based efficient transfer-matrix method framework for optical simulations"
+description = "A JAX-based Differentiable Optical and Radio Frequency Simulator for Multilayer Structures"
 readme = "README.md"
 requires-python = ">=3.8"
 authors = [
@@ -45,7 +45,6 @@ dev = [
     "wheel",
     "build",
     "twine",
-    "sphinx",
     "black",
     "colour-science",
 ]

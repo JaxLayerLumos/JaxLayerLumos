@@ -1,3 +1,19 @@
+"""
+Material property utilities for optical calculations.
+
+This module provides functions for loading, interpolating, and converting material
+properties including refractive indices (n, k), permittivity (ε), and permeability (μ).
+It supports both optical materials (from CSV files) and radar materials, with automatic
+interpolation to desired frequency ranges.
+
+The module handles:
+- Loading material data from CSV files
+- Interpolation of material properties to specific frequencies
+- Conversion between refractive indices and permittivity/permeability
+- Special materials like Air and PEC (Perfect Electric Conductor)
+- Integration with radar material databases
+"""
+
 import jax.numpy as jnp
 import numpy as onp
 import os
@@ -12,6 +28,14 @@ from jaxlayerlumos import utils_radar_materials
 
 
 def load_json():
+    """
+    Load the materials index file that maps material names to CSV files.
+    
+    Returns:
+        tuple: (material_indices, current_dir) where material_indices is a dictionary
+               mapping material names to CSV filenames, and current_dir is the
+               directory containing the materials data.
+    """
     current_dir = str(Path(__file__).parent)
     materials_file = os.path.join(current_dir, "materials.json")
 
@@ -22,11 +46,34 @@ def load_json():
 
 
 def get_all_materials():
+    """
+    Get a list of all available material names.
+    
+    Returns:
+        list: Names of all materials available in the database.
+    """
     material_indices, _ = load_json()
     return list(material_indices.keys())
 
 
 def load_material_wavelength_um(material):
+    """
+    Load refractive index data for a material with wavelengths in micrometers.
+    
+    This function reads the CSV file for the specified material and extracts
+    the wavelength-dependent refractive index (n) and extinction coefficient (k).
+    The data is returned with wavelengths in micrometers.
+    
+    Args:
+        material (str): Name of the material to load.
+    
+    Returns:
+        tuple: (data_n, data_k) where each is a jnp.ndarray with shape (n_points, 2)
+               containing [wavelength_um, value] pairs.
+    
+    Raises:
+        ValueError: If the material is not found or the CSV format is invalid.
+    """
     material_indices, str_directory = load_json()
     str_file = material_indices.get(material)
 
@@ -82,6 +129,18 @@ def load_material_wavelength_um(material):
 
 
 def load_material_wavelength(material):
+    """
+    Load refractive index data for a material with wavelengths in meters.
+    
+    This function loads material data and converts wavelengths from micrometers to meters.
+    
+    Args:
+        material (str): Name of the material to load.
+    
+    Returns:
+        tuple: (data_n, data_k) where each is a jnp.ndarray with shape (n_points, 2)
+               containing [wavelength_m, value] pairs.
+    """
     data_n, data_k = load_material_wavelength_um(material)
 
     data_n = data_n.at[:, 0].set(data_n[:, 0] * 1e-6)
@@ -91,6 +150,18 @@ def load_material_wavelength(material):
 
 
 def load_material(material):
+    """
+    Load refractive index data for a material with frequencies in Hz.
+    
+    This function loads material data and converts wavelengths to frequencies.
+    
+    Args:
+        material (str): Name of the material to load.
+    
+    Returns:
+        tuple: (data_n, data_k) where each is a jnp.ndarray with shape (n_points, 2)
+               containing [frequency_Hz, value] pairs.
+    """
     data_n, data_k = load_material_wavelength(material)
 
     data_n = data_n.at[:, 0].set(
@@ -104,6 +175,25 @@ def load_material(material):
 
 
 def interpolate(freqs_values, frequencies):
+    """
+    Interpolate frequency-dependent values to target frequencies.
+    
+    This function performs linear interpolation of frequency-dependent data to
+    the specified target frequencies. It includes bounds checking and warnings
+    for extrapolation.
+    
+    Args:
+        freqs_values (jnp.ndarray): Array with shape (n_points, 2) containing
+                                   [frequency, value] pairs.
+        frequencies (jnp.ndarray): Target frequencies for interpolation.
+    
+    Returns:
+        jnp.ndarray: Interpolated values at the target frequencies.
+    
+    Note:
+        Extrapolation is allowed but will generate a warning if frequencies
+        are outside the data range.
+    """
     assert isinstance(freqs_values, jnp.ndarray)
     assert isinstance(frequencies, jnp.ndarray)
     assert freqs_values.ndim == 2
@@ -132,6 +222,20 @@ def interpolate(freqs_values, frequencies):
 
 
 def interpolate_material_n_k(material, frequencies):
+    """
+    Interpolate refractive indices for a material to target frequencies.
+    
+    This function handles special materials (Air, PEC) and interpolates
+    refractive index data for other materials to the specified frequencies.
+    
+    Args:
+        material (str): Name of the material.
+        frequencies (jnp.ndarray): Target frequencies in Hz.
+    
+    Returns:
+        tuple: (n_material, k_material) - Real and imaginary parts of the
+               refractive index at the target frequencies.
+    """
     assert isinstance(frequencies, jnp.ndarray)
     assert frequencies.ndim == 1
 
@@ -150,6 +254,25 @@ def interpolate_material_n_k(material, frequencies):
 
 
 def get_eps_mu(materials, frequencies):
+    """
+    Get permittivity and permeability for a list of materials.
+    
+    This function handles radar materials using the Michielssen database
+    and special materials like Air and PEC. It returns permittivity and
+    permeability arrays suitable for multilayer calculations.
+    
+    Args:
+        materials (list or onp.ndarray): List of material names or indices.
+                                        First material must be "Air".
+        frequencies (jnp.ndarray): Frequencies in Hz.
+    
+    Returns:
+        tuple: (eps_r, mu_r) - Relative permittivity and permeability arrays
+               with shape (n_freq, n_layers).
+    
+    Raises:
+        NotImplementedError: If the last material is not supported.
+    """
     assert isinstance(materials, (list, onp.ndarray))
     assert isinstance(frequencies, jnp.ndarray)
     assert frequencies.ndim == 1
@@ -185,6 +308,24 @@ def get_eps_mu(materials, frequencies):
 
 
 def interpolate_material_eps_mu(material, frequencies):
+    """
+    Interpolate permittivity and permeability for a material.
+    
+    This function loads frequency-dependent permittivity and permeability data
+    and interpolates to the target frequencies.
+    
+    Args:
+        material (str): Name of the material.
+        frequencies (jnp.ndarray): Target frequencies in Hz.
+    
+    Returns:
+        tuple: (eps_r_real, eps_r_imag, mu_r_real, mu_r_imag) - Real and
+               imaginary parts of permittivity and permeability.
+    
+    Note:
+        This function requires the material to have frequency-dependent
+        permittivity and permeability data available.
+    """
     assert isinstance(frequencies, jnp.ndarray)
     assert frequencies.ndim == 1
 
@@ -200,6 +341,19 @@ def interpolate_material_eps_mu(material, frequencies):
 
 
 def get_n_k(materials, frequencies):
+    """
+    Get refractive indices for a list of materials.
+    
+    This function interpolates refractive index data for each material to
+    the target frequencies and returns a complex refractive index array.
+    
+    Args:
+        materials (list or onp.ndarray): List of material names.
+        frequencies (jnp.ndarray): Target frequencies in Hz.
+    
+    Returns:
+        jnp.ndarray: Complex refractive indices with shape (n_freq, n_layers).
+    """
     assert isinstance(materials, (list, onp.ndarray))
     assert isinstance(frequencies, jnp.ndarray)
     assert frequencies.ndim == 1
@@ -218,6 +372,19 @@ def get_n_k(materials, frequencies):
 
 
 def get_n_k_surrounded_by_air(materials, frequencies):
+    """
+    Get refractive indices for materials surrounded by air layers.
+    
+    This function adds air layers at the beginning and end of the material stack,
+    which is a common requirement for multilayer calculations.
+    
+    Args:
+        materials (list or onp.ndarray): List of material names.
+        frequencies (jnp.ndarray): Target frequencies in Hz.
+    
+    Returns:
+        jnp.ndarray: Complex refractive indices with shape (n_freq, n_layers + 2).
+    """
     assert isinstance(materials, (list, onp.ndarray))
     assert isinstance(frequencies, jnp.ndarray)
     assert frequencies.ndim == 1
@@ -227,6 +394,19 @@ def get_n_k_surrounded_by_air(materials, frequencies):
 
 
 def convert_n_k_to_eps_mu_for_non_magnetic_materials(n_k):
+    """
+    Convert refractive indices to permittivity and permeability for non-magnetic materials.
+    
+    This function assumes μ = 1 (non-magnetic materials) and calculates
+    ε = n² using the relationship between refractive index and material properties.
+    
+    Args:
+        n_k (jnp.ndarray): Complex refractive indices.
+    
+    Returns:
+        tuple: (eps, mu) - Relative permittivity and permeability arrays.
+               mu will be all ones for non-magnetic materials.
+    """
     eps = jnp.conj(n_k**2)
     mu = jnp.ones_like(eps)
 

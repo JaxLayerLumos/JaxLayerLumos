@@ -1,24 +1,24 @@
-# JaxLayerLumos: A JAX-based Efficient Transfer-Matrix Method Framework for Optical Simulations
-
+# JaxLayerLumos: A JAX-based Differentiable Optical and Radio Frequency Simulator for Multilayer Structures
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12602789.svg)](https://doi.org/10.5281/zenodo.12602789)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/jaxlayerlumos)](https://pypi.org/project/jaxlayerlumos/)
 ![GitHub Release](https://img.shields.io/github/v/release/JaxLayerLumos/jaxlayerlumos)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-
+[![Documentation Status](https://readthedocs.org/projects/jaxlayerlumos/badge/?version=main)](https://jaxlayerlumos.readthedocs.io)
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/main/assets/jaxlayerlumos.jpg" width="400" />
 </p>
 
-
 ## Overview
 
 **JaxLayerLumos** is open-source transfer-matrix method (TMM) software designed for scientists, engineers, and researchers in optics and photonics. It provides a powerful yet intuitive interface for calculating the reflection and transmission (RT) of light through multi-layer optical structures. By inputting the refractive index, thickness of each layer, and the frequency vector, users can analyze how light interacts with layered materials, including the option to adjust for incidence angles.
-
 Our mission is to offer a lightweight, flexible, and fast alternative to commercial software, enabling users to perform complex optical simulations with ease. JaxLayerLumos is built with performance and usability in mind, facilitating the exploration of optical phenomena in research and development settings.
 
+<p align="center">
+<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/JOSS/assets/TMM.png" width="700" />
+</p>
 
 ## Features
 
@@ -28,7 +28,6 @@ Our mission is to offer a lightweight, flexible, and fast alternative to commerc
 - **Angle of Incidence Support**: Expands simulation capabilities to include angled light incidence, providing more detailed analysis for advanced optical designs.
 - **Open Source and Community-Driven**: Encourages contributions and feedback from the community, ensuring continuous improvement and innovation.
 - **Comprehensive Material Database**: Includes a growing database of materials with their optical properties, streamlining the simulation setup process.
-
 
 ## Installation
 
@@ -44,11 +43,14 @@ Alternatively, JaxLayerLumos can be installed from source.
 pip install .
 ```
 
-In addition, we support three installation modes, `dev`, `benchmarking`, and `examples`, where `dev` is defined for installing the packages required for development, `benchmarking` is for installing the packages required for benchmarking against differnt TMM software programs, and `examples` is needed for running the examples included in the `examples` directory.
+In addition, we support three installation modes, `dev`, `benchmarking`, and `examples`, where `dev` is defined for installing the packages required for development and software testing, `benchmarking` is for installing the packages required for benchmarking against differnt TMM software programs, and `examples` is needed for running the examples included in the `examples` directory.
 One of these modes can be used by commanding `pip install .[dev]`, `pip install .[benchmarking]`, or `pip install .[examples]`.
 
-
 ## Examples
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/JOSS/assets/applications.png" width="800" />
+</p>
 
 A collection of examples in the `examples` directory exhibits various use cases and capabilities of our software.
 We provide the following examples:
@@ -66,30 +68,27 @@ We provide the following examples:
 11. [Transmission Spectra over Wavelengths Varying Thicknesses](examples/thickness-variation.ipynb)
 12. [Triple Junction Solar Cells](examples/triple-junction-solar-cells.ipynb)
 
-
 ## Comparison of TMM Packages
 
 We compare [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), and [tmm](https://github.com/sbyrnes321/tmm) to our software.
 
-| Feature | Ansys Optics (stackrt) | TMM-Fast | tmm (sbyrnes) | JaxLayerLumos |
+| Feature | Ansys Optics (stackrt) | TMM-Fast (PyTorch/NumPy) | tmm (Pure Python) | JaxLayerLumos (JAX) |
 |-----|-----|-----|-----|-----|
-| **Lightweight** | ❌ (Commercial, bulky) | ✅ (PyTorch/NumPy) | ✅ (Pure Python) | ✅ (JAX) |
-| **Speed** | Moderate | ✅ Fast (PyTorch) | Slow (CPU-bound) | ✅ Fast (JAX) |
-| **Gradient Support** | ❌ | ✅ (PyTorch) | ❌ | ✅ (JAX) |
-| **GPU Support** | ❌ | ✅ (PyTorch) | ❌ | ✅ (JAX) |  
-| **TPU Support** | ❌                               | ❌                        | ❌                  | ✅ (JAX)         |  
-| **Position-Dependent Poynting** | ❌                  | ❌                        | ❌                  | ✅                          
-| **Optical Simulation** | ✅ Full-spectrum                 | ✅ Optimized              | ✅ Basic            | ✅ User-defined          |  
-| **Infrared Simulation** | ❌ Limited                       | ✅ Limited                | ❌                 | ✅ User-defined          |  
-| **Radar (HF) Simulation** | ❌ Limited                       | ❌                        | ❌                 | ✅ Magnetic materials covered |  
-| **Material Database** | ✅ Extensive (Commercial)        | ❌ User-defined           | ❌ User-defined     | ✅ Growing library       |  
-| **Open Source** | ❌                               | ✅ MIT                    | ✅ BSD-3-Clause     | ✅ MIT                   |  
-
+| **Lightweight** | ❌ Bulky | ✅ | ✅ | ✅ |
+| **Speed** | 🟨 Moderate | ✅ Fast | 🟨 Moderate | ✅ Fast |
+| **Gradient Support** | ❌ | ✅ | ❌ | ✅ |
+| **GPU Support** | ❌ | ✅ | ❌ | ✅ |
+| **TPU Support** | ❌ | ❌ | ❌ | ✅ |
+| **Position-Dependent Absorption** | ❌ | ❌ | ✅ | ✅ |
+| **Optical Simulations** | ✅ | ✅ | ✅ | ✅ |
+| **Infrared Simulations** | 🟨 Limited | 🟨 Limited | ❌ | ✅ |
+| **Radio Wave Simulations** | 🟨 Limited | ❌ | ❌ | ✅ Handles magnetic materials |
+| **Open Source** | ❌ Commercial | ✅ MIT | ✅ BSD-3-Clause | ✅ MIT |
 
 ## Benchmarking against Other Software
 
 We benchmark JaxLayerLumos against other software.
-Detailed benchmarking results can be found in [this file](markdowns/COMPARISONS.md).
+Detailed benchmarking results can be found in [COMPARISONS.md](markdowns/COMPARISONS.md).
 These comparisons include the results of [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](https://github.com/MLResearchAtOSRAM/tmm_fast), and [tmm](https://github.com/sbyrnes321/tmm).
 
 To obtain these results, you should install additional required packages.
@@ -109,11 +108,26 @@ pip install .[benchmarking]
 
 Finally, you can run the benchmarking code `compare_methods.py` in the `benchmarking` directory.
 
+## Software Testing and Test Automation
+
+We provide a variety of test files in the `tests` directory.
+Before running the test files, the required packages should be installed by using `pip install .[dev]`.
+They can be run by commanding `pytest tests/`.
+Moreover, these test files are automatically tested via GitHub Actions, of which the configuration is defined in `.github/workflows/pytest.yml`.
 
 ## Supported Materials
 
-Materials supported by our software are described in [this file](markdowns/MATERIALS.md).
+Materials supported by our software are described in [MATERIALS.md](markdowns/MATERIALS.md).
 
+JaxLayerLumos includes a growing library of materials, which are specified using either complex refractive indices or complex permittivities and permeabilities, which can be sourced from the literature or 
+specified by users based on experimental data.
+When only complex refractive indices are provided, magnetic effects are assumed to be negligible, and the relative permeability is set to unity
+($\mu\_{r,j} = 1$), an assumption typically valid at optical frequencies.
+In the RF and microwave regimes, the electromagnetic properties of metals are derived from their electrical conductivity and magnetic susceptibility, while dielectrics are generally modeled with constant permittivity and negligible loss.
+
+## Contributing Guidelines
+
+To contribute, please read [CONTRIBUTING.md](markdowns/CONTRIBUTING.md) for our guidelines on issues, enhancements, and pull requests. Follow the outlined standards to keep the project consistent and collaborative.
 
 ## License
 
