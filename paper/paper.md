@@ -91,7 +91,7 @@ JaxLayerLumos includes a growing library of materials, which are specified using
 
 # Potential applications
 
-Diverse use cases demonstrate the versatility of JaxLayerLumos:
+These illustrative examples outline how JaxLayerLumos can be applied across diverse fields, showcasing its versatility and broad potential:
 
 * **Radar-absorbing materials and frequency-selective surfaces**: Simulate spectral responses in the microwave and RF ranges [@michielssen1993design], with full support for magnetic materials.
 * **Thin-film structural optimization**: Use Bayesian optimization [@garnett2023bayesian] or gradient-based methods [@boyd2004convex] to tailor spectral responses across both optical and RF domains.
