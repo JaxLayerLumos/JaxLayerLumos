@@ -99,7 +99,7 @@ These illustrative examples, including our own reproduced implementations, outli
 * **Structural color**: Explore engineered structural coloration for novel material design [@sun2013structural;@elkabbash2023fano].
 * **Inverse design with machine learning**: Train Transformer-based models [@vaswani2017attention] to design optical coatings and RF devices.
 
-Jupyter notebook examples are available in the [examples directory](https://github.com/JaxLayerLumos/JaxLayerLumos/tree/main/examples).
+Jupyter notebook examples are available in the [examples directory](https://github.com/JaxLayerLumos/JaxLayerLumos/tree/main/examples). Note that some of these examples are reproduced implementations used to validate the functionality of our software.
 
 # Acknowledgements
 
