@@ -1,4 +1,4 @@
-STR_VERSION = "0.3.3"
+STR_VERSION = "0.3.4"
 
 
 def test_version_setup():
