@@ -18,7 +18,7 @@
 Our mission is to offer a lightweight, flexible, and fast alternative to commercial software, enabling users to perform complex optical simulations with ease. JaxLayerLumos is built with performance and usability in mind, facilitating the exploration of optical phenomena in research and development settings.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/JOSS/assets/TMM.png" width="700" />
+<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/main/assets/TMM.png" width="700" />
 </p>
 
 ## Features
@@ -50,7 +50,7 @@ One of these modes can be used by commanding `pip install .[dev]`, `pip install 
 ## Examples
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/JOSS/assets/applications.png" width="800" />
+<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/main/assets/applications.png" width="800" />
 </p>
 
 A collection of examples in the `examples` directory exhibits various use cases and capabilities of our software.
@@ -147,7 +147,6 @@ To contribute, please read [CONTRIBUTING.md](markdowns/CONTRIBUTING.md) for our 
 ## License
 
 JaxLayerLumos is released under the [MIT License](LICENSE), promoting open and unrestricted access to software for academic and commercial use.
-
 
 ## Acknowledgments
 
