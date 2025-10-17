@@ -1,5 +1,6 @@
 # JaxLayerLumos: A JAX-based Differentiable Optical and Radio Frequency Simulator for Multilayer Structures
 
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.08572/status.svg)](https://doi.org/10.21105/joss.08572)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12602789.svg)](https://doi.org/10.5281/zenodo.12602789)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/jaxlayerlumos)](https://pypi.org/project/jaxlayerlumos/)
 ![GitHub Release](https://img.shields.io/github/v/release/JaxLayerLumos/jaxlayerlumos)
@@ -128,6 +129,20 @@ In the RF and microwave regimes, the electromagnetic properties of metals are de
 ## Contributing Guidelines
 
 To contribute, please read [CONTRIBUTING.md](markdowns/CONTRIBUTING.md) for our guidelines on issues, enhancements, and pull requests. Follow the outlined standards to keep the project consistent and collaborative.
+
+## Citation
+
+```
+@article{LiM2025joss,
+    author={Li, Mingxuan and Kim, Jungtaek and Leu, Paul W.},
+    title={{JaxLayerLumos}: A {JAX}-based Differentiable Optical and Radio Frequency Simulator for Multilayer Structures},
+    journal={Journal of Open Source Software},
+    volume={10},
+    number={114},
+    pages={8572},
+    year={2025}
+}
+```
 
 ## License
 

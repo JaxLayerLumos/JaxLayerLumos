@@ -13,9 +13,12 @@ Citation:
 
 .. code-block:: latex
 
-    @misc{LiM2024jaxlayerlumos,
-        title={{JaxLayerLumos}: A {JAX}-based Differentiable Optical and Radio Frequency Simulator for Multilayer Structures},
+    @article{LiM2025joss,
         author={Li, Mingxuan and Kim, Jungtaek and Leu, Paul W.},
-        howpublished={\url{https://doi.org/10.5281/zenodo.12602789}},
-        year={2024}
+        title={{JaxLayerLumos}: A {JAX}-based Differentiable Optical and Radio Frequency Simulator for Multilayer Structures},
+        journal={Journal of Open Source Software},
+        volume={10},
+        number={114},
+        pages={8572},
+        year={2025}
     }
