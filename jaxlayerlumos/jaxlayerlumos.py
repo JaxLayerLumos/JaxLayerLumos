@@ -1,3 +1,19 @@
+"""
+Core optical multilayer stack calculation functions using JAX.
+
+This module provides the fundamental functions for calculating reflection and transmission
+coefficients for multilayer optical stacks. It implements the transfer matrix method
+for both TE and TM polarizations, supporting complex refractive indices and arbitrary
+incidence angles.
+
+The main functions handle:
+- Single frequency/angle calculations (stackrt_eps_mu_base)
+- Multiple frequencies/angles (stackrt_eps_mu_theta, stackrt_eps_mu)
+- Refractive index input (stackrt_n_k)
+
+All functions are JAX-compatible for automatic differentiation and GPU acceleration.
+"""
+
 import jax
 import jax.numpy as jnp
 import numpy as onp
@@ -7,6 +23,21 @@ from jaxlayerlumos import utils_units
 
 
 def true_fun(r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM):
+    """
+    Set reflection and transmission coefficients for perfect conductor boundary.
+    
+    This function is used when the last layer is a perfect conductor (infinite permittivity),
+    setting the reflection coefficient to -1 and transmission coefficient to 1.
+    
+    Args:
+        r_jk_TE: TE reflection coefficients
+        t_jk_TE: TE transmission coefficients  
+        r_jk_TM: TM reflection coefficients
+        t_jk_TM: TM transmission coefficients
+        
+    Returns:
+        Tuple of modified reflection and transmission coefficients
+    """
     r_jk_TE = r_jk_TE.at[-1].set(-1.0)
     t_jk_TE = t_jk_TE.at[-1].set(1.0)
     r_jk_TM = r_jk_TM.at[-1].set(-1.0)
@@ -16,10 +47,56 @@ def true_fun(r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM):
 
 
 def false_fun(r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM):
+    """
+    Return reflection and transmission coefficients unchanged.
+    
+    This function is used when the last layer is not a perfect conductor,
+    returning the coefficients as calculated.
+    
+    Args:
+        r_jk_TE: TE reflection coefficients
+        t_jk_TE: TE transmission coefficients
+        r_jk_TM: TM reflection coefficients  
+        t_jk_TM: TM transmission coefficients
+        
+    Returns:
+        Tuple of reflection and transmission coefficients unchanged
+    """
     return r_jk_TE, t_jk_TE, r_jk_TM, t_jk_TM
 
 
 def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, return_coeffs=False):
+    """
+    Calculate reflection and transmission coefficients for a multilayer stack.
+    
+    This is the core function that implements the transfer matrix method for calculating
+    reflection and transmission coefficients of a multilayer optical stack. It handles
+    both TE and TM polarizations and supports complex permittivity and permeability.
+    
+    Args:
+        eps_r (jnp.ndarray): Relative permittivity of each layer. Shape (n_layers,).
+        mu_r (jnp.ndarray): Relative permeability of each layer. Shape (n_layers,).
+        thicknesses (jnp.ndarray): Thickness of each layer in meters. Shape (n_layers,).
+                                  First and last elements must be 0 (semi-infinite media).
+        f_i (float): Frequency in Hz.
+        thetas_k (jnp.ndarray): Incidence angles in radians. Shape (n_angles,).
+        return_coeffs (bool, optional): If True, return additional coefficients and
+                                       intermediate calculations. Defaults to False.
+    
+    Returns:
+        If return_coeffs=False:
+            tuple: (R_TE, T_TE, R_TM, T_TM) - Reflection and transmission coefficients
+                  for TE and TM polarizations.
+        If return_coeffs=True:
+            tuple: (R_TE, T_TE, R_TM, T_TM, results_coeffs) - Coefficients plus
+                  additional data including field coefficients, refractive indices,
+                  and power calculations.
+    
+    Note:
+        - The first and last layers are assumed to be semi-infinite media (thickness=0)
+        - Perfect conductor boundaries are automatically handled
+        - All calculations are performed using JAX for GPU acceleration and differentiation
+    """
     assert isinstance(eps_r, jnp.ndarray)
     assert isinstance(mu_r, jnp.ndarray)
     assert isinstance(thicknesses, jnp.ndarray)
@@ -195,6 +272,32 @@ def stackrt_eps_mu_base(eps_r, mu_r, thicknesses, f_i, thetas_k, return_coeffs=F
 
 
 def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, return_coeffs=False):
+    """
+    Calculate reflection and transmission coefficients for multiple frequencies at a single angle.
+    
+    This function vectorizes the base calculation over multiple frequencies for a given
+    incidence angle. It handles the conversion from degrees to radians and applies
+    special handling for perfect conductor boundaries.
+    
+    Args:
+        eps_r (jnp.ndarray): Relative permittivity for each frequency and layer.
+                             Shape (n_freq, n_layers).
+        mu_r (jnp.ndarray): Relative permeability for each frequency and layer.
+                            Shape (n_freq, n_layers).
+        d (jnp.ndarray): Thickness of each layer in meters. Shape (n_layers,).
+        f (jnp.ndarray): Frequencies in Hz. Shape (n_freq,).
+        theta (float): Incidence angle in degrees.
+        return_coeffs (bool, optional): If True, return additional coefficients.
+                                       Defaults to False.
+    
+    Returns:
+        If return_coeffs=False:
+            tuple: (R_TE, T_TE, R_TM, T_TM) - Arrays of reflection and transmission
+                  coefficients for each frequency.
+        If return_coeffs=True:
+            tuple: (R_TE, T_TE, R_TM, T_TM, results_coeffs) - Coefficients plus
+                  additional data for each frequency.
+    """
     assert isinstance(eps_r, jnp.ndarray)
     assert isinstance(mu_r, jnp.ndarray)
     assert isinstance(d, jnp.ndarray)
@@ -242,6 +345,26 @@ def stackrt_eps_mu_theta(eps_r, mu_r, d, f, theta, return_coeffs=False):
 
 
 def stackrt_eps_mu(eps_r, mu_r, d, f, thetas):
+    """
+    Calculate reflection and transmission coefficients for multiple frequencies and angles.
+    
+    This function vectorizes the calculation over both frequencies and incidence angles.
+    It handles input validation and converts single angle inputs to arrays.
+    
+    Args:
+        eps_r (jnp.ndarray): Relative permittivity for each frequency and layer.
+                             Shape (n_freq, n_layers).
+        mu_r (jnp.ndarray): Relative permeability for each frequency and layer.
+                            Shape (n_freq, n_layers).
+        d (jnp.ndarray): Thickness of each layer in meters. Shape (n_layers,).
+        f (jnp.ndarray): Frequencies in Hz. Shape (n_freq,).
+        thetas (jnp.ndarray, float, int, or None): Incidence angle(s) in degrees.
+                                                  If None, defaults to [0].
+    
+    Returns:
+        tuple: (R_TE, T_TE, R_TM, T_TM) - Arrays of reflection and transmission
+               coefficients. Shape (n_freq, n_angles) for each output.
+    """
     if thetas is None:
         thetas = jnp.array([0])
     elif isinstance(thetas, (float, int)):

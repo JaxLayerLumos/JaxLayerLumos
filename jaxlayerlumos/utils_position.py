@@ -1,9 +1,31 @@
+"""
+Position-dependent field and power calculations for multilayer stacks.
+
+This module provides functions for calculating electromagnetic field distributions,
+Poynting vectors, and absorption profiles at specific positions within multilayer
+optical stacks. It handles both TE and TM polarizations and provides detailed
+analysis of power flow and absorption in each layer.
+"""
+
 import jax.numpy as jnp
 import numpy as np
 
 
 def calc_position_in_structure(thickness_materials, position):
-
+    """
+    Calculate which layer a position belongs to and the distance within that layer.
+    
+    This function determines the layer index and the distance from the layer's
+    start boundary for given positions within a multilayer structure.
+    
+    Args:
+        thickness_materials (np.ndarray): Thickness of each material layer.
+        position (np.ndarray): Positions within the structure.
+    
+    Returns:
+        list: [layer, distance] where layer contains the layer indices and
+              distance contains the distances within each layer.
+    """
     cs = np.cumsum(thickness_materials[:-1])
     layer = np.sum(position[:, None] >= cs, axis=1)
     # layer = np.sum(position >= cs, axis=0)
@@ -12,6 +34,27 @@ def calc_position_in_structure(thickness_materials, position):
 
 
 def calc_position_data(layer, position_in_layer, results, update_results=True):
+    """
+    Calculate electromagnetic field and power data at a specific position in a layer.
+    
+    This function computes the forward and backward propagating fields, Poynting vectors,
+    absorption, and electric field components at a given position within a specified layer.
+    
+    Args:
+        layer (int or list): Layer index or indices.
+        position_in_layer (float or np.ndarray): Position(s) within the layer(s).
+        results (dict): Results dictionary from multilayer calculation containing
+                       coefficients, refractive indices, and other parameters.
+        update_results (bool, optional): If True, update the results dictionary.
+                                        If False, return only position-specific data.
+                                        Defaults to True.
+    
+    Returns:
+        dict: Updated results dictionary or position-specific data including:
+              - poyn_TE/TM: Poynting vectors for TE/TM polarization
+              - absorb_TE/TM: Absorption per meter for TE/TM polarization
+              - E_TE/TM: Electric field components for TE/TM polarization
+    """
     coeff_TE = results["coeff_TE"][:, :, layer, :]
     coeff_TM = results["coeff_TM"][:, :, layer, :]
     n = results["n"][:, :, layer]
@@ -70,6 +113,27 @@ def calc_position_data(layer, position_in_layer, results, update_results=True):
 
 
 def calc_absorption_in_each_layer(thicknesses, results):
+    """
+    Calculate absorption in each layer of the multilayer stack.
+    
+    This function computes the power entering each layer and the resulting absorption
+    by analyzing the Poynting vectors at layer boundaries. It provides a detailed
+    breakdown of where absorption occurs in the multilayer structure.
+    
+    Args:
+        thicknesses (list or np.ndarray): Thickness of each layer.
+        results (dict): Results dictionary from multilayer calculation containing
+                       power entering, transmission coefficients, and other parameters.
+    
+    Returns:
+        dict: Updated results dictionary with additional keys:
+              - absorption_layer_TE: Absorption in each layer for TE polarization
+              - absorption_layer_TM: Absorption in each layer for TM polarization
+    
+    Note:
+        The absorption values represent the power absorbed per unit area in each layer.
+        Positive values indicate absorption, negative values indicate gain.
+    """
     # Assuming d, power_entering_TE, power_entering_TM, t_TE_i, t_TM_i, kz_layers,
     # cos_theta, n_layers, coeff_TE, coeff_TM, and calc_position_data are already defined.
 

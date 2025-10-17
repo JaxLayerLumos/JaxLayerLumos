@@ -1,3 +1,12 @@
+"""
+Color matching functions for color science calculations.
+
+This module contains the CIE 1931 color matching functions (x_bar, y_bar, z_bar)
+which define the spectral sensitivity of the human visual system. These functions
+are essential for converting spectral data to color space coordinates.
+The data is provided in nanometers and normalized units.
+"""
+
 cmfs_cie1931 = [
     [360, 0.000129900000, 0.000003917000, 0.000606100000],
     [361, 0.000145847000, 0.000004393581, 0.000680879200],

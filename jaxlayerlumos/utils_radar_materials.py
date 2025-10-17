@@ -1,3 +1,11 @@
+"""
+Radar material properties for electromagnetic calculations.
+
+This module provides functions for accessing radar material properties including
+permittivity and permeability data based on the Michielssen database. It supports
+16 different radar materials with frequency-dependent properties in the GHz range.
+"""
+
 import jax.numpy as jnp
 import numpy as onp
 
@@ -5,6 +13,29 @@ from jaxlayerlumos import utils_units
 
 
 def get_eps_mu_Michielssen(material_indices, frequencies):
+    """
+    Get permittivity and permeability for radar materials from the Michielssen database.
+    
+    This function provides frequency-dependent permittivity and permeability values
+    for 16 different radar materials. The materials include various types of
+    absorbers and coatings commonly used in radar applications.
+    
+    Args:
+        material_indices (onp.ndarray): Material indices (1-16) corresponding to
+                                       different radar materials.
+        frequencies (jnp.ndarray): Frequencies in Hz for which to calculate properties.
+    
+    Returns:
+        tuple: (eps_r, mu_r) - Relative permittivity and permeability arrays
+               with shape (n_materials, n_frequencies).
+    
+    Note:
+        - Material indices must be between 1 and 16
+        - Frequencies are converted to GHz internally for the calculations
+        - Materials 1-5 have constant permittivity and frequency-dependent permeability
+        - Materials 6-8 have frequency-dependent permittivity and constant permeability
+        - Materials 9-16 have frequency-dependent permittivity and permeability
+    """
     assert isinstance(material_indices, onp.ndarray)
     assert isinstance(frequencies, jnp.ndarray)
     assert material_indices.ndim == 1

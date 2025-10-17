@@ -1,3 +1,15 @@
+"""
+Color science utilities for optical calculations.
+
+This module provides functions for color calculations including:
+- Spectral to color space conversions (XYZ, xyY, sRGB, Lab)
+- Color matching functions and illuminants
+- Color transformations and composite calculations
+
+The module supports standard color spaces and illuminants commonly used
+in optical and display applications.
+"""
+
 import jax
 
 jax.config.update("jax_enable_x64", True)
