@@ -86,7 +86,7 @@ We compare [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](htt
 | **Radio Wave Simulations** | 🟨 Limited | ❌ | ❌ | ✅ Handles magnetic materials |
 | **Open Source** | ❌ Commercial | ✅ MIT | ✅ BSD-3-Clause | ✅ MIT |
 
-$^1$Because TPUs are optimized for low-precision computation, their simulation results may show reduced numerical precision.
+$^1$ Because TPUs are optimized for low-precision computation, their simulation results may show reduced numerical precision.
 
 ## Benchmarking against Other Software
 
