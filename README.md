@@ -1,5 +1,6 @@
 # JaxLayerLumos: A JAX-based Differentiable Optical and Radio Frequency Simulator for Multilayer Structures
 
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.08572/status.svg)](https://doi.org/10.21105/joss.08572)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12602789.svg)](https://doi.org/10.5281/zenodo.12602789)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/jaxlayerlumos)](https://pypi.org/project/jaxlayerlumos/)
 ![GitHub Release](https://img.shields.io/github/v/release/JaxLayerLumos/jaxlayerlumos)
@@ -17,7 +18,7 @@
 Our mission is to offer a lightweight, flexible, and fast alternative to commercial software, enabling users to perform complex optical simulations with ease. JaxLayerLumos is built with performance and usability in mind, facilitating the exploration of optical phenomena in research and development settings.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/JOSS/assets/TMM.png" width="700" />
+<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/main/assets/TMM.png" width="700" />
 </p>
 
 ## Features
@@ -49,7 +50,7 @@ One of these modes can be used by commanding `pip install .[dev]`, `pip install 
 ## Examples
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/JOSS/assets/applications.png" width="800" />
+<img src="https://raw.githubusercontent.com/JaxLayerLumos/JaxLayerLumos/main/assets/applications.png" width="800" />
 </p>
 
 A collection of examples in the `examples` directory exhibits various use cases and capabilities of our software.
@@ -75,15 +76,17 @@ We compare [Ansys Optics](https://www.ansys.com/products/optics), [TMM-Fast](htt
 | Feature | Ansys Optics (stackrt) | TMM-Fast (PyTorch/NumPy) | tmm (Pure Python) | JaxLayerLumos (JAX) |
 |-----|-----|-----|-----|-----|
 | **Lightweight** | ❌ Bulky | ✅ | ✅ | ✅ |
-| **Speed** | 🟨 Moderate | ✅ Fast | 🟨 Moderate | ✅ Fast |
+| **Speed** | ❌ Slow | ✅ Fast | ❌ Slow | 🟨 Moderate |
 | **Gradient Support** | ❌ | ✅ | ❌ | ✅ |
 | **GPU Support** | ❌ | ✅ | ❌ | ✅ |
-| **TPU Support** | ❌ | ❌ | ❌ | ✅ |
+| **TPU Support**$^1$ | ❌ | ❌ | ❌ | ✅ |
 | **Position-Dependent Absorption** | ❌ | ❌ | ✅ | ✅ |
 | **Optical Simulations** | ✅ | ✅ | ✅ | ✅ |
 | **Infrared Simulations** | 🟨 Limited | 🟨 Limited | ❌ | ✅ |
 | **Radio Wave Simulations** | 🟨 Limited | ❌ | ❌ | ✅ Handles magnetic materials |
 | **Open Source** | ❌ Commercial | ✅ MIT | ✅ BSD-3-Clause | ✅ MIT |
+
+$^1$ Because TPUs are optimized for low-precision computation, their simulation results may show reduced numerical precision.
 
 ## Benchmarking against Other Software
 
@@ -129,10 +132,23 @@ In the RF and microwave regimes, the electromagnetic properties of metals are de
 
 To contribute, please read [CONTRIBUTING.md](markdowns/CONTRIBUTING.md) for our guidelines on issues, enhancements, and pull requests. Follow the outlined standards to keep the project consistent and collaborative.
 
+## Citation
+
+```
+@article{LiM2025joss,
+    author={Li, Mingxuan and Kim, Jungtaek and Leu, Paul W.},
+    title={{JaxLayerLumos}: A {JAX}-based Differentiable Optical and Radio Frequency Simulator for Multilayer Structures},
+    journal={Journal of Open Source Software},
+    volume={10},
+    number={114},
+    pages={8572},
+    year={2025}
+}
+```
+
 ## License
 
 JaxLayerLumos is released under the [MIT License](LICENSE), promoting open and unrestricted access to software for academic and commercial use.
-
 
 ## Acknowledgments
 
