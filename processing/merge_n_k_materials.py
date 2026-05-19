@@ -53,7 +53,7 @@ def read_material_csv(file_path: Path) -> List[MergedRow]:
         ...
 
     Returns:
-        List of (wavelength, n, k), using the original wavelength order.
+        List of (wavelength, n, k), sorted by wavelength in ascending order.
     """
     rows = read_non_empty_rows(file_path)
 
@@ -79,7 +79,7 @@ def read_material_csv(file_path: Path) -> List[MergedRow]:
 
             merged_rows.append((wavelength, n_value, k_value))
 
-        return merged_rows
+        return sorted(merged_rows, key=lambda row: row[0])
 
     # Case 2: old two-block format: wl,n and wl,k
     n_data: Dict[float, float] = {}
@@ -133,18 +133,19 @@ def read_material_csv(file_path: Path) -> List[MergedRow]:
         for wavelength in wavelengths
     ]
 
-    return merged_rows
+    return sorted(merged_rows, key=lambda row: row[0])
 
 
 def write_merged_csv(output_path: Path, rows: List[MergedRow]) -> None:
     """Write merged material data in wl,n,k format."""
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    sorted_rows = sorted(rows, key=lambda row: row[0])
 
     with output_path.open("w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(["wl", "n", "k"])
 
-        for wavelength, n_value, k_value in rows:
+        for wavelength, n_value, k_value in sorted_rows:
             writer.writerow(
                 [
                     wavelength,
@@ -156,12 +157,13 @@ def write_merged_csv(output_path: Path, rows: List[MergedRow]) -> None:
 
 def merge_all_materials() -> None:
     """
-    Merge all CSV files under jaxlayerlumos/materials and overwrite them in
-    wl,n,k format.
+    Merge all raw CSV files under jaxlayerlumos/raw_materials and write runtime
+    material CSV files under jaxlayerlumos/materials in wl,n,k format.
     """
     repo_root = Path(__file__).resolve().parents[1]
 
-    source_dir = repo_root / "jaxlayerlumos" / "materials"
+    source_dir = repo_root / "jaxlayerlumos" / "raw_materials"
+    output_dir = repo_root / "jaxlayerlumos" / "materials"
 
     if not source_dir.exists():
         raise FileNotFoundError(f"Source directory does not exist: {source_dir}")
@@ -172,7 +174,9 @@ def merge_all_materials() -> None:
         raise FileNotFoundError(f"No CSV files found in {source_dir}")
 
     print(f"Source directory: {source_dir}")
-    print("Output mode: overwrite source CSV files")
+    print(f"Output directory: {output_dir}")
+    print("Output mode: generate runtime material CSV files from raw source data")
+    print("Sort order: wavelength ascending")
     print(f"Number of CSV files: {len(csv_files)}")
     print("-" * 100)
 
@@ -180,7 +184,7 @@ def merge_all_materials() -> None:
     errors = []
 
     for source_path in csv_files:
-        output_path = source_path
+        output_path = output_dir / source_path.name
 
         try:
             merged_rows = read_material_csv(source_path)
@@ -207,7 +211,7 @@ def merge_all_materials() -> None:
             print(f"  - {file_path.name}: {exc}")
         raise SystemExit(1)
 
-    print(f"All merged files have overwritten source files in: {source_dir}")
+    print(f"All merged files have been written to: {output_dir}")
 
 
 if __name__ == "__main__":
