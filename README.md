@@ -60,14 +60,15 @@ We provide the following examples:
 2. [Color Conversion](examples/color-conversion.ipynb)
 3. [Color Exploration with Thin-Film Structures](examples/color-exploration.ipynb)
 4. [Gradient Computation](examples/gradient-computation.ipynb)
-5. [Visualization of Light Sources](examples/light-source-visualization.ipynb)
-6. [Plotting of Optical Constants](examples/n-k-extrapolation.ipynb)
-7. [Thin-Film Structure Optimization with Bayesian Optimization](examples/optimization-bayeso.ipynb)
-8. [Thin-Film Structure Optimization with DoG Optimizer](examples/optimization-dog.ipynb)
-9. [Reflection Spectra over Frequencies for Radar Design](examples/radar-design.ipynb)
-10. [Analysis of Solar Cells](examples/solar-cell-analysis.ipynb)
-11. [Transmission Spectra over Wavelengths Varying Thicknesses](examples/thickness-variation.ipynb)
-12. [Triple Junction Solar Cells](examples/triple-junction-solar-cells.ipynb)
+5. [Graded Layers with Selected Interfaces](examples/graded-layers.ipynb)
+6. [Visualization of Light Sources](examples/light-source-visualization.ipynb)
+7. [Plotting of Optical Constants](examples/n-k-extrapolation.ipynb)
+8. [Thin-Film Structure Optimization with Bayesian Optimization](examples/optimization-bayeso.ipynb)
+9. [Thin-Film Structure Optimization with DoG Optimizer](examples/optimization-dog.ipynb)
+10. [Reflection Spectra over Frequencies for Radar Design](examples/radar-design.ipynb)
+11. [Analysis of Solar Cells](examples/solar-cell-analysis.ipynb)
+12. [Transmission Spectra over Wavelengths Varying Thicknesses](examples/thickness-variation.ipynb)
+13. [Triple Junction Solar Cells](examples/triple-junction-solar-cells.ipynb)
 
 ## Comparison of TMM Packages
 
