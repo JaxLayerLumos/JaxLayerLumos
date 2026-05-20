@@ -12,10 +12,10 @@ packages = [
 
 [project]
 name = "jaxlayerlumos"
-version = "0.3.4"
+version = "0.3.5"
 description = "A JAX-based Differentiable Optical and Radio Frequency Simulator for Multilayer Structures"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 authors = [
     {name = "Mingxuan Li", email = "mil152@pitt.edu"},
     {name = "Jungtaek Kim", email = "jungtaek.kim.mail@gmail.com"},
