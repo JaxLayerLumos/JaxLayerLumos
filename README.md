@@ -57,19 +57,19 @@ A collection of examples in the `examples` directory exhibits various use cases 
 We provide the following examples:
 
 1. [Reflection Spectra over Wavelengths Varying Incidence Angles](examples/angle-variation.ipynb)
-2. [Color Conversion](examples/color-conversion.ipynb)
-3. [Color Exploration with Thin-Film Structures](examples/color-exploration.ipynb)
-4. [Gradient Computation](examples/gradient-computation.ipynb)
-5. [Effective Medium Approximation Across a Partially Graded Interface](examples/effective-medium-approximation.ipynb)
-6. [Graded Layers with Selected Interfaces](examples/graded-layers.ipynb)
-7. [Visualization of Light Sources](examples/light-source-visualization.ipynb)
-8. [Plotting of Optical Constants](examples/n-k-extrapolation.ipynb)
-9. [Thin-Film Structure Optimization with Bayesian Optimization](examples/optimization-bayeso.ipynb)
-10. [Thin-Film Structure Optimization with DoG Optimizer](examples/optimization-dog.ipynb)
-11. [Reflection Spectra over Frequencies for Radar Design](examples/radar-design.ipynb)
-12. [Analysis of Solar Cells](examples/solar-cell-analysis.ipynb)
-13. [Transmission Spectra over Wavelengths Varying Thicknesses](examples/thickness-variation.ipynb)
-14. [Triple Junction Solar Cells](examples/triple-junction-solar-cells.ipynb)
+1. [Color Conversion](examples/color-conversion.ipynb)
+1. [Color Exploration with Thin-Film Structures](examples/color-exploration.ipynb)
+1. [Gradient Computation](examples/gradient-computation.ipynb)
+1. [Effective Medium Approximation Across a Partially Graded Interface](examples/effective-medium-approximation.ipynb)
+1. [Graded Layers with Selected Interfaces](examples/graded-layers.ipynb)
+1. [Visualization of Light Sources](examples/light-source-visualization.ipynb)
+1. [Plotting of Optical Constants](examples/n-k-extrapolation.ipynb)
+1. [Thin-Film Structure Optimization with Bayesian Optimization](examples/optimization-bayeso.ipynb)
+1. [Thin-Film Structure Optimization with DoG Optimizer](examples/optimization-dog.ipynb)
+1. [Reflection Spectra over Frequencies for Radar Design](examples/radar-design.ipynb)
+1. [Analysis of Solar Cells](examples/solar-cell-analysis.ipynb)
+1. [Transmission Spectra over Wavelengths Varying Thicknesses](examples/thickness-variation.ipynb)
+1. [Triple Junction Solar Cells](examples/triple-junction-solar-cells.ipynb)
 
 ## Comparison of TMM Packages
 
