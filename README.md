@@ -134,6 +134,10 @@ In the RF and microwave regimes, the electromagnetic properties of metals are de
 
 To contribute, please read [CONTRIBUTING.md](markdowns/CONTRIBUTING.md) for our guidelines on issues, enhancements, and pull requests. Follow the outlined standards to keep the project consistent and collaborative.
 
+## Declaration of Large Language Model Usage
+
+This project was initiated before large language models were incorporated into its development workflow. They are now actively used to support code revision, feature development, software maintenance, and text editing in this repository. In particular, we use Codex as an AI coding tool.
+
 ## Citation
 
 ```
