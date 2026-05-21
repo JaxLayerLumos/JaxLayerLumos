@@ -62,6 +62,9 @@ dev = [
     "twine",
     "black",
     "colour-science",
+    "ipykernel",
+    "nbclient",
+    "nbformat",
 ]
 
 benchmarking = [
