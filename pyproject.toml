@@ -6,8 +6,25 @@ requires = [
 ]
 
 [tool.setuptools]
-packages = [
-    "jaxlayerlumos",
+include-package-data = true
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = [
+    "src",
+]
+include = [
+    "jaxlayerlumos*",
+]
+
+[tool.setuptools.package-data]
+jaxlayerlumos = [
+    "*.json",
+    "light_sources/*.csv",
+    "materials/*.csv",
+    "raw_materials/*.csv",
 ]
 
 [project]

@@ -1,4 +1,6 @@
-include jaxlayerlumos/materials.json
-recursive-include jaxlayerlumos/materials *
-recursive-include jaxlayerlumos/raw_materials *
+include src/jaxlayerlumos/materials.json
+include src/jaxlayerlumos/light_sources.json
+recursive-include src/jaxlayerlumos/materials *
+recursive-include src/jaxlayerlumos/raw_materials *
+recursive-include src/jaxlayerlumos/light_sources *
 recursive-exclude assets *

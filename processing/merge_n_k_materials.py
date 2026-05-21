@@ -157,13 +157,13 @@ def write_merged_csv(output_path: Path, rows: List[MergedRow]) -> None:
 
 def merge_all_materials() -> None:
     """
-    Merge all raw CSV files under jaxlayerlumos/raw_materials and write runtime
-    material CSV files under jaxlayerlumos/materials in wl,n,k format.
+    Merge all raw CSV files under src/jaxlayerlumos/raw_materials and write
+    runtime material CSV files under src/jaxlayerlumos/materials in wl,n,k format.
     """
     repo_root = Path(__file__).resolve().parents[1]
 
-    source_dir = repo_root / "jaxlayerlumos" / "raw_materials"
-    output_dir = repo_root / "jaxlayerlumos" / "materials"
+    source_dir = repo_root / "src" / "jaxlayerlumos" / "raw_materials"
+    output_dir = repo_root / "src" / "jaxlayerlumos" / "materials"
 
     if not source_dir.exists():
         raise FileNotFoundError(f"Source directory does not exist: {source_dir}")
@@ -216,4 +216,3 @@ def merge_all_materials() -> None:
 
 if __name__ == "__main__":
     merge_all_materials()
-
