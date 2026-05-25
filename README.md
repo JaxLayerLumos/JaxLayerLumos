@@ -44,7 +44,7 @@ Alternatively, JaxLayerLumos can be installed from source.
 pip install .
 ```
 
-In addition, we support three installation modes, `dev`, `benchmarking`, and `examples`, where `dev` is defined for installing the packages required for development and software testing, `benchmarking` is for installing the packages required for benchmarking against differnt TMM software programs, and `examples` is needed for running the examples included in the `examples` directory.
+In addition, we support three installation modes, `dev`, `benchmarking`, and `examples`, where `dev` is defined for installing the packages required for development and software testing, `benchmarking` is for installing the packages required for benchmarking against different TMM software programs, and `examples` is needed for running the examples included in the `examples` directory.
 One of these modes can be used by commanding `pip install .[dev]`, `pip install .[benchmarking]`, or `pip install .[examples]`.
 
 ## Examples
@@ -104,7 +104,7 @@ In particular, if you need the CPU version of PyTorch, you can install it using 
 pip install torch --index-url https://download.pytorch.org/whl/cpu
 ```
 
-For details, you can refer to [the official instruction of PyTorch](https://pytorch.org).
+For details, you can refer to [the official PyTorch instruction](https://pytorch.org).
 Then, the required packages can be installed by the following command.
 
 ```bash
