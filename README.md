@@ -152,6 +152,20 @@ This project was initiated before large language models were incorporated into i
 }
 ```
 
+## Contributors
+
+The *Journal of Open Source Software* paper author list is fixed at publication.
+This section recognizes software contributions to the project.
+
+| Contributor | Role |
+|-----|-----|
+| [Mingxuan Li](https://www.linkedin.com/in/mingxuan-l-0009b61ab/) | Core contributor |
+| [Jungtaek Kim](https://jungtaekkim.github.io) | Core contributor |
+| [Paul W. Leu](http://lamp.pitt.edu) | Core contributor |
+| Boyi Sun | Software contributor |
+
+For the full commit history, see the [GitHub contributors graph](https://github.com/JaxLayerLumos/JaxLayerLumos/graphs/contributors).
+
 ## License
 
 JaxLayerLumos is released under the [MIT License](LICENSE), promoting open and unrestricted access to software for academic and commercial use.
