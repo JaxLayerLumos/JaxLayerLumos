@@ -9,6 +9,8 @@ jaxlayerlumos
 
 .. toctree::
     jaxlayerlumos.jaxlayerlumos
+    jaxlayerlumos.utils_effective_medium
+    jaxlayerlumos.utils_graded_layers
     jaxlayerlumos.utils_layers
     jaxlayerlumos.utils_light_sources
     jaxlayerlumos.utils_materials
