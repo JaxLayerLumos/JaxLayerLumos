@@ -7,11 +7,11 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - '3.8'
           - '3.9'
           - '3.10'
           - '3.11'
           - '3.12'
+          - '3.13'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,3 +25,20 @@ jobs:
       - name: Run pytest
         run: |
           pytest tests/
+
+  examples:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install this project and example dependencies
+        run: |
+          pip install --upgrade pip
+          pip install .[dev,examples]
+      - name: Run example notebooks
+        env:
+          MPLBACKEND: Agg
+        run: |
+          python processing/run_examples.py --check --output-dir /tmp/jaxlayerlumos-example-runs --timeout 900

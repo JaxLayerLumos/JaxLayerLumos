@@ -2,20 +2,36 @@
 build-backend = "setuptools.build_meta"
 requires = [
     "setuptools",
-    "setuptools_scm",
 ]
 
 [tool.setuptools]
-packages = [
-    "jaxlayerlumos",
+include-package-data = true
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = [
+    "src",
+]
+include = [
+    "jaxlayerlumos*",
+]
+
+[tool.setuptools.package-data]
+jaxlayerlumos = [
+    "*.json",
+    "light_sources/*.csv",
+    "materials/*.csv",
+    "raw_materials/*.csv",
 ]
 
 [project]
 name = "jaxlayerlumos"
-version = "0.3.4"
+version = "0.3.5"
 description = "A JAX-based Differentiable Optical and Radio Frequency Simulator for Multilayer Structures"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 authors = [
     {name = "Mingxuan Li", email = "mil152@pitt.edu"},
     {name = "Jungtaek Kim", email = "jungtaek.kim.mail@gmail.com"},
@@ -25,11 +41,10 @@ dependencies = [
     "jax",
     "jaxlib",
 ]
-license = {text = "MIT"}
+license = "MIT"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering",
 ]
@@ -47,6 +62,9 @@ dev = [
     "twine",
     "black",
     "colour-science",
+    "ipykernel",
+    "nbclient",
+    "nbformat",
 ]
 
 benchmarking = [

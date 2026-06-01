@@ -1,3 +1,16 @@
-include jaxlayerlumos/materials.json
-recursive-include jaxlayerlumos/materials *
-recursive-exclude assets *
+include .readthedocs.yml
+include src/jaxlayerlumos/materials.json
+include src/jaxlayerlumos/light_sources.json
+recursive-include src/jaxlayerlumos/materials *
+recursive-include src/jaxlayerlumos/raw_materials *
+recursive-include src/jaxlayerlumos/light_sources *
+recursive-include .github/workflows *
+recursive-include benchmarking *.py
+recursive-include docs *.py *.rst *.txt Makefile make.bat
+recursive-include docs/_static *
+recursive-include examples *.ipynb
+recursive-include markdowns *.md
+recursive-include paper *.bib *.md
+recursive-include processing *.py
+recursive-include processing/csv *.csv
+recursive-include tests *.py

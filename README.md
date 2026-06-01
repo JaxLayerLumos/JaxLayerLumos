@@ -44,7 +44,7 @@ Alternatively, JaxLayerLumos can be installed from source.
 pip install .
 ```
 
-In addition, we support three installation modes, `dev`, `benchmarking`, and `examples`, where `dev` is defined for installing the packages required for development and software testing, `benchmarking` is for installing the packages required for benchmarking against differnt TMM software programs, and `examples` is needed for running the examples included in the `examples` directory.
+In addition, we support three installation modes, `dev`, `benchmarking`, and `examples`, where `dev` is defined for installing the packages required for development and software testing, `benchmarking` is for installing the packages required for benchmarking against different TMM software programs, and `examples` is needed for running the examples included in the `examples` directory.
 One of these modes can be used by commanding `pip install .[dev]`, `pip install .[benchmarking]`, or `pip install .[examples]`.
 
 ## Examples
@@ -57,17 +57,19 @@ A collection of examples in the `examples` directory exhibits various use cases 
 We provide the following examples:
 
 1. [Reflection Spectra over Wavelengths Varying Incidence Angles](examples/angle-variation.ipynb)
-2. [Color Conversion](examples/color-conversion.ipynb)
-3. [Color Exploration with Thin-Film Structures](examples/color-exploration.ipynb)
-4. [Gradient Computation](examples/gradient-computation.ipynb)
-5. [Visualization of Light Sources](examples/light-source-visualization.ipynb)
-6. [Plotting of Optical Constants](examples/n-k-extrapolation.ipynb)
-7. [Thin-Film Structure Optimization with Bayesian Optimization](examples/optimization-bayeso.ipynb)
-8. [Thin-Film Structure Optimization with DoG Optimizer](examples/optimization-dog.ipynb)
-9. [Reflection Spectra over Frequencies for Radar Design](examples/radar-design.ipynb)
-10. [Analysis of Solar Cells](examples/solar-cell-analysis.ipynb)
-11. [Transmission Spectra over Wavelengths Varying Thicknesses](examples/thickness-variation.ipynb)
-12. [Triple Junction Solar Cells](examples/triple-junction-solar-cells.ipynb)
+1. [Color Conversion](examples/color-conversion.ipynb)
+1. [Color Exploration with Thin-Film Structures](examples/color-exploration.ipynb)
+1. [Gradient Computation](examples/gradient-computation.ipynb)
+1. [Effective Medium Approximation Across a Partially Graded Interface](examples/effective-medium-approximation.ipynb)
+1. [Graded Layers with Selected Interfaces](examples/graded-layers.ipynb)
+1. [Visualization of Light Sources](examples/light-source-visualization.ipynb)
+1. [Plotting of Optical Constants](examples/n-k-extrapolation.ipynb)
+1. [Thin-Film Structure Optimization with Bayesian Optimization](examples/optimization-bayeso.ipynb)
+1. [Thin-Film Structure Optimization with DoG Optimizer](examples/optimization-dog.ipynb)
+1. [Reflection Spectra over Frequencies for Radar Design](examples/radar-design.ipynb)
+1. [Analysis of Solar Cells](examples/solar-cell-analysis.ipynb)
+1. [Transmission Spectra over Wavelengths Varying Thicknesses](examples/thickness-variation.ipynb)
+1. [Triple Junction Solar Cells](examples/triple-junction-solar-cells.ipynb)
 
 ## Comparison of TMM Packages
 
@@ -102,7 +104,7 @@ In particular, if you need the CPU version of PyTorch, you can install it using 
 pip install torch --index-url https://download.pytorch.org/whl/cpu
 ```
 
-For details, you can refer to [the official instruction of PyTorch](https://pytorch.org).
+For details, you can refer to [the official PyTorch instruction](https://pytorch.org).
 Then, the required packages can be installed by the following command.
 
 ```bash
@@ -132,6 +134,10 @@ In the RF and microwave regimes, the electromagnetic properties of metals are de
 
 To contribute, please read [CONTRIBUTING.md](markdowns/CONTRIBUTING.md) for our guidelines on issues, enhancements, and pull requests. Follow the outlined standards to keep the project consistent and collaborative.
 
+## Declaration of Large Language Model Usage
+
+This project was initiated before large language models were incorporated into its development workflow. They are now actively used to support code revision, feature development, software maintenance, and text editing in this repository. In particular, we use Codex as an AI coding tool.
+
 ## Citation
 
 ```
@@ -145,6 +151,20 @@ To contribute, please read [CONTRIBUTING.md](markdowns/CONTRIBUTING.md) for our 
     year={2025}
 }
 ```
+
+## Contributors
+
+The *Journal of Open Source Software* paper author list is fixed at publication.
+This section recognizes software contributions to the project.
+
+| Contributor | Role |
+|-----|-----|
+| [Mingxuan Li](https://www.linkedin.com/in/mingxuan-l-0009b61ab/) | Core contributor |
+| [Jungtaek Kim](https://jungtaekkim.github.io) | Core contributor |
+| [Paul W. Leu](http://lamp.pitt.edu) | Core contributor |
+| Boyi Sun | Software contributor |
+
+For the full commit history, see the [GitHub contributors graph](https://github.com/JaxLayerLumos/JaxLayerLumos/graphs/contributors).
 
 ## License
 

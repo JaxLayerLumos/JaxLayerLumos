@@ -62,7 +62,8 @@ def load_material_wavelength_um(material):
     
     This function reads the CSV file for the specified material and extracts
     the wavelength-dependent refractive index (n) and extinction coefficient (k).
-    The data is returned with wavelengths in micrometers.
+    It supports both wl,n / wl,k blocks and merged wl,n,k files. The data is
+    returned with wavelengths in micrometers.
     
     Args:
         material (str): Name of the material to load.
@@ -89,15 +90,34 @@ def load_material_wavelength_um(material):
 
         start_n = False
         start_k = False
+        start_n_k = False
 
         for row in csvreader:
-            if len(row) == 2:
+            row = [cell.strip() for cell in row]
+
+            if len(row) == 3:
+                if row[0] == "wl" and row[1] == "n" and row[2] == "k":
+                    start_n = False
+                    start_k = False
+                    start_n_k = True
+                elif start_n_k:
+                    wavelength_um = float(row[0])
+
+                    if row[1]:
+                        data_n.append([wavelength_um, float(row[1])])
+                    if row[2]:
+                        data_k.append([wavelength_um, float(row[2])])
+                else:
+                    raise ValueError
+            elif len(row) == 2:
                 if row[0] == "wl" and row[1] == "n":
                     start_n = True
                     start_k = False
+                    start_n_k = False
                 elif row[0] == "wl" and row[1] == "k":
                     start_n = False
                     start_k = True
+                    start_n_k = False
                 else:
                     wavelength_um, value = map(float, row)
 
@@ -170,6 +190,12 @@ def load_material(material):
     data_k = data_k.at[:, 0].set(
         utils_spectra.convert_wavelengths_to_frequencies(data_k[:, 0])
     )
+
+    indices_n = jnp.argsort(data_n[:, 0])
+    indices_k = jnp.argsort(data_k[:, 0])
+
+    data_n = data_n[indices_n]
+    data_k = data_k[indices_k]
 
     return data_n, data_k
 

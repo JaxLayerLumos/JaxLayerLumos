@@ -33,6 +33,7 @@ Features:
     about/software_testing
     about/supported_materials
     about/contributing_guidelines
+    about/contributors
     about/license
     about/acknowledgments_citation
 
