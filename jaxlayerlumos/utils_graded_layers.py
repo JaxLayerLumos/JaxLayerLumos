@@ -5,7 +5,7 @@ Utilities for replacing sharp interfaces with graded material layers.
 import jax.numpy as jnp
 
 
-def get_mixing_ratios(num_graded_layers, method="linear", beta=3.0):
+def get_mixing_ratios(num_graded_layers, method="linear", beta=3.0, fractions=None):
     """
     Return material-2 fractions for true intermediate graded layers.
 
@@ -16,9 +16,19 @@ def get_mixing_ratios(num_graded_layers, method="linear", beta=3.0):
         num_graded_layers (int): Number of true intermediate mixed layers.
         method (str): One of "linear", "sine", or "exponential".
         beta (float): Exponential steepness. beta=0 falls back to linear.
+        fractions: Optional explicit fractions for each graded layer. When
+            provided, method and beta are ignored.
     """
     assert isinstance(num_graded_layers, int)
     assert num_graded_layers >= 1
+
+    if fractions is not None:
+        fractions = jnp.asarray(fractions)
+        assert fractions.ndim == 1
+        assert fractions.shape[0] == num_graded_layers
+        if jnp.any(fractions < 0) or jnp.any(fractions > 1):
+            raise ValueError("fractions must be between 0 and 1.")
+        return fractions
 
     x = jnp.arange(1, num_graded_layers + 1) / (num_graded_layers + 1)
 
